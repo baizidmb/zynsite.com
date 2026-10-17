@@ -1,0 +1,2029 @@
+<!DOCTYPE html>
+<html lang="bn" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZynSite - Advanced Admin Portal</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Next-Gen Agency CRM & Admin Control Portal for ZynSite.com">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="favicon.svg">
+  
+  <!-- Unified Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Jost:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS & Lucide Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            bn: ['"Noto Sans Bengali"', '"Hind Siliguri"', 'sans-serif'],
+            en: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          colors: {
+            royal: {
+              400: '#C8AA76',
+              500: '#B38F48',
+              600: '#997530',
+              700: '#7A5B20'
+            },
+            porcelain: {
+              50: '#FAF9F5',
+              100: '#F5F2EA',
+              200: '#EBDDC7',
+              300: '#D5CEBA',
+              400: '#C8AA76'
+            },
+            brand: {
+              400: '#C8AA76',
+              500: '#B38F48',
+              600: '#997530',
+              700: '#7A5B20'
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Hind Siliguri', sans-serif;
+      background-color: #FAF9F5;
+      color: #14120D;
+    }
+    .font-en {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(200, 170, 118, 0.28);
+      box-shadow: 0 4px 20px -2px rgba(180, 140, 75, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+    .glass-card-hover {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card-hover:hover {
+      border-color: rgba(200, 170, 118, 0.65);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -10px rgba(180, 140, 75, 0.15);
+    }
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FAF9F5;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D5CEBA;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #B38F48;
+    }
+    /* Modal & Toast Animations */
+    .modal-backdrop {
+      background: rgba(20, 18, 13, 0.55);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    @keyframes modalPop {
+      0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-content-animated {
+      animation: modalPop 0.25s ease-out forwards;
+      background: #FFFFFF !important;
+      border: 1px solid rgba(200, 170, 118, 0.35) !important;
+      box-shadow: 0 25px 60px -15px rgba(20, 18, 13, 0.2), 0 0 30px rgba(200, 170, 118, 0.12) !important;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      color: #14120D;
+    }
+    @keyframes slideInRight {
+      from { transform: translateX(110%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .toast-slide {
+      animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Mobile GPU & Performance Optimization */
+    @media (max-width: 768px) {
+      .glass-panel {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+    }
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      .toast-slide,
+      .modal-content-animated {
+        animation: none !important;
+      }
+      html {
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1559635049299284');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1559635049299284&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+</head>
+<body class="min-h-screen antialiased bg-[#FAF9F5] text-[#14120D] flex flex-col selection:bg-[#C8AA76]/30 selection:text-[#14120D]">
+
+  <!-- ================= AUTH LOGIN SCREEN ================= -->
+  <div id="login-container" class="min-h-screen flex items-center justify-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#C8AA76]/20 via-[#FAF9F5] to-[#F5F2EA]">
+    <div class="relative w-full max-w-md">
+      <!-- Ambient aura -->
+      <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-[#C8AA76]/30 via-[#B38F48]/20 to-[#EBDDC7]/40 opacity-70 blur-2xl"></div>
+      
+      <div class="relative glass-panel rounded-3xl p-8 shadow-2xl border border-[#C8AA76]/35">
+        <!-- Logo & Branding -->
+        <div class="text-center mb-8">
+          <div class="w-16 h-16 rounded-2xl bg-[#14120D] border border-[#C8AA76]/60 flex items-center justify-center p-2.5 mx-auto shadow-xl shadow-[#C8AA76]/20 mb-4">
+            <svg class="w-full h-full" viewBox="0 0 120 120" role="img" aria-label="ZynSite Monogram">
+              <circle cx="60" cy="60" r="54" fill="none" stroke="#C8AA76" stroke-opacity="0.7" stroke-width="2.2"></circle>
+              <path d="M38 42 H82 M38 78 H82" fill="none" stroke="#F3EFE6" stroke-width="3" stroke-linecap="round"></path>
+              <path d="M88 36 L32 84" fill="none" stroke="#C8AA76" stroke-width="2.5" stroke-linecap="round"></path>
+              <circle cx="88" cy="36" r="3.5" fill="#C8AA76"></circle>
+              <circle cx="32" cy="84" r="3.5" fill="#C8AA76"></circle>
+            </svg>
+          </div>
+          <div class="flex items-center justify-center gap-2">
+            <h1 class="text-2xl font-bold text-[#14120D] tracking-widest" style="font-family: 'Cormorant Garamond', serif;">ZYN<span style="color:#C8AA76; font-weight:600;">SITE</span></h1>
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#C8AA76]/15 text-[#997530] border border-[#C8AA76]/35 font-mono uppercase tracking-wider">Studio v2.5</span>
+          </div>
+          <p class="text-sm text-[#5C5343] mt-2 leading-relaxed">উন্নত ক্লাউড সিঙ্ক ও অর্ডার কন্ট্রোল ড্যাশবোর্ড</p>
+        </div>
+
+        <form id="login-form" onsubmit="handleAdminLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-sm font-bold text-[#2D281E] uppercase mb-2 flex items-center justify-between">
+              <span>অ্যাডমিন ইমেইল</span>
+              <span class="text-[11px] text-[#64748B] font-mono">Email</span>
+            </label>
+            <input 
+              id="login-email" 
+              type="email" 
+              required 
+              value="support.zynsite@gmail.com" 
+              placeholder="support.zynsite@gmail.com" 
+              class="w-full px-4 py-3.5 rounded-xl bg-[#FAF9F5] border border-[#D5CEBA] text-[#14120D] placeholder-slate-400 text-sm focus:bg-white focus:border-[#C8AA76] focus:ring-2 focus:ring-[#C8AA76]/20 focus:outline-none font-en transition-all"
+              autocomplete="username"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-[#2D281E] uppercase mb-2 flex items-center justify-between">
+              <span>অ্যাডমিন পাসওয়ার্ড</span>
+              <span class="text-[11px] text-[#64748B] font-mono">Protected</span>
+            </label>
+            <div class="relative">
+              <input 
+                id="login-password" 
+                type="password" 
+                required 
+                placeholder="অ্যাডমিন সিক্রেট পাসওয়ার্ড" 
+                class="w-full px-4 py-3.5 pr-12 rounded-xl bg-[#FAF9F5] border border-[#D5CEBA] text-[#14120D] placeholder-slate-400 text-sm focus:bg-white focus:border-[#C8AA76] focus:ring-2 focus:ring-[#C8AA76]/20 focus:outline-none font-en transition-all"
+                autocomplete="current-password"
+              />
+              <button 
+                type="button" 
+                onclick="togglePasswordVisibility()" 
+                class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#64748B] hover:text-[#14120D] transition-colors p-1"
+                aria-label="Toggle Password Visibility"
+              >
+                <i id="eye-icon" data-lucide="eye" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <p id="login-error" class="hidden text-sm text-rose-600 mt-2 flex items-center gap-1.5 leading-relaxed bg-rose-50 p-2.5 rounded-xl border border-rose-200">
+              <i data-lucide="alert-circle" class="w-4 h-4 shrink-0 text-rose-500"></i>
+              <span>ভুল ক্রেডেনশিয়াল! সঠিক ইমেইল বা অ্যাডমিন পাসওয়ার্ড প্রদান করুন।</span>
+            </p>
+          </div>
+
+          <div class="flex items-center justify-between text-sm text-[#5C5343] pt-1">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input id="remember-me" type="checkbox" checked class="rounded bg-white border-[#D5CEBA] text-[#C8AA76] focus:ring-0">
+              <span>সেশন মনে রাখুন</span>
+            </label>
+            <span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 flex items-center gap-1.5 text-xs font-semibold">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>Supabase Live</span>
+            </span>
+          </div>
+
+          <button 
+            id="login-submit-btn"
+            type="submit" 
+            class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#C8AA76] via-[#B38F48] to-[#997530] hover:from-[#B38F48] hover:to-[#7A5B20] text-white font-bold text-sm shadow-xl shadow-[#C8AA76]/25 flex items-center justify-center gap-2 transition-all cursor-pointer mt-2"
+          >
+            <span>স্টুডিওতে প্রবেশ করুন</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </form>
+
+        <div class="mt-6 pt-6 border-t border-[#C8AA76]/20 text-center text-xs text-[#64748B] flex items-center justify-center gap-1.5">
+          <i data-lucide="lock" class="w-3.5 h-3.5 text-[#997530]"></i>
+          <span>২৫৬-বিট এন্ড-টু-এন্ড এনক্রিপশন দ্বারা সুরক্ষিত</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= MAIN ADMIN DASHBOARD ================= -->
+  <div id="dashboard-container" class="hidden min-h-screen flex flex-col">
+    
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-30 glass-panel border-b border-[#C8AA76]/25 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3 flex items-center justify-between">
+        
+        <!-- Left: Branding & Status -->
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-[#14120D] border border-[#C8AA76]/60 flex items-center justify-center p-1.5 text-white shadow-lg shadow-[#C8AA76]/15 shrink-0">
+              <svg class="w-full h-full" viewBox="0 0 120 120" role="img" aria-label="ZynSite Monogram">
+                <circle cx="60" cy="60" r="54" fill="none" stroke="#C8AA76" stroke-opacity="0.7" stroke-width="2.2"></circle>
+                <path d="M38 42 H82 M38 78 H82" fill="none" stroke="#F3EFE6" stroke-width="3" stroke-linecap="round"></path>
+                <path d="M88 36 L32 84" fill="none" stroke="#C8AA76" stroke-width="2.5" stroke-linecap="round"></path>
+                <circle cx="88" cy="36" r="3.5" fill="#C8AA76"></circle>
+                <circle cx="32" cy="84" r="3.5" fill="#C8AA76"></circle>
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xl font-bold text-[#14120D] tracking-widest" style="font-family: 'Cormorant Garamond', serif;">ZYN<span style="color:#C8AA76; font-weight:600;">SITE</span></span>
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#C8AA76]/15 text-[#997530] border border-[#C8AA76]/30 font-mono uppercase">Studio</span>
+              </div>
+              <p class="text-xs text-[#5C5343] -mt-0.5 font-medium">রিয়েলটাইম লিড ও অর্ডার কন্ট্রোল প্যানেল</p>
+            </div>
+          </div>
+
+          <!-- Supabase Live Connection Indicator -->
+          <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-700 text-xs font-semibold">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>Supabase Live</span>
+          </div>
+        </div>
+
+        <!-- Right: Actions & Profile -->
+        <div class="flex items-center gap-2.5">
+          <!-- Manual Order Button -->
+          <button 
+            onclick="openManualOrderModal()" 
+            class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#C8AA76] via-[#B38F48] to-[#997530] hover:from-[#B38F48] hover:to-[#7A5B20] text-white text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-md shadow-[#C8AA76]/20 transition-all cursor-pointer"
+          >
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">নতুন অর্ডার</span>
+          </button>
+
+          <!-- Refresh Data Button -->
+          <button 
+            onclick="refreshDashboardData()" 
+            class="p-2 sm:px-3 sm:py-2 rounded-xl bg-white hover:bg-[#F5F2EA] border border-[#C8AA76]/30 text-[#2D281E] text-xs sm:text-sm font-medium flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm"
+            title="ডাটা রিলোড করুন"
+          >
+            <i id="refresh-icon" data-lucide="refresh-cw" class="w-4 h-4 text-[#997530]"></i>
+            <span class="hidden sm:inline">রিফ্রেশ</span>
+          </button>
+
+          <!-- View Main Website Link -->
+          <a 
+            href="/" 
+            target="_blank" 
+            class="p-2 sm:px-3 sm:py-2 rounded-xl bg-white hover:bg-[#F5F2EA] border border-[#C8AA76]/30 text-[#2D281E] text-xs sm:text-sm font-medium flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm"
+            title="লাইভ সাইট দেখুন"
+          >
+            <i data-lucide="external-link" class="w-4 h-4 text-[#997530]"></i>
+            <span class="hidden md:inline">মূল সাইট</span>
+          </a>
+
+          <!-- Logout Button -->
+          <button 
+            onclick="handleAdminLogout()" 
+            class="p-2 rounded-xl bg-white hover:bg-rose-50 text-[#64748B] hover:text-rose-600 border border-[#C8AA76]/30 transition-colors cursor-pointer shadow-sm"
+            title="লগআউট করুন"
+          >
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      
+      <!-- Top Overview Metrics Strip -->
+      <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Metric 1: Total Orders -->
+        <div class="glass-panel glass-card-hover rounded-2xl p-5 border border-[#C8AA76]/25">
+          <div class="flex items-center justify-between text-[#5C5343] text-xs">
+            <span class="font-bold text-[#475569]">সর্বমোট অর্ডার</span>
+            <div class="w-8 h-8 rounded-lg bg-[#C8AA76]/15 text-[#997530] flex items-center justify-center">
+              <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="mt-3 flex items-baseline gap-2">
+            <span id="stat-total-orders" class="text-2xl sm:text-3xl font-black text-[#14120D] font-en">0</span>
+            <span id="stat-pending-orders-badge" class="text-xs font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-200">
+              <span id="stat-pending-orders">0</span> অপেক্ষমান
+            </span>
+          </div>
+          <p id="stat-total-revenue" class="text-xs text-[#5C5343] mt-2 font-en font-medium">৳0 সর্বমোট ভ্যালু</p>
+        </div>
+
+        <!-- Metric 2: Urgent Pending -->
+        <div class="glass-panel glass-card-hover rounded-2xl p-5 border border-[#C8AA76]/25">
+          <div class="flex items-center justify-between text-[#5C5343] text-xs">
+            <span class="font-bold text-amber-800">জরুরি পেন্ডিং রিকোয়েস্ট</span>
+            <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center">
+              <i data-lucide="clock" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="mt-3 flex items-baseline gap-2">
+            <span id="stat-pending-orders-count" class="text-2xl sm:text-3xl font-black text-amber-700 font-en">0</span>
+            <span class="text-xs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-200">তাৎক্ষণিক কল দিন</span>
+          </div>
+          <p class="text-xs text-amber-700 font-medium mt-2">অপেক্ষমান ক্লায়েন্টদের সাথে কথা বলুন</p>
+        </div>
+
+        <!-- Metric 3: In Progress Projects -->
+        <div class="glass-panel glass-card-hover rounded-2xl p-5 border border-[#C8AA76]/25">
+          <div class="flex items-center justify-between text-[#5C5343] text-xs">
+            <span class="font-bold text-blue-800">চলমান প্রজেক্ট (In Progress)</span>
+            <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center">
+              <i data-lucide="layers" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="mt-3 flex items-baseline gap-2">
+            <span id="stat-progress-orders" class="text-2xl sm:text-3xl font-black text-blue-700 font-en">0</span>
+            <span class="text-xs font-semibold text-[#5C5343]">টি সাইট তৈরি হচ্ছে</span>
+          </div>
+          <p id="stat-avg-order" class="text-xs text-[#5C5343] mt-2 font-en font-medium">গড় বাজেট: ৳0</p>
+        </div>
+
+        <!-- Metric 4: Free Demos Scheduled -->
+        <div class="glass-panel glass-card-hover rounded-2xl p-5 border border-[#C8AA76]/25">
+          <div class="flex items-center justify-between text-[#5C5343] text-xs">
+            <span class="font-bold text-purple-800">ডেমো ও কনসাল্টেশন</span>
+            <div class="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center">
+              <i data-lucide="calendar" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="mt-3 flex items-baseline gap-2">
+            <span id="stat-total-demos" class="text-2xl sm:text-3xl font-black text-purple-700 font-en">0</span>
+            <span class="text-xs font-semibold text-[#5C5343]">বুকিং সম্পন্ন</span>
+          </div>
+          <p id="stat-pending-demos" class="text-xs text-purple-700 font-medium mt-2 font-en">0টি অপেক্ষমান সেশন</p>
+        </div>
+      </section>
+
+      <!-- Package Sales Distribution Bar -->
+      <section class="glass-panel rounded-2xl p-5 border border-[#C8AA76]/25">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <i data-lucide="pie-chart" class="w-4 h-4 text-[#997530]"></i>
+            <h3 class="text-sm font-bold text-[#14120D]">প্যাকেজ অনুযায়ী অর্ডার বিতরণ</h3>
+          </div>
+          <span class="text-xs font-semibold text-[#5C5343] font-en">Live Analytics</span>
+        </div>
+
+        <!-- Multi-segment visual bar -->
+        <div id="package-distribution-bar" class="w-full h-3 rounded-full bg-[#EBDDC7]/60 overflow-hidden flex shadow-inner">
+          <div style="width: 50%" class="bg-[#C8AA76]" title="এফ-কমার্স"></div>
+          <div style="width: 25%" class="bg-[#B38F48]" title="কর্পোরেট"></div>
+          <div style="width: 15%" class="bg-[#997530]" title="পার্সোনাল"></div>
+          <div style="width: 10%" class="bg-emerald-500" title="মেগা ই-কমার্স"></div>
+        </div>
+
+        <!-- Touch-Accessible Dynamic Legend Pills -->
+        <div class="flex flex-wrap items-center gap-3 sm:gap-4 mt-3 text-xs text-[#5C5343] font-medium">
+          <span id="legend-fcom" class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0"></span> এফ-কমার্স: 0টি (0%)</span>
+          <span id="legend-corp" class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500 shrink-0"></span> কর্পোরেট: 0টি (0%)</span>
+          <span id="legend-pers" class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-purple-500 shrink-0"></span> পার্সোনাল: 0টি (0%)</span>
+          <span id="legend-ecom" class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span> মেগা ই-কমার্স: 0টি (0%)</span>
+          <span id="legend-cust" class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span> কাস্টম: 0টি (0%)</span>
+        </div>
+      </section>
+
+      <!-- Main Navigation Tabs: Orders vs Demos -->
+      <section class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 border-b border-[#C8AA76]/25 pb-3">
+        <!-- 2 Main Tabs -->
+        <div class="flex items-center gap-2">
+          <button 
+            onclick="switchTab('orders')" 
+            id="tab-btn-orders"
+            class="px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 transition-all bg-gradient-to-r from-[#C8AA76] via-[#B38F48] to-[#997530] text-white shadow-md shadow-[#C8AA76]/20 cursor-pointer"
+          >
+            <i data-lucide="package" class="w-4 h-4"></i>
+            <span>অর্ডার সমূহ</span>
+            <span id="tab-badge-orders" class="px-2 py-0.5 rounded-full text-xs bg-white/20 text-white font-en font-bold ml-1">0</span>
+          </button>
+
+          <button 
+            onclick="switchTab('demos')" 
+            id="tab-btn-demos"
+            class="px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 transition-all bg-white text-[#5C5343] hover:text-[#14120D] hover:bg-[#F5F2EA] border border-[#C8AA76]/30 cursor-pointer shadow-sm"
+          >
+            <i data-lucide="calendar" class="w-4 h-4"></i>
+            <span>ডেমো ও মিটিং বুকিং</span>
+            <span id="tab-badge-demos" class="px-2 py-0.5 rounded-full text-xs bg-[#F5F2EA] text-[#5C5343] font-en font-bold ml-1 border border-[#C8AA76]/20">0</span>
+          </button>
+        </div>
+
+        <!-- Export tools -->
+        <div class="flex items-center gap-2">
+          <button 
+            onclick="exportOrdersCSV()" 
+            class="px-3.5 py-2 rounded-xl bg-white hover:bg-[#F5F2EA] border border-[#C8AA76]/30 text-[#2D281E] text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm"
+            title="CSV এক্সপোর্ট"
+          >
+            <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i>
+            <span>Export CSV</span>
+          </button>
+          <button 
+            onclick="exportBackupJSON()" 
+            class="px-3.5 py-2 rounded-xl bg-white hover:bg-[#F5F2EA] border border-[#C8AA76]/30 text-[#2D281E] text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm"
+            title="JSON ব্যাকআপ"
+          >
+            <i data-lucide="hard-drive" class="w-4 h-4 text-[#997530]"></i>
+            <span>JSON Backup</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- TAB 1: ORDERS MANAGEMENT -->
+      <section id="tab-content-orders" class="space-y-4">
+        
+        <!-- Filter & Search Toolbar -->
+        <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 bg-white/90 p-3 rounded-2xl border border-[#C8AA76]/25 shadow-sm">
+          
+          <!-- Search input -->
+          <div class="relative flex-1">
+            <i data-lucide="search" class="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input 
+              id="order-search-input" 
+              type="text" 
+              oninput="filterAndRenderOrders()" 
+              placeholder="নাম, ফোন নম্বর, অর্ডার আইডি বা বিজনেস দিয়ে খুঁজুন..." 
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#FAF9F5] border border-[#D5CEBA] text-sm text-[#14120D] placeholder-slate-400 focus:bg-white focus:outline-none focus:border-[#C8AA76] focus:ring-2 focus:ring-[#C8AA76]/20 transition-all"
+            />
+          </div>
+
+          <!-- Status Filters with Live Badges -->
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-1 lg:pb-0 text-xs sm:text-sm">
+            <button onclick="setOrderStatusFilter('all')" data-status="all" class="order-status-pill px-3 py-2 rounded-xl font-bold bg-gradient-to-r from-[#C8AA76] to-[#B38F48] text-white shrink-0 cursor-pointer shadow-sm">
+              সকল <span id="count-st-all" class="ml-1 opacity-90 font-en font-normal">(0)</span>
+            </button>
+            <button onclick="setOrderStatusFilter('pending')" data-status="pending" class="order-status-pill px-3 py-2 rounded-xl font-medium text-[#5C5343] hover:text-[#14120D] bg-white border border-[#C8AA76]/25 shrink-0 cursor-pointer">
+              অপেক্ষমান <span id="count-st-pending" class="ml-1 text-amber-700 font-en font-bold">(0)</span>
+            </button>
+            <button onclick="setOrderStatusFilter('contacted')" data-status="contacted" class="order-status-pill px-3 py-2 rounded-xl font-medium text-[#5C5343] hover:text-[#14120D] bg-white border border-[#C8AA76]/25 shrink-0 cursor-pointer">
+              যোগাযোগকৃত <span id="count-st-contacted" class="ml-1 text-indigo-700 font-en font-bold">(0)</span>
+            </button>
+            <button onclick="setOrderStatusFilter('in_progress')" data-status="in_progress" class="order-status-pill px-3 py-2 rounded-xl font-medium text-[#5C5343] hover:text-[#14120D] bg-white border border-[#C8AA76]/25 shrink-0 cursor-pointer">
+              চলমান <span id="count-st-progress" class="ml-1 text-blue-700 font-en font-bold">(0)</span>
+            </button>
+            <button onclick="setOrderStatusFilter('completed')" data-status="completed" class="order-status-pill px-3 py-2 rounded-xl font-medium text-[#5C5343] hover:text-[#14120D] bg-white border border-[#C8AA76]/25 shrink-0 cursor-pointer">
+              সম্পন্ন <span id="count-st-completed" class="ml-1 text-emerald-700 font-en font-bold">(0)</span>
+            </button>
+            <button onclick="setOrderStatusFilter('cancelled')" data-status="cancelled" class="order-status-pill px-3 py-2 rounded-xl font-medium text-[#5C5343] hover:text-[#14120D] bg-white border border-[#C8AA76]/25 shrink-0 cursor-pointer">
+              বাতিল <span id="count-st-cancelled" class="ml-1 text-rose-700 font-en font-bold">(0)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Orders Table Card -->
+        <div class="glass-panel rounded-2xl border border-[#C8AA76]/25 overflow-hidden shadow-xl">
+          <!-- Desktop Table (Screen >= 768px) -->
+          <div class="overflow-x-auto hidden md:block">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-[#F5F2EA] text-[#5C5343] uppercase text-[11px] font-bold border-b border-[#C8AA76]/25">
+                <tr>
+                  <th class="py-3.5 px-4 font-en">Order ID & Date</th>
+                  <th class="py-3.5 px-4">গ্রাহক ও ব্যবসা</th>
+                  <th class="py-3.5 px-4">প্যাকেজ ও বাজেট</th>
+                  <th class="py-3.5 px-4">ক্লায়েন্ট নোট</th>
+                  <th class="py-3.5 px-4">স্ট্যাটাস</th>
+                  <th class="py-3.5 px-4 text-right">অ্যাকশন</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body" class="divide-y divide-[#EBDDC7]/50">
+                <!-- Populated dynamically via JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Mobile Stacked Glass Cards (Screen < 768px) -->
+          <div id="orders-cards-mobile" class="block md:hidden divide-y divide-[#EBDDC7]/50">
+            <!-- Populated dynamically via JS -->
+          </div>
+
+          <!-- Empty State -->
+          <div id="orders-empty-state" class="hidden text-center py-20 px-4 bg-white/60">
+            <div class="w-14 h-14 rounded-2xl bg-[#F5F2EA] border border-[#C8AA76]/30 flex items-center justify-center mx-auto text-[#997530] mb-3">
+              <i data-lucide="inbox" class="w-7 h-7"></i>
+            </div>
+            <h4 class="text-base font-bold text-[#14120D]">কোনো অর্ডার রেকর্ড পাওয়া যায়নি</h4>
+            <p class="text-sm text-[#5C5343] mt-1 max-w-sm mx-auto leading-relaxed">ওয়েবসাইটে কোনো ক্লায়েন্ট অর্ডার করলে তা সাথে সাথে এখানে লাইভ রিয়েলটাইমে দৃশ্যমান হবে।</p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- TAB 2: DEMO BOOKINGS MANAGEMENT -->
+      <section id="tab-content-demos" class="hidden space-y-4">
+        
+        <!-- Filter Toolbar -->
+        <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 bg-white/90 p-3 rounded-2xl border border-[#C8AA76]/25 shadow-sm">
+          <div class="relative flex-1">
+            <i data-lucide="search" class="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input 
+              id="demo-search-input" 
+              type="text" 
+              oninput="filterAndRenderDemos()" 
+              placeholder="ডেমো আইডি, নাম, ফোন বা টপিক দিয়ে খুঁজুন..." 
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#FAF9F5] border border-[#D5CEBA] text-sm text-[#14120D] placeholder-slate-400 focus:bg-white focus:outline-none focus:border-[#C8AA76] focus:ring-2 focus:ring-[#C8AA76]/20 transition-all"
+            />
+          </div>
+
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-1 lg:pb-0 text-xs sm:text-sm">
+            <button onclick="setDemoStatusFilter('all')" data-status="all" class="demo-status-pill px-3 py-2 rounded-xl font-bold bg-gradient-to-r from-[#C8AA76] to-[#B38F48] text-white shrink-0 cursor-pointer shadow-sm">
+              সকল ডেমো
+            </button>
+            <button onclick="setDemoStatusFilter('pending')" data-status="pending" class="demo-status-pill px-3 py-2 rounded-xl font-medium text-[#5C5343] hover:text-[#14120D] bg-white border border-[#C8AA76]/25 shrink-0 cursor-pointer">
+              অপেক্ষমান
+            </button>
+            <button onclick="setDemoStatusFilter('confirmed')" data-status="confirmed" class="demo-status-pill px-3 py-2 rounded-xl font-medium text-[#5C5343] hover:text-[#14120D] bg-white border border-[#C8AA76]/25 shrink-0 cursor-pointer">
+              কনফার্মড
+            </button>
+            <button onclick="setDemoStatusFilter('completed')" data-status="completed" class="demo-status-pill px-3 py-2 rounded-xl font-medium text-[#5C5343] hover:text-[#14120D] bg-white border border-[#C8AA76]/25 shrink-0 cursor-pointer">
+              সম্পন্ন
+            </button>
+            <button onclick="setDemoStatusFilter('cancelled')" data-status="cancelled" class="demo-status-pill px-3 py-2 rounded-xl font-medium text-[#5C5343] hover:text-[#14120D] bg-white border border-[#C8AA76]/25 shrink-0 cursor-pointer">
+              বাতিল
+            </button>
+          </div>
+        </div>
+
+        <!-- Demos Table Card -->
+        <div class="glass-panel rounded-2xl border border-[#C8AA76]/25 overflow-hidden shadow-xl">
+          <!-- Desktop Table (Screen >= 768px) -->
+          <div class="overflow-x-auto hidden md:block">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-[#F5F2EA] text-[#5C5343] uppercase text-[11px] font-bold border-b border-[#C8AA76]/25">
+                <tr>
+                  <th class="py-3.5 px-4 font-en">Booking ID & Date</th>
+                  <th class="py-3.5 px-4">ক্লায়েন্ট ও প্রতিষ্ঠান</th>
+                  <th class="py-3.5 px-4">মিটিং সময়সূচী</th>
+                  <th class="py-3.5 px-4">প্ল্যাটফর্ম</th>
+                  <th class="py-3.5 px-4">আলোচ্য বিষয়</th>
+                  <th class="py-3.5 px-4">স্ট্যাটাস</th>
+                  <th class="py-3.5 px-4 text-right">অ্যাকশন</th>
+                </tr>
+              </thead>
+              <tbody id="demos-table-body" class="divide-y divide-[#EBDDC7]/50">
+                <!-- Populated dynamically via JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Mobile Stacked Glass Cards (Screen < 768px) -->
+          <div id="demos-cards-mobile" class="block md:hidden divide-y divide-[#EBDDC7]/50">
+            <!-- Populated dynamically via JS -->
+          </div>
+
+          <!-- Empty State -->
+          <div id="demos-empty-state" class="hidden text-center py-20 px-4 bg-white/60">
+            <div class="w-14 h-14 rounded-2xl bg-[#F5F2EA] border border-[#C8AA76]/30 flex items-center justify-center mx-auto text-[#997530] mb-3">
+              <i data-lucide="calendar" class="w-7 h-7"></i>
+            </div>
+            <h4 class="text-base font-bold text-[#14120D]">কোনো ডেমো বুকিং রেকর্ড পাওয়া যায়নি</h4>
+            <p class="text-sm text-[#5C5343] mt-1 max-w-sm mx-auto leading-relaxed">ক্লায়েন্টরা ফ্রি ডেমো বুক করলে তা স্বয়ংক্রিয়ভাবে এখানে যুক্ত হবে।</p>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <!-- ================= MODAL 1: ORDER DETAILS VIEW ================= -->
+  <div id="order-details-modal" class="hidden fixed inset-0 z-50 overflow-y-auto modal-backdrop" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-[#14120D]/60 backdrop-blur-sm cursor-pointer" onclick="closeOrderDetailsModal()"></div>
+    <div class="min-h-full flex items-center justify-center p-4">
+      <div class="relative w-full max-w-lg bg-white border border-[#C8AA76]/35 rounded-3xl p-6 sm:p-8 shadow-2xl z-10 text-left modal-content-animated">
+        <button 
+          type="button" 
+          onclick="closeOrderDetailsModal()" 
+          class="absolute top-4 right-4 sm:top-5 sm:right-5 w-9 h-9 rounded-full bg-[#F5F2EA] text-[#5C5343] hover:text-[#14120D] hover:bg-[#EBDDC7] border border-[#C8AA76]/30 flex items-center justify-center transition-all cursor-pointer"
+        >
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <div class="flex items-center gap-3 mb-5 pr-8">
+          <div class="w-10 h-10 rounded-xl bg-[#C8AA76]/15 text-[#997530] flex items-center justify-center shrink-0">
+            <i data-lucide="file-text" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-[#14120D] flex items-center gap-2">
+              <span>অর্ডার বিবরণ</span>
+              <span id="dtl-order-id" class="font-mono text-sm text-[#997530]">#ZS-0000</span>
+            </h3>
+            <p class="text-xs text-[#5C5343] font-en">Client Order Information</p>
+          </div>
+        </div>
+
+        <div id="dtl-order-content" class="space-y-4 text-sm">
+          <!-- Injected via openOrderDetailsModal() -->
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-[#C8AA76]/25 flex items-center justify-between">
+          <button 
+            type="button" 
+            onclick="closeOrderDetailsModal()" 
+            class="px-4 py-2.5 rounded-xl font-semibold text-sm text-[#5C5343] hover:text-[#14120D] bg-[#F5F2EA] hover:bg-[#EBDDC7] border border-[#C8AA76]/30 transition-colors cursor-pointer"
+          >
+            বন্ধ করুন
+          </button>
+          <div id="dtl-order-actions" class="flex items-center gap-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= MODAL 2: MANUAL ORDER CREATION ================= -->
+  <div id="manual-order-modal" class="hidden fixed inset-0 z-50 overflow-y-auto modal-backdrop" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-[#14120D]/60 backdrop-blur-sm cursor-pointer" onclick="closeManualOrderModal()"></div>
+    <div class="min-h-full flex items-start sm:items-center justify-center p-3 sm:p-6 py-6 sm:py-10">
+      <div class="relative w-full max-w-lg bg-white border border-[#C8AA76]/35 rounded-3xl p-6 sm:p-8 shadow-2xl z-10 text-left modal-content-animated">
+        <button 
+          type="button" 
+          onclick="closeManualOrderModal()" 
+          class="absolute top-4 right-4 sm:top-5 sm:right-5 w-9 h-9 rounded-full bg-[#F5F2EA] text-[#5C5343] hover:text-rose-600 hover:bg-[#EBDDC7] border border-[#C8AA76]/30 flex items-center justify-center transition-all cursor-pointer"
+        >
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <div class="flex items-center gap-3 mb-5 pr-8">
+          <div class="w-10 h-10 rounded-xl bg-[#C8AA76]/15 text-[#997530] flex items-center justify-center shrink-0">
+            <i data-lucide="plus-circle" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-[#14120D]">নতুন লিড / অর্ডার এন্ট্রি করুন</h3>
+            <p class="text-sm text-[#5C5343] leading-relaxed">অফলাইন, ফোন কল বা ইনবক্স থেকে পাওয়া অর্ডার সরাসরি Supabase এ যুক্ত করুন</p>
+          </div>
+        </div>
+
+        <form onsubmit="handleManualOrderSubmit(event)" class="space-y-4 text-sm">
+          <!-- Honeypot anti-bot shield -->
+          <input type="text" name="zynsite_hp_field" id="mo-hp-field" class="hidden" tabindex="-1" autocomplete="off" style="display:none;">
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-sm font-bold text-[#2D281E] uppercase mb-1">গ্রাহকের নাম *</label>
+              <input id="mo-name" type="text" required placeholder="মোঃ তানভীর হাসান" class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF9F5] border border-[#D5CEBA] text-[#14120D] placeholder-slate-400 text-sm focus:bg-white focus:border-[#C8AA76] focus:ring-2 focus:ring-[#C8AA76]/20 focus:outline-none transition-all" />
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-[#2D281E] uppercase mb-1">মোবাইল নম্বর *</label>
+              <input id="mo-phone" type="tel" required placeholder="01XXXXXXXXX" class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF9F5] border border-[#D5CEBA] text-[#14120D] placeholder-slate-400 text-sm focus:bg-white focus:border-[#C8AA76] focus:ring-2 focus:ring-[#C8AA76]/20 focus:outline-none font-en transition-all" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-sm font-bold text-[#2D281E] uppercase mb-1">ব্যবসা / শপের নাম</label>
+              <input id="mo-business" type="text" placeholder="যেমন: ফ্যাশন বিডি" class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF9F5] border border-[#D5CEBA] text-[#14120D] placeholder-slate-400 text-sm focus:bg-white focus:border-[#C8AA76] focus:ring-2 focus:ring-[#C8AA76]/20 focus:outline-none transition-all" />
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-[#2D281E] uppercase mb-1">ফেসবুক / ওয়েব লিংক</label>
+              <input id="mo-link" type="text" placeholder="facebook.com/page" class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF9F5] border border-[#D5CEBA] text-[#14120D] placeholder-slate-400 text-sm focus:bg-white focus:border-[#C8AA76] focus:ring-2 focus:ring-[#C8AA76]/20 focus:outline-none font-en transition-all" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-sm font-bold text-[#2D281E] uppercase mb-1">প্যাকেজ নির্বাচন করুন</label>
+              <select id="mo-package" onchange="handleManualPackageChange(this.value)" class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF9F5] border border-[#D5CEBA] text-[#14120D] text-sm focus:bg-white focus:border-[#C8AA76] focus:ring-2 focus:ring-[#C8AA76]/20 focus:outline-none transition-all">
+                <option value="3990" data-name="এফ-কমার্স সুপার সেলার ল্যান্ডিং পেজ">এফ-কমার্স সুপার সেলার (৳৩,৯৯০)</option>
+                <option value="7990" data-name="কর্পোরেট বিজনেস প্রো সাইট">কর্পোরেট বিজনেস প্রো (৳৭,৯৯০)</option>
+                <option value="4990" data-name="পার্সোনাল ব্র্যান্ড মাস্টার">পার্সোনাল ব্র্যান্ড মাস্টার (৳৪,৯৯০)</option>
+                <option value="14990" data-name="মেগা ই-কমার্স এম্পায়ার">মেগা ই-কমার্স এম্পায়ার (৳১৪,৯৯০)</option>
+                <option value="custom" data-name="কাস্টম ডেভেলপমেন্ট">কাস্টম ডেভেলপমেন্ট</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-[#2D281E] uppercase mb-1">মোট প্রাইস (৳) *</label>
+              <input id="mo-price" type="number" required value="3990" class="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF9F5] border border-[#D5CEBA] text-[#14120D] text-sm focus:bg-white focus:border-[#C8AA76] focus:ring-2 focus:ring-[#C8AA76]/20 focus:outline-none font-en transition-all" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-[#2D281E] uppercase mb-1">বিশেষ রিকোয়ারমেন্ট বা নোট</label>
+            <textarea id="mo-notes" rows="2" placeholder="ক্লায়েন্টের চাহিদা বা ডোমেইন সংক্রান্ত তথ্য লিখুন..." class="w-full px-3.5 py-2 rounded-xl bg-[#FAF9F5] border border-[#D5CEBA] text-[#14120D] placeholder-slate-400 text-sm focus:bg-white focus:border-[#C8AA76] focus:ring-2 focus:ring-[#C8AA76]/20 focus:outline-none leading-relaxed transition-all"></textarea>
+          </div>
+
+          <div class="pt-2 flex items-center justify-end gap-3">
+            <button type="button" onclick="closeManualOrderModal()" class="px-4 py-2.5 rounded-xl font-semibold text-sm text-[#5C5343] hover:text-[#14120D] bg-[#F5F2EA] hover:bg-[#EBDDC7] border border-[#C8AA76]/30 cursor-pointer">বাতিল</button>
+            <button type="submit" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-gradient-to-r from-[#C8AA76] via-[#B38F48] to-[#997530] hover:from-[#B38F48] hover:to-[#7A5B20] text-white shadow-md shadow-[#C8AA76]/20 flex items-center gap-1.5 cursor-pointer">
+              <i data-lucide="check" class="w-4 h-4"></i>
+              <span>সংরক্ষণ করুন (Save to Supabase)</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= MODAL 3: CONFIRM DELETE MODAL ================= -->
+  <div id="confirm-delete-modal" class="hidden fixed inset-0 z-50 overflow-y-auto modal-backdrop" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-[#14120D]/60 backdrop-blur-sm cursor-pointer" onclick="closeConfirmDeleteModal()"></div>
+    <div class="min-h-full flex items-center justify-center p-4">
+      <div class="relative w-full max-w-sm bg-white border border-[#C8AA76]/35 rounded-3xl p-6 shadow-2xl z-10 text-center modal-content-animated">
+        <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center mx-auto mb-4">
+          <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-lg font-bold text-[#14120D] mb-1">মুছে ফেলার নিশ্চিতকরণ</h3>
+        <p class="text-sm text-[#5C5343] leading-relaxed mb-5">
+          আপনি কি নিশ্চিত যে <span id="del-item-id" class="font-mono font-bold text-rose-600"></span> রেকর্ডটি স্থায়ীভাবে মুছে ফেলতে চান?
+        </p>
+        <div class="flex items-center justify-center gap-3">
+          <button 
+            type="button" 
+            onclick="closeConfirmDeleteModal()" 
+            class="px-5 py-2.5 rounded-xl font-semibold text-sm text-[#5C5343] hover:text-[#14120D] bg-[#F5F2EA] hover:bg-[#EBDDC7] border border-[#C8AA76]/30 transition-colors cursor-pointer"
+          >
+            বাতিল
+          </button>
+          <button 
+            id="confirm-delete-btn" 
+            type="button" 
+            onclick="executeConfirmDelete()" 
+            class="px-5 py-2.5 rounded-xl font-bold text-sm bg-rose-600 hover:bg-rose-700 text-white shadow-lg shadow-rose-600/25 flex items-center gap-1.5 transition-all cursor-pointer"
+          >
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+            <span>হ্যাঁ, মুছে ফেলুন</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= TOAST NOTIFICATION CONTAINER ================= -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 pointer-events-none"></div>
+
+
+  <!-- ================= SCRIPTS ================= -->
+  <script src="js/backend.js"></script>
+  <script>
+    /**
+     * XSS Sanitization Helper
+     */
+    function escapeHTML(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    /**
+     * URL Validation & Sanitization
+     * Blocks javascript:, data:, vbscript: URIs
+     */
+    function sanitizeUrl(url) {
+      if (!url) return '';
+      const trimmed = String(url).trim();
+      if (trimmed === 'দেওয়া হয়নি' || trimmed === 'নেই') return '';
+      if (/^https?:\/\//i.test(trimmed)) {
+        return trimmed;
+      }
+      if (/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/.*)?$/i.test(trimmed)) {
+        return 'https://' + trimmed;
+      }
+      return '';
+    }
+
+    // SHA-256 Web Crypto Helper
+    async function computeSHA256(message) {
+      const msgBuffer = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // SHA-256 Hash of admin master password (No plain text in source code)
+    const ADMIN_PASSWORD_HASH = "5d315ed6c72666edf92937a657c474db183c75cf3a93611c70d746664bc60e62";
+
+    let activeTab = "orders";
+    let currentOrderStatusFilter = "all";
+    let currentDemoStatusFilter = "all";
+    let allOrdersData = [];
+    let allDemosData = [];
+    let pendingDelete = null; // { type: 'order'|'demo', id: string }
+
+    // Toast Notification System
+    function showToast(message, type = 'success') {
+      const container = document.getElementById("toast-container");
+      if (!container) return;
+
+      const toast = document.createElement("div");
+      toast.className = `pointer-events-auto toast-slide border px-4 py-3 rounded-2xl flex items-center gap-3 shadow-2xl text-sm font-medium ${
+        type === 'error'
+          ? 'border-rose-300 bg-rose-50 text-rose-900'
+          : type === 'info'
+          ? 'border-blue-300 bg-blue-50 text-blue-900'
+          : 'border-emerald-300 bg-emerald-50 text-emerald-900'
+      }`;
+
+      const iconName = type === 'error' ? 'alert-circle' : type === 'info' ? 'info' : 'check-circle';
+      toast.innerHTML = `
+        <i data-lucide="${iconName}" class="w-4 h-4 shrink-0"></i>
+        <span>${escapeHTML(message)}</span>
+      `;
+
+      container.appendChild(toast);
+      if (window.lucide) lucide.createIcons();
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // Copy to Clipboard Helper
+    function copyToClipboard(text, btnElement) {
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(`কপি হয়েছে: ${text}`, 'success');
+        if (btnElement) {
+          const origHtml = btnElement.innerHTML;
+          btnElement.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i>`;
+          if (window.lucide) lucide.createIcons();
+          setTimeout(() => {
+            btnElement.innerHTML = origHtml;
+            if (window.lucide) lucide.createIcons();
+          }, 1500);
+        }
+      }).catch(() => {
+        showToast("ক্লিপবোর্ডে কপি করা যায়নি", "error");
+      });
+    }
+
+    // Global Event Delegation for [data-copy]
+    document.addEventListener("click", (e) => {
+      const copyBtn = e.target.closest("[data-copy]");
+      if (copyBtn) {
+        e.preventDefault();
+        const text = copyBtn.getAttribute("data-copy");
+        copyToClipboard(text, copyBtn);
+      }
+    });
+
+    // On Load
+    document.addEventListener("DOMContentLoaded", async () => {
+      if (window.lucide) lucide.createIcons();
+
+      await checkAuthSession();
+      initRealtimeSubscriptions();
+
+      // Close modal on Escape
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" || e.key === "Esc") {
+          closeOrderDetailsModal();
+          closeManualOrderModal();
+          closeConfirmDeleteModal();
+        }
+      });
+    });
+
+    let realtimeChannel = null;
+    function initRealtimeSubscriptions() {
+      if (window.zynBackend?.supabase) {
+        try {
+          if (realtimeChannel) {
+            window.zynBackend.supabase.removeChannel(realtimeChannel);
+          }
+          realtimeChannel = window.zynBackend.supabase.channel('admin-realtime')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, (payload) => {
+              showToast("নতুন অর্ডার এসেছে বা স্ট্যাটাস আপডেট হয়েছে!", "info");
+              refreshDashboardData();
+            })
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'demo_bookings' }, (payload) => {
+              showToast("নতুন ডেমো বুকিং এসেছে!", "info");
+              refreshDashboardData();
+            })
+            .subscribe();
+        } catch (err) {
+          console.warn("Realtime subscription init failed:", err);
+        }
+      }
+
+      window.addEventListener("zynsite:new_lead", (e) => {
+        const lead = e.detail;
+        showToast(lead?.type === 'order' ? "নতুন অর্ডার সফলভাবে গৃহীত হয়েছে!" : "নতুন ডেমো সেশন বুক হয়েছে!", "success");
+        refreshDashboardData();
+      });
+    }
+
+    async function checkAuthSession() {
+      const localAuth = sessionStorage.getItem("zynsite_admin_auth") === "true" || localStorage.getItem("zynsite_admin_auth") === "true";
+      if (localAuth) {
+        showDashboard();
+        return;
+      }
+
+      if (window.zynBackend?.supabase?.auth) {
+        try {
+          const { data } = await window.zynBackend.supabase.auth.getSession();
+          if (data?.session) {
+            sessionStorage.setItem("zynsite_admin_auth", "true");
+            showDashboard();
+            return;
+          }
+        } catch (e) {
+          console.warn("Session check error:", e);
+        }
+      }
+
+      showLogin();
+    }
+
+    function togglePasswordVisibility() {
+      const input = document.getElementById("login-password");
+      const icon = document.getElementById("eye-icon");
+      if (!input) return;
+      if (input.type === "password") {
+        input.type = "text";
+        if (icon) icon.setAttribute("data-lucide", "eye-off");
+      } else {
+        input.type = "password";
+        if (icon) icon.setAttribute("data-lucide", "eye");
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    async function handleAdminLogin(e) {
+      if (e) e.preventDefault();
+      const emailInput = document.getElementById("login-email");
+      const passInput = document.getElementById("login-password");
+      const remember = document.getElementById("remember-me")?.checked;
+      const errorEl = document.getElementById("login-error");
+      const submitBtn = document.getElementById("login-submit-btn");
+
+      const email = emailInput?.value.trim() || "";
+      const pass = passInput?.value.trim() || "";
+
+      if (!pass) return;
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span>যাচাই করা হচ্ছে...</span>`;
+      }
+
+      let authenticated = false;
+
+      // 1. Attempt Supabase Auth sign-in
+      if (window.zynBackend?.supabase?.auth) {
+        try {
+          const { data, error } = await window.zynBackend.supabase.auth.signInWithPassword({
+            email: email,
+            password: pass
+          });
+          if (!error && data?.session) {
+            authenticated = true;
+          }
+        } catch (authErr) {
+          console.warn("Supabase auth attempted:", authErr);
+        }
+      }
+
+      // 2. Cryptographic SHA-256 fallback comparison
+      if (!authenticated) {
+        try {
+          const hash = await computeSHA256(pass);
+          if (hash === ADMIN_PASSWORD_HASH) {
+            authenticated = true;
+          }
+        } catch (cryptoErr) {
+          console.error("Crypto error:", cryptoErr);
+        }
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>স্টুডিওতে প্রবেশ করুন</span><i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+        if (window.lucide) lucide.createIcons();
+      }
+
+      if (authenticated) {
+        sessionStorage.setItem("zynsite_admin_auth", "true");
+        if (remember) {
+          localStorage.setItem("zynsite_admin_auth", "true");
+        }
+        if (errorEl) errorEl.classList.add("hidden");
+        showDashboard();
+      } else {
+        if (errorEl) errorEl.classList.remove("hidden");
+        if (passInput) {
+          passInput.classList.add("border-rose-500");
+          passInput.focus();
+        }
+      }
+    }
+
+    async function handleAdminLogout() {
+      sessionStorage.removeItem("zynsite_admin_auth");
+      localStorage.removeItem("zynsite_admin_auth");
+      if (window.zynBackend?.supabase?.auth) {
+        try {
+          await window.zynBackend.supabase.auth.signOut();
+        } catch (e) {}
+      }
+      showLogin();
+    }
+
+    function showLogin() {
+      document.getElementById("login-container").classList.remove("hidden");
+      document.getElementById("dashboard-container").classList.add("hidden");
+    }
+
+    function showDashboard() {
+      document.getElementById("login-container").classList.add("hidden");
+      document.getElementById("dashboard-container").classList.remove("hidden");
+      refreshDashboardData();
+    }
+
+    function switchTab(tabId) {
+      activeTab = tabId;
+      const tabs = ["orders", "demos"];
+      
+      tabs.forEach(t => {
+        const content = document.getElementById(`tab-content-${t}`);
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (t === tabId) {
+          content?.classList.remove("hidden");
+          btn?.classList.remove("bg-white", "text-[#5C5343]", "border-[#C8AA76]/30");
+          btn?.classList.add("bg-gradient-to-r", "from-[#C8AA76]", "via-[#B38F48]", "to-[#997530]", "text-white", "shadow-md", "shadow-[#C8AA76]/20");
+        } else {
+          content?.classList.add("hidden");
+          btn?.classList.remove("bg-gradient-to-r", "from-[#C8AA76]", "via-[#B38F48]", "to-[#997530]", "text-white", "shadow-md", "shadow-[#C8AA76]/20");
+          btn?.classList.add("bg-white", "text-[#5C5343]", "border", "border-[#C8AA76]/30");
+        }
+      });
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // Refresh Data from Supabase
+    async function refreshDashboardData() {
+      const refreshIcon = document.getElementById("refresh-icon");
+      if (refreshIcon) refreshIcon.classList.add("animate-spin");
+
+      try {
+        if (window.zynBackend) {
+          allOrdersData = await window.zynBackend.getOrders();
+          allDemosData = await window.zynBackend.getDemoBookings();
+        }
+      } catch (err) {
+        console.error("Fetch error:", err);
+      }
+
+      updateMetrics();
+      filterAndRenderOrders();
+      filterAndRenderDemos();
+
+      setTimeout(() => {
+        if (refreshIcon) refreshIcon.classList.remove("animate-spin");
+      }, 500);
+    }
+
+    function updateMetrics() {
+      const totalOrders = allOrdersData.length;
+      const pendingOrders = allOrdersData.filter(o => !o.status || o.status === "pending").length;
+      const contactedOrders = allOrdersData.filter(o => o.status === "contacted").length;
+      const progressOrders = allOrdersData.filter(o => o.status === "in_progress").length;
+      const completedOrders = allOrdersData.filter(o => o.status === "completed").length;
+      const cancelledOrders = allOrdersData.filter(o => o.status === "cancelled").length;
+      const totalRevenue = allOrdersData.reduce((sum, o) => sum + (Number(o.price) || 0), 0);
+      const avgOrder = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
+      
+      const totalDemos = allDemosData.length;
+      const pendingDemos = allDemosData.filter(d => !d.status || d.status === "pending").length;
+
+      document.getElementById("stat-total-orders").textContent = totalOrders;
+      document.getElementById("stat-pending-orders").textContent = pendingOrders;
+      document.getElementById("stat-pending-orders-count").textContent = pendingOrders;
+      document.getElementById("stat-total-revenue").textContent = `৳${totalRevenue.toLocaleString('en-US')} সর্বমোট ভ্যালু`;
+      document.getElementById("stat-progress-orders").textContent = progressOrders;
+      document.getElementById("stat-avg-order").textContent = `গড় বাজেট: ৳${avgOrder.toLocaleString('en-US')}`;
+      
+      document.getElementById("stat-total-demos").textContent = totalDemos;
+      document.getElementById("stat-pending-demos").textContent = `${pendingDemos}টি অপেক্ষমান সেশন`;
+
+      document.getElementById("tab-badge-orders").textContent = totalOrders;
+      document.getElementById("tab-badge-demos").textContent = totalDemos;
+
+      // Status pill counters
+      document.getElementById("count-st-all").textContent = `(${totalOrders})`;
+      document.getElementById("count-st-pending").textContent = `(${pendingOrders})`;
+      document.getElementById("count-st-contacted").textContent = `(${contactedOrders})`;
+      document.getElementById("count-st-progress").textContent = `(${progressOrders})`;
+      document.getElementById("count-st-completed").textContent = `(${completedOrders})`;
+      document.getElementById("count-st-cancelled").textContent = `(${cancelledOrders})`;
+
+      // Package distribution visual bar
+      updateDistributionBar();
+    }
+
+    function updateDistributionBar() {
+      const bar = document.getElementById("package-distribution-bar");
+      if (!bar) return;
+      const total = allOrdersData.length;
+      if (total === 0) {
+        bar.innerHTML = `<div style="width: 100%" class="bg-[#EBDDC7]/60"></div>`;
+        document.getElementById("legend-fcom").innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0"></span> এফ-কমার্স: 0টি (0%)`;
+        document.getElementById("legend-corp").innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-indigo-500 shrink-0"></span> কর্পোরেট: 0টি (0%)`;
+        document.getElementById("legend-pers").innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-purple-500 shrink-0"></span> পার্সোনাল: 0টি (0%)`;
+        document.getElementById("legend-ecom").innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span> মেগা ই-কমার্স: 0টি (0%)`;
+        document.getElementById("legend-cust").innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span> কাস্টম: 0টি (0%)`;
+        return;
+      }
+
+      let fcom = 0, corp = 0, pers = 0, ecom = 0, cust = 0;
+      allOrdersData.forEach(o => {
+        const pkg = (o.package_name || '').toLowerCase();
+        if (pkg.includes('এফ-কমার্স') || pkg.includes('f-commerce')) fcom++;
+        else if (pkg.includes('কর্পোরেট') || pkg.includes('corporate') || pkg.includes('business')) corp++;
+        else if (pkg.includes('পার্সোনাল') || pkg.includes('personal') || pkg.includes('brand')) pers++;
+        else if (pkg.includes('মেগা') || pkg.includes('ই-কমার্স') || pkg.includes('ecommerce')) ecom++;
+        else cust++;
+      });
+
+      const pFcom = Math.round((fcom / total) * 100);
+      const pCorp = Math.round((corp / total) * 100);
+      const pPers = Math.round((pers / total) * 100);
+      const pEcom = Math.round((ecom / total) * 100);
+      const pCust = Math.max(0, 100 - (pFcom + pCorp + pPers + pEcom));
+
+      bar.innerHTML = `
+        <div style="width: ${pFcom}%" class="bg-blue-500 transition-all duration-500" title="এফ-কমার্স: ${fcom}টি (${pFcom}%)"></div>
+        <div style="width: ${pCorp}%" class="bg-indigo-500 transition-all duration-500" title="কর্পোরেট: ${corp}টি (${pCorp}%)"></div>
+        <div style="width: ${pPers}%" class="bg-purple-500 transition-all duration-500" title="পার্সোনাল: ${pers}টি (${pPers}%)"></div>
+        <div style="width: ${pEcom}%" class="bg-emerald-500 transition-all duration-500" title="মেগা ই-কমার্স: ${ecom}টি (${pEcom}%)"></div>
+        <div style="width: ${pCust}%" class="bg-amber-500 transition-all duration-500" title="কাস্টম: ${cust}টি (${pCust}%)"></div>
+      `;
+
+      // Update visible touch-friendly legend text
+      document.getElementById("legend-fcom").innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0"></span> এফ-কমার্স: ${fcom}টি (${pFcom}%)`;
+      document.getElementById("legend-corp").innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-indigo-500 shrink-0"></span> কর্পোরেট: ${corp}টি (${pCorp}%)`;
+      document.getElementById("legend-pers").innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-purple-500 shrink-0"></span> পার্সোনাল: ${pers}টি (${pPers}%)`;
+      document.getElementById("legend-ecom").innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span> মেগা ই-কমার্স: ${ecom}টি (${pEcom}%)`;
+      document.getElementById("legend-cust").innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span> কাস্টম: ${cust}টি (${pCust}%)`;
+    }
+
+    // Orders Filter & Render
+    function setOrderStatusFilter(status) {
+      currentOrderStatusFilter = status;
+      document.querySelectorAll(".order-status-pill").forEach(btn => {
+        if (btn.dataset.status === status) {
+          btn.classList.add("bg-gradient-to-r", "from-[#C8AA76]", "to-[#B38F48]", "text-white", "font-bold", "shadow-sm");
+          btn.classList.remove("text-[#5C5343]", "bg-white", "border-[#C8AA76]/25");
+        } else {
+          btn.classList.remove("bg-gradient-to-r", "from-[#C8AA76]", "to-[#B38F48]", "text-white", "font-bold", "shadow-sm");
+          btn.classList.add("text-[#5C5343]", "bg-white", "border", "border-[#C8AA76]/25");
+        }
+      });
+      filterAndRenderOrders();
+    }
+
+    function filterAndRenderOrders() {
+      const query = (document.getElementById("order-search-input")?.value || "").toLowerCase().trim();
+      const tbody = document.getElementById("orders-table-body");
+      const mobileContainer = document.getElementById("orders-cards-mobile");
+      const emptyState = document.getElementById("orders-empty-state");
+      if (!tbody || !mobileContainer) return;
+
+      let filtered = allOrdersData.filter(order => {
+        if (currentOrderStatusFilter !== "all") {
+          const st = order.status || "pending";
+          if (st !== currentOrderStatusFilter) return false;
+        }
+        if (query) {
+          const searchStr = `${order.order_id || ''} ${order.client_name || ''} ${order.client_phone || ''} ${order.business_name || ''} ${order.package_name || ''}`.toLowerCase();
+          if (!searchStr.includes(query)) return false;
+        }
+        return true;
+      });
+
+      if (!filtered.length) {
+        tbody.innerHTML = "";
+        mobileContainer.innerHTML = "";
+        emptyState.classList.remove("hidden");
+        return;
+      }
+
+      emptyState.classList.add("hidden");
+
+      // Desktop Table Rendering
+      tbody.innerHTML = filtered.map(order => {
+        const orderDate = order.created_at ? new Date(order.created_at).toLocaleString('bn-BD', { dateStyle: 'short', timeStyle: 'short' }) : 'তারিখ নেই';
+        const cleanPhone = (order.client_phone || '').replace(/[^0-9+]/g, '');
+        const waPhone = cleanPhone.startsWith('0') ? '88' + cleanPhone : cleanPhone;
+        const waMsg = encodeURIComponent(`হ্যালো ${order.client_name || ''}! ZynSite থেকে আপনার অর্ডার #${order.order_id} (${order.package_name}) নিয়ে যোগাযোগ করছি। আমরা আপনার ওয়েবসাইট তৈরির কাজ শুরু করতে প্রস্তুত।`);
+        const safePageLink = sanitizeUrl(order.page_link);
+
+        return `
+          <tr class="hover:bg-[#FAF9F5] transition-colors border-b border-[#EBDDC7]/50">
+            <!-- Order ID & Date -->
+            <td class="py-4 px-4 whitespace-nowrap">
+              <div class="flex items-center gap-1.5">
+                <span class="font-mono font-bold text-[#997530] text-xs">${escapeHTML(order.order_id || 'N/A')}</span>
+                <button data-copy="${escapeHTML(order.order_id || '')}" class="text-[#64748B] hover:text-[#14120D] p-0.5 cursor-pointer" title="আইডি কপি করুন">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+              <p class="text-[11px] text-[#5C5343] mt-0.5 font-en font-medium">${orderDate}</p>
+            </td>
+
+            <!-- Client Info -->
+            <td class="py-4 px-4">
+              <div class="font-bold text-[#14120D] text-sm flex items-center gap-1.5">
+                <span>${escapeHTML(order.client_name || 'নাম নেই')}</span>
+              </div>
+              <div class="text-xs text-[#5C5343] flex items-center gap-2 mt-0.5">
+                <span class="font-en text-[#475569] font-medium">${escapeHTML(order.client_phone || 'ফোন নেই')}</span>
+                <button data-copy="${escapeHTML(order.client_phone || '')}" class="text-[#64748B] hover:text-[#997530] cursor-pointer" title="ফোন কপি করুন">
+                  <i data-lucide="copy" class="w-3 h-3"></i>
+                </button>
+              </div>
+              ${order.business_name ? `
+                <div class="text-xs text-[#5C5343] flex items-center gap-1 mt-0.5">
+                  <i data-lucide="briefcase" class="w-3 h-3 text-[#997530]"></i>
+                  <span>${escapeHTML(order.business_name)}</span>
+                </div>
+              ` : ''}
+              ${safePageLink ? `
+                <a href="${escapeHTML(safePageLink)}" target="_blank" rel="noopener noreferrer" class="text-xs text-[#997530] hover:underline flex items-center gap-1 mt-0.5 font-en font-medium">
+                  <i data-lucide="link" class="w-3 h-3"></i>
+                  <span class="truncate max-w-[140px]">${escapeHTML(order.page_link)}</span>
+                </a>
+              ` : ''}
+            </td>
+
+            <!-- Package & Price -->
+            <td class="py-4 px-4 whitespace-nowrap">
+              <div class="font-semibold text-[#2D281E] text-sm">${escapeHTML(order.package_name || 'কাস্টম প্যাকেজ')}</div>
+              <div class="text-sm font-black text-[#14120D] font-en mt-0.5">৳${Number(order.price || 0).toLocaleString('en-US')}</div>
+              <span class="text-[11px] text-emerald-800 font-semibold bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded">৫০% অ্যাডভান্স: ৳${Number(order.advance_amount || Math.round((order.price || 0) * 0.5)).toLocaleString('en-US')}</span>
+            </td>
+
+            <!-- Notes -->
+            <td class="py-4 px-4 max-w-xs">
+              <p class="text-sm text-[#475569] line-clamp-2 leading-relaxed" title="${escapeHTML(order.notes || '')}">
+                ${order.notes ? escapeHTML(order.notes) : '<span class="text-[#94A3B8] italic">কোনো বিশেষ রিকোয়ারমেন্ট নেই</span>'}
+              </p>
+            </td>
+
+            <!-- Status Dropdown -->
+            <td class="py-4 px-4 whitespace-nowrap">
+              <select 
+                onchange="handleOrderStatusChange('${escapeHTML(order.order_id)}', this.value)" 
+                class="px-2.5 py-1.5 rounded-lg text-xs font-bold border focus:outline-none cursor-pointer transition-colors shadow-sm ${getStatusBadgeClass(order.status)}"
+              >
+                <option value="pending" ${order.status === 'pending' || !order.status ? 'selected' : ''}>⏳ অপেক্ষমান (Pending)</option>
+                <option value="contacted" ${order.status === 'contacted' ? 'selected' : ''}>📞 যোগাযোগকৃত (Contacted)</option>
+                <option value="in_progress" ${order.status === 'in_progress' ? 'selected' : ''}>⚡ কাজ চলছে (In Progress)</option>
+                <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>✅ ডেলিভার্ড (Completed)</option>
+                <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>❌ বাতিল (Cancelled)</option>
+              </select>
+            </td>
+
+            <!-- Actions -->
+            <td class="py-4 px-4 whitespace-nowrap text-right">
+              <div class="flex items-center justify-end gap-1.5">
+                <!-- WhatsApp button -->
+                <a 
+                  href="https://wa.me/${waPhone}?text=${waMsg}" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 transition-all cursor-pointer shadow-sm"
+                  title="হোয়াটসঅ্যাপে সরাসরি চ্যাট করুন"
+                >
+                  <i data-lucide="message-circle" class="w-4 h-4"></i>
+                </a>
+
+                <!-- Phone call button -->
+                <a 
+                  href="tel:${cleanPhone}" 
+                  class="p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-300 transition-all cursor-pointer shadow-sm"
+                  title="সরাসরি ফোন কল দিন"
+                >
+                  <i data-lucide="phone-call" class="w-4 h-4"></i>
+                </a>
+
+                <!-- Details Modal -->
+                <button 
+                  onclick="openOrderDetailsModal('${escapeHTML(order.order_id)}')" 
+                  class="p-2 rounded-lg bg-[#F5F2EA] hover:bg-[#EBDDC7] text-[#2D281E] border border-[#C8AA76]/30 transition-colors cursor-pointer shadow-sm"
+                  title="পূর্ণাঙ্গ বিবরণ দেখুন"
+                >
+                  <i data-lucide="eye" class="w-4 h-4"></i>
+                </button>
+
+                <!-- Delete -->
+                <button 
+                  onclick="handleDeleteOrder('${escapeHTML(order.order_id)}')" 
+                  class="p-2 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition-colors cursor-pointer shadow-sm"
+                  title="অর্ডারটি মুছুন"
+                >
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Mobile Stacked Cards Rendering
+      mobileContainer.innerHTML = filtered.map(order => {
+        const orderDate = order.created_at ? new Date(order.created_at).toLocaleString('bn-BD', { dateStyle: 'short', timeStyle: 'short' }) : 'তারিখ নেই';
+        const cleanPhone = (order.client_phone || '').replace(/[^0-9+]/g, '');
+        const waPhone = cleanPhone.startsWith('0') ? '88' + cleanPhone : cleanPhone;
+        const waMsg = encodeURIComponent(`হ্যালো ${order.client_name || ''}! ZynSite থেকে আপনার অর্ডার #${order.order_id} (${order.package_name}) নিয়ে যোগাযোগ করছি...`);
+        const safePageLink = sanitizeUrl(order.page_link);
+
+        return `
+          <div class="p-4 space-y-3 hover:bg-[#FAF9F5] transition-colors border-b border-[#EBDDC7]/50">
+            <!-- Header: ID, Date & Status Dropdown -->
+            <div class="flex items-center justify-between gap-2">
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="font-mono font-bold text-[#997530] text-xs">${escapeHTML(order.order_id || 'N/A')}</span>
+                  <button data-copy="${escapeHTML(order.order_id || '')}" class="text-[#64748B] hover:text-[#14120D] p-0.5 cursor-pointer" title="কপি করুন">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+                <p class="text-[11px] text-[#5C5343] font-en font-medium mt-0.5">${orderDate}</p>
+              </div>
+
+              <select 
+                onchange="handleOrderStatusChange('${escapeHTML(order.order_id)}', this.value)" 
+                class="px-2 py-1 rounded-lg text-xs font-bold border focus:outline-none cursor-pointer transition-colors shadow-sm ${getStatusBadgeClass(order.status)}"
+              >
+                <option value="pending" ${order.status === 'pending' || !order.status ? 'selected' : ''}>⏳ অপেক্ষমান</option>
+                <option value="contacted" ${order.status === 'contacted' ? 'selected' : ''}>📞 যোগাযোগকৃত</option>
+                <option value="in_progress" ${order.status === 'in_progress' ? 'selected' : ''}>⚡ কাজ চলছে</option>
+                <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>✅ ডেলিভার্ড</option>
+                <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>❌ বাতিল</option>
+              </select>
+            </div>
+
+            <!-- Client Info -->
+            <div>
+              <h4 class="font-bold text-[#14120D] text-base leading-snug">${escapeHTML(order.client_name || 'নাম নেই')}</h4>
+              <div class="flex items-center gap-2 mt-1 text-sm text-[#475569]">
+                <span class="font-en font-medium">${escapeHTML(order.client_phone || 'ফোন নেই')}</span>
+                <button data-copy="${escapeHTML(order.client_phone || '')}" class="text-[#64748B] hover:text-[#997530] cursor-pointer" title="ফোন কপি করুন">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                </button>
+                ${order.business_name ? `<span class="text-[#CBD5E1]">•</span><span class="text-[#5C5343] text-xs truncate">${escapeHTML(order.business_name)}</span>` : ''}
+              </div>
+              ${safePageLink ? `
+                <a href="${escapeHTML(safePageLink)}" target="_blank" rel="noopener noreferrer" class="text-xs text-[#997530] hover:underline flex items-center gap-1 mt-1 font-en font-medium">
+                  <i data-lucide="link" class="w-3 h-3"></i>
+                  <span class="truncate max-w-[200px]">${escapeHTML(order.page_link)}</span>
+                </a>
+              ` : ''}
+            </div>
+
+            <!-- Package & Price Pill -->
+            <div class="flex items-center justify-between bg-[#F5F2EA] p-2.5 rounded-xl border border-[#C8AA76]/25 text-xs">
+              <div>
+                <span class="text-[#5C5343] font-medium">${escapeHTML(order.package_name || 'কাস্টম প্যাকেজ')}</span>
+                <p class="text-sm font-black text-[#14120D] font-en mt-0.5">৳${Number(order.price || 0).toLocaleString('en-US')}</p>
+              </div>
+              <span class="text-[11px] text-emerald-800 font-semibold bg-emerald-100 border border-emerald-200 px-2 py-1 rounded-lg">
+                ৫০% অ্যাডভান্স: ৳${Number(order.advance_amount || Math.round((order.price || 0) * 0.5)).toLocaleString('en-US')}
+              </span>
+            </div>
+
+            ${order.notes ? `
+              <p class="text-xs text-[#475569] line-clamp-2 leading-relaxed bg-[#FAF9F5] p-2 rounded-lg border border-[#EBDDC7]">
+                <span class="text-[#2D281E] font-medium">নোট:</span> ${escapeHTML(order.notes)}
+              </p>
+            ` : ''}
+
+            <!-- 1-Tap Action Buttons -->
+            <div class="flex items-center justify-end gap-2 pt-2 border-t border-[#EBDDC7]/60">
+              <a 
+                href="https://wa.me/${waPhone}?text=${waMsg}" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="flex-1 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-sm"
+              >
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                <span>WhatsApp</span>
+              </a>
+              <a 
+                href="tel:${cleanPhone}" 
+                class="py-2 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-300 text-xs flex items-center justify-center gap-1 transition-all cursor-pointer shadow-sm"
+                title="কল দিন"
+              >
+                <i data-lucide="phone-call" class="w-4 h-4"></i>
+              </a>
+              <button 
+                onclick="openOrderDetailsModal('${escapeHTML(order.order_id)}')" 
+                class="py-2 px-3 rounded-xl bg-[#F5F2EA] hover:bg-[#EBDDC7] text-[#2D281E] border border-[#C8AA76]/30 text-xs flex items-center justify-center transition-colors cursor-pointer shadow-sm"
+                title="বিবরণ"
+              >
+                <i data-lucide="eye" class="w-4 h-4"></i>
+              </button>
+              <button 
+                onclick="handleDeleteOrder('${escapeHTML(order.order_id)}')" 
+                class="py-2 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs flex items-center justify-center transition-colors cursor-pointer shadow-sm"
+                title="মুছুন"
+              >
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function getStatusBadgeClass(status) {
+      switch(status) {
+        case 'completed':
+          return 'bg-emerald-100 text-emerald-800 border-emerald-300';
+        case 'in_progress':
+          return 'bg-blue-100 text-blue-800 border-blue-300';
+        case 'contacted':
+          return 'bg-indigo-100 text-indigo-800 border-indigo-300';
+        case 'cancelled':
+          return 'bg-rose-100 text-rose-800 border-rose-300';
+        case 'pending':
+        default:
+          return 'bg-amber-100 text-amber-800 border-amber-300';
+      }
+    }
+
+    async function handleOrderStatusChange(orderId, newStatus) {
+      if (window.zynBackend) {
+        await window.zynBackend.updateOrderStatus(orderId, newStatus);
+        const order = allOrdersData.find(o => o.order_id === orderId);
+        if (order) order.status = newStatus;
+        showToast(`অর্ডার স্ট্যাটাস আপডেট হয়েছে`, 'success');
+        updateMetrics();
+        filterAndRenderOrders();
+      }
+    }
+
+    function handleDeleteOrder(orderId) {
+      pendingDelete = { type: 'order', id: orderId };
+      document.getElementById("del-item-id").textContent = `#${orderId}`;
+      document.getElementById("confirm-delete-modal").classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // Demos Filter & Render
+    function setDemoStatusFilter(status) {
+      currentDemoStatusFilter = status;
+      document.querySelectorAll(".demo-status-pill").forEach(btn => {
+        if (btn.dataset.status === status) {
+          btn.classList.add("bg-gradient-to-r", "from-[#C8AA76]", "to-[#B38F48]", "text-white", "font-bold", "shadow-sm");
+          btn.classList.remove("text-[#5C5343]", "bg-white", "border-[#C8AA76]/25");
+        } else {
+          btn.classList.remove("bg-gradient-to-r", "from-[#C8AA76]", "to-[#B38F48]", "text-white", "font-bold", "shadow-sm");
+          btn.classList.add("text-[#5C5343]", "bg-white", "border", "border-[#C8AA76]/25");
+        }
+      });
+      filterAndRenderDemos();
+    }
+
+    function filterAndRenderDemos() {
+      const query = (document.getElementById("demo-search-input")?.value || "").toLowerCase().trim();
+      const tbody = document.getElementById("demos-table-body");
+      const mobileContainer = document.getElementById("demos-cards-mobile");
+      const emptyState = document.getElementById("demos-empty-state");
+      if (!tbody || !mobileContainer) return;
+
+      let filtered = allDemosData.filter(demo => {
+        if (currentDemoStatusFilter !== "all") {
+          const st = demo.status || "pending";
+          if (st !== currentDemoStatusFilter) return false;
+        }
+        if (query) {
+          const searchStr = `${demo.booking_id || ''} ${demo.client_name || ''} ${demo.client_phone || ''} ${demo.business_name || ''} ${demo.topic || ''}`.toLowerCase();
+          if (!searchStr.includes(query)) return false;
+        }
+        return true;
+      });
+
+      if (!filtered.length) {
+        tbody.innerHTML = "";
+        mobileContainer.innerHTML = "";
+        emptyState.classList.remove("hidden");
+        return;
+      }
+
+      emptyState.classList.add("hidden");
+
+      // Desktop Table
+      tbody.innerHTML = filtered.map(demo => {
+        const cleanPhone = (demo.client_phone || '').replace(/[^0-9+]/g, '');
+        const waPhone = cleanPhone.startsWith('0') ? '88' + cleanPhone : cleanPhone;
+        const waMsg = encodeURIComponent(`হ্যালো ${demo.client_name || ''}! ZynSite থেকে আপনার নির্ধারিত ফ্রি ডেমো সেশন #${demo.booking_id} (${demo.meeting_date} • ${demo.meeting_time}) সংক্রান্ত লিংক পাঠাচ্ছি...`);
+
+        return `
+          <tr class="hover:bg-[#FAF9F5] transition-colors border-b border-[#EBDDC7]/50">
+            <td class="py-4 px-4 whitespace-nowrap">
+              <div class="flex items-center gap-1.5">
+                <span class="font-mono font-bold text-[#997530] text-xs">${escapeHTML(demo.booking_id || 'N/A')}</span>
+                <button data-copy="${escapeHTML(demo.booking_id || '')}" class="text-[#64748B] hover:text-[#14120D] p-0.5 cursor-pointer" title="কপি করুন">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+              <p class="text-[11px] text-[#5C5343] mt-0.5 font-en font-medium">${demo.created_at ? new Date(demo.created_at).toLocaleDateString('bn-BD') : ''}</p>
+            </td>
+
+            <td class="py-4 px-4">
+              <div class="font-bold text-[#14120D] text-sm">${escapeHTML(demo.client_name || 'নাম নেই')}</div>
+              <div class="text-xs text-[#5C5343] flex items-center gap-1.5 mt-0.5 font-en font-medium">
+                <i data-lucide="phone" class="w-3 h-3 text-[#997530]"></i>
+                <span>${escapeHTML(demo.client_phone || 'ফোন নেই')}</span>
+                <button data-copy="${escapeHTML(demo.client_phone || '')}" class="text-[#64748B] hover:text-[#997530] cursor-pointer" title="ফোন কপি করুন">
+                  <i data-lucide="copy" class="w-3 h-3"></i>
+                </button>
+              </div>
+              ${demo.business_name ? `<span class="text-xs text-[#5C5343] block mt-0.5">${escapeHTML(demo.business_name)}</span>` : ''}
+            </td>
+
+            <td class="py-4 px-4 whitespace-nowrap">
+              <div class="font-semibold text-[#14120D] text-sm">${escapeHTML(demo.meeting_date || 'তারিখ নেই')}</div>
+              <div class="text-xs text-[#997530] font-en font-bold mt-0.5">${escapeHTML(demo.meeting_time || '')}</div>
+            </td>
+
+            <td class="py-4 px-4 whitespace-nowrap">
+              <span class="px-2.5 py-1 rounded-md text-xs font-semibold bg-[#F5F2EA] border border-[#C8AA76]/30 text-[#2D281E] flex items-center gap-1.5 w-fit">
+                <i data-lucide="video" class="w-3.5 h-3.5 text-blue-600"></i>
+                <span>${escapeHTML(demo.channel || 'Google Meet')}</span>
+              </span>
+            </td>
+
+            <td class="py-4 px-4 max-w-xs">
+              <span class="text-sm text-[#475569] line-clamp-2 leading-relaxed">${escapeHTML(demo.topic || 'সাধারণ আলোচনা')}</span>
+            </td>
+
+            <td class="py-4 px-4 whitespace-nowrap">
+              <select 
+                onchange="handleDemoStatusChange('${escapeHTML(demo.booking_id)}', this.value)" 
+                class="px-2.5 py-1.5 rounded-lg text-xs font-bold border focus:outline-none cursor-pointer transition-colors shadow-sm ${getStatusBadgeClass(demo.status)}"
+              >
+                <option value="pending" ${demo.status === 'pending' || !demo.status ? 'selected' : ''}>⏳ অপেক্ষমান (Pending)</option>
+                <option value="confirmed" ${demo.status === 'confirmed' ? 'selected' : ''}>📅 কনফার্মড (Confirmed)</option>
+                <option value="completed" ${demo.status === 'completed' ? 'selected' : ''}>✅ সম্পন্ন (Done)</option>
+                <option value="cancelled" ${demo.status === 'cancelled' ? 'selected' : ''}>❌ বাতিল (Cancelled)</option>
+              </select>
+            </td>
+
+            <td class="py-4 px-4 whitespace-nowrap text-right">
+              <div class="flex items-center justify-end gap-1.5">
+                <a 
+                  href="https://wa.me/${waPhone}?text=${waMsg}" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 transition-all cursor-pointer shadow-sm"
+                  title="হোয়াটসঅ্যাপে লিংক পাঠান"
+                >
+                  <i data-lucide="message-circle" class="w-4 h-4"></i>
+                </a>
+                <a 
+                  href="tel:${cleanPhone}" 
+                  class="p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-300 transition-all cursor-pointer shadow-sm"
+                  title="সরাসরি কল দিন"
+                >
+                  <i data-lucide="phone-call" class="w-4 h-4"></i>
+                </a>
+                <button 
+                  onclick="handleDeleteDemo('${escapeHTML(demo.booking_id)}')" 
+                  class="p-2 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition-colors cursor-pointer shadow-sm"
+                  title="মুছুন"
+                >
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Mobile Stacked Cards
+      mobileContainer.innerHTML = filtered.map(demo => {
+        const cleanPhone = (demo.client_phone || '').replace(/[^0-9+]/g, '');
+        const waPhone = cleanPhone.startsWith('0') ? '88' + cleanPhone : cleanPhone;
+        const waMsg = encodeURIComponent(`হ্যালো ${demo.client_name || ''}! ZynSite থেকে আপনার নির্ধারিত ফ্রি ডেমো সেশন #${demo.booking_id}...`);
+
+        return `
+          <div class="p-4 space-y-3 hover:bg-[#FAF9F5] transition-colors border-b border-[#EBDDC7]/50">
+            <!-- Header: Booking ID & Status Dropdown -->
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-1.5">
+                <span class="font-mono font-bold text-[#997530] text-xs">${escapeHTML(demo.booking_id || 'N/A')}</span>
+                <button data-copy="${escapeHTML(demo.booking_id || '')}" class="text-[#64748B] hover:text-[#14120D] p-0.5 cursor-pointer" title="কপি করুন">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+
+              <select 
+                onchange="handleDemoStatusChange('${escapeHTML(demo.booking_id)}', this.value)" 
+                class="px-2 py-1 rounded-lg text-xs font-bold border focus:outline-none cursor-pointer transition-colors shadow-sm ${getStatusBadgeClass(demo.status)}"
+              >
+                <option value="pending" ${demo.status === 'pending' || !demo.status ? 'selected' : ''}>⏳ অপেক্ষমান</option>
+                <option value="confirmed" ${demo.status === 'confirmed' ? 'selected' : ''}>📅 কনফার্মড</option>
+                <option value="completed" ${demo.status === 'completed' ? 'selected' : ''}>✅ সম্পন্ন</option>
+                <option value="cancelled" ${demo.status === 'cancelled' ? 'selected' : ''}>❌ বাতিল</option>
+              </select>
+            </div>
+
+            <!-- Client Info -->
+            <div>
+              <h4 class="font-bold text-[#14120D] text-base leading-snug">${escapeHTML(demo.client_name || 'নাম নেই')}</h4>
+              <div class="flex items-center gap-2 mt-1 text-sm text-[#475569]">
+                <span class="font-en font-medium">${escapeHTML(demo.client_phone || 'ফোন নেই')}</span>
+                <button data-copy="${escapeHTML(demo.client_phone || '')}" class="text-[#64748B] hover:text-[#997530] cursor-pointer" title="ফোন কপি করুন">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                </button>
+                ${demo.business_name ? `<span class="text-[#CBD5E1]">•</span><span class="text-[#5C5343] text-xs truncate">${escapeHTML(demo.business_name)}</span>` : ''}
+              </div>
+            </div>
+
+            <!-- Meeting Schedule Pill -->
+            <div class="flex items-center justify-between bg-[#F5F2EA] p-2.5 rounded-xl border border-[#C8AA76]/25 text-xs">
+              <div class="flex items-center gap-2">
+                <i data-lucide="calendar" class="w-4 h-4 text-[#997530]"></i>
+                <div>
+                  <span class="text-[#14120D] font-semibold">${escapeHTML(demo.meeting_date || 'তারিখ নেই')}</span>
+                  <span class="text-[#997530] font-bold ml-1.5 font-en">${escapeHTML(demo.meeting_time || '')}</span>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-white border border-[#C8AA76]/25 text-[#2D281E]">
+                ${escapeHTML(demo.channel || 'Google Meet')}
+              </span>
+            </div>
+
+            <p class="text-xs text-[#475569] leading-relaxed bg-[#FAF9F5] p-2 rounded-lg border border-[#EBDDC7]">
+              <span class="text-[#2D281E] font-medium">বিষয়:</span> ${escapeHTML(demo.topic || 'সাধারণ আলোচনা')}
+            </p>
+
+            <!-- 1-Tap Action buttons -->
+            <div class="flex items-center justify-end gap-2 pt-2 border-t border-[#EBDDC7]/60">
+              <a 
+                href="https://wa.me/${waPhone}?text=${waMsg}" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="flex-1 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-sm"
+              >
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                <span>হোয়াটসঅ্যাপে লিংক</span>
+              </a>
+              <a 
+                href="tel:${cleanPhone}" 
+                class="py-2 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-300 text-xs flex items-center justify-center gap-1 transition-all cursor-pointer shadow-sm"
+                title="কল দিন"
+              >
+                <i data-lucide="phone-call" class="w-4 h-4"></i>
+              </a>
+              <button 
+                onclick="handleDeleteDemo('${escapeHTML(demo.booking_id)}')" 
+                class="py-2 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs flex items-center justify-center transition-colors cursor-pointer shadow-sm"
+                title="মুছুন"
+              >
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    async function handleDemoStatusChange(bookingId, newStatus) {
+      if (window.zynBackend) {
+        await window.zynBackend.updateDemoStatus(bookingId, newStatus);
+        const demo = allDemosData.find(d => d.booking_id === bookingId);
+        if (demo) demo.status = newStatus;
+        showToast(`ডেমো স্ট্যাটাস আপডেট হয়েছে`, 'success');
+        updateMetrics();
+        filterAndRenderDemos();
+      }
+    }
+
+    function handleDeleteDemo(bookingId) {
+      pendingDelete = { type: 'demo', id: bookingId };
+      document.getElementById("del-item-id").textContent = `#${bookingId}`;
+      document.getElementById("confirm-delete-modal").classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeConfirmDeleteModal() {
+      pendingDelete = null;
+      const modal = document.getElementById("confirm-delete-modal");
+      if (modal) {
+        modal.classList.add("hidden");
+        document.body.style.overflow = "auto";
+      }
+    }
+
+    async function executeConfirmDelete() {
+      if (!pendingDelete || !window.zynBackend) return;
+      const { type, id } = pendingDelete;
+      closeConfirmDeleteModal();
+
+      if (type === 'order') {
+        await window.zynBackend.deleteOrder(id);
+        allOrdersData = allOrdersData.filter(o => o.order_id !== id);
+        showToast(`অর্ডার #${id} সফলভাবে মুছে ফেলা হয়েছে`, 'info');
+        updateMetrics();
+        filterAndRenderOrders();
+      } else if (type === 'demo') {
+        await window.zynBackend.deleteDemoBooking(id);
+        allDemosData = allDemosData.filter(d => d.booking_id !== id);
+        showToast(`ডেমো বুকিং #${id} সফলভাবে মুছে ফেলা হয়েছে`, 'info');
+        updateMetrics();
+        filterAndRenderDemos();
+      }
+    }
+
+    // Modal Details View
+    function openOrderDetailsModal(orderId) {
+      const order = allOrdersData.find(o => o.order_id === orderId);
+      if (!order) return;
+
+      document.getElementById("dtl-order-id").textContent = `#${escapeHTML(order.order_id)}`;
+      const content = document.getElementById("dtl-order-content");
+      const cleanPhone = (order.client_phone || '').replace(/[^0-9+]/g, '');
+      const waPhone = cleanPhone.startsWith('0') ? '88' + cleanPhone : cleanPhone;
+      const waMsg = encodeURIComponent(`হ্যালো ${order.client_name || ''}! ZynSite থেকে আপনার #${order.order_id} অর্ডার নিয়ে যোগাযোগ করছি...`);
+      const safePageLink = sanitizeUrl(order.page_link);
+
+      content.innerHTML = `
+        <div class="p-4 rounded-2xl bg-[#FAF9F5] border border-[#C8AA76]/25 space-y-2.5">
+          <div class="flex justify-between py-1 border-b border-[#EBDDC7]">
+            <span class="text-[#5C5343] font-medium">গ্রাহকের নাম:</span>
+            <span class="font-bold text-[#14120D]">${escapeHTML(order.client_name || 'N/A')}</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-[#EBDDC7]">
+            <span class="text-[#5C5343] font-medium">মোবাইল নম্বর:</span>
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-[#997530] font-en">${escapeHTML(order.client_phone || 'N/A')}</span>
+              <button data-copy="${escapeHTML(order.client_phone || '')}" class="text-xs text-[#64748B] hover:text-[#14120D] cursor-pointer" title="কপি করুন"><i data-lucide="copy" class="w-3.5 h-3.5"></i></button>
+            </div>
+          </div>
+          <div class="flex justify-between py-1 border-b border-[#EBDDC7]">
+            <span class="text-[#5C5343] font-medium">ব্যবসার নাম:</span>
+            <span class="font-semibold text-[#2D281E]">${escapeHTML(order.business_name || 'দেওয়া হয়নি')}</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-[#EBDDC7]">
+            <span class="text-[#5C5343] font-medium">ওয়েবসাইট / ফেসবুক পেজ:</span>
+            ${safePageLink ? `
+              <a href="${escapeHTML(safePageLink)}" target="_blank" rel="noopener noreferrer" class="font-medium text-[#997530] hover:underline truncate max-w-[200px] font-en flex items-center gap-1">
+                <i data-lucide="link" class="w-3 h-3"></i>
+                <span>${escapeHTML(order.page_link)}</span>
+              </a>
+            ` : `<span class="font-medium text-[#5C5343]">${escapeHTML(order.page_link || 'নেই')}</span>`}
+          </div>
+          <div class="flex justify-between py-1 border-b border-[#EBDDC7]">
+            <span class="text-[#5C5343] font-medium">প্যাকেজ:</span>
+            <span class="font-semibold text-[#14120D]">${escapeHTML(order.package_name || 'কাস্টম')}</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-[#EBDDC7]">
+            <span class="text-[#5C5343] font-medium">টোটাল বাজেট:</span>
+            <span class="font-black text-emerald-700 font-en text-base">৳${Number(order.price || 0).toLocaleString('en-US')}</span>
+          </div>
+          <div class="flex justify-between py-1">
+            <span class="text-[#5C5343] font-medium">প্রারম্ভিক অ্যাডভান্স (৫০%):</span>
+            <span class="font-bold text-[#14120D] font-en">৳${Number(order.advance_amount || Math.round((order.price || 0) * 0.5)).toLocaleString('en-US')}</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-bold text-[#2D281E] uppercase mb-1">গ্রাহকের বিশেষ চাহিদা বা নোট:</label>
+          <div class="p-3.5 rounded-2xl bg-[#FAF9F5] border border-[#C8AA76]/25 text-[#475569] text-sm leading-relaxed whitespace-pre-wrap">
+            ${escapeHTML(order.notes || 'কোনো নোট পাওয়া যায়নি।')}
+          </div>
+        </div>
+      `;
+
+      window.currentActiveOrderModal = order;
+
+      const actions = document.getElementById("dtl-order-actions");
+      actions.innerHTML = `
+        <button 
+          type="button" 
+          onclick="printCurrentOrderInvoice()" 
+          class="px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-[#C8AA76] via-[#B38F48] to-[#997530] hover:from-[#B38F48] hover:to-[#7A5B20] text-white font-bold text-sm flex items-center gap-1.5 shadow-md shadow-[#C8AA76]/25 cursor-pointer"
+          title="অফিসিয়াল ইনভয়েস ডাউনলোড / প্রিন্ট করুন"
+        >
+          <i data-lucide="printer" class="w-4 h-4"></i>
+          <span>ইনভয়েস (PDF)</span>
+        </button>
+        <a 
+          href="https://wa.me/${waPhone}?text=${waMsg}" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center gap-1.5 shadow-md shadow-emerald-600/25 cursor-pointer"
+        >
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span>WhatsApp Chat</span>
+        </a>
+      `;
+
+      document.getElementById("order-details-modal").classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function printCurrentOrderInvoice() {
+      if (window.currentActiveOrderModal && window.zynBackend?.generatePrintableInvoice) {
+        window.zynBackend.generatePrintableInvoice(window.currentActiveOrderModal);
+      }
+    }
+
+    function closeOrderDetailsModal() {
+      const modal = document.getElementById("order-details-modal");
+      if (modal) {
+        modal.classList.add("hidden");
+        document.body.style.overflow = "auto";
+      }
+    }
+
+    // Manual Order Modal
+    function openManualOrderModal() {
+      document.getElementById("manual-order-modal").classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeManualOrderModal() {
+      const modal = document.getElementById("manual-order-modal");
+      if (modal) {
+        modal.classList.add("hidden");
+        document.body.style.overflow = "auto";
+      }
+    }
+
+    function handleManualPackageChange(val) {
+      const priceInput = document.getElementById("mo-price");
+      if (val !== "custom" && priceInput) {
+        priceInput.value = val;
+      }
+    }
+
+    async function handleManualOrderSubmit(e) {
+      if (e) e.preventDefault();
+      
+      // Honeypot check
+      const hp = document.getElementById("mo-hp-field")?.value;
+      if (hp) {
+        closeManualOrderModal();
+        return;
+      }
+
+      const name = document.getElementById("mo-name")?.value.trim();
+      const phone = document.getElementById("mo-phone")?.value.trim();
+      const business = document.getElementById("mo-business")?.value.trim() || "";
+      const link = document.getElementById("mo-link")?.value.trim() || "";
+      const price = Number(document.getElementById("mo-price")?.value) || 3990;
+      const notes = document.getElementById("mo-notes")?.value.trim() || "";
+      const pkgSelect = document.getElementById("mo-package");
+      const pkgName = pkgSelect ? pkgSelect.options[pkgSelect.selectedIndex].getAttribute('data-name') : "কাস্টম অর্ডার";
+
+      const orderData = {
+        orderId: `ZS-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
+        name: name,
+        phone: phone,
+        businessName: business,
+        pageLink: link,
+        packageName: pkgName,
+        price: price,
+        notes: notes,
+        status: "pending",
+        createdAt: new Date().toISOString()
+      };
+
+      if (window.zynBackend) {
+        await window.zynBackend.saveOrder(orderData);
+        showToast("নতুন অর্ডার সফলভাবে সংরক্ষণ করা হয়েছে", "success");
+      }
+
+      closeManualOrderModal();
+      refreshDashboardData();
+    }
+
+    // Data Exports (CSV & JSON)
+    function exportOrdersCSV() {
+      if (!allOrdersData.length) {
+        showToast("এক্সপোর্ট করার মতো কোনো অর্ডার নেই", "error");
+        return;
+      }
+
+      const headers = ["Order ID", "Date", "Client Name", "Phone", "Business", "Page Link", "Package", "Price", "Advance", "Status", "Notes"];
+      const rows = allOrdersData.map(o => [
+        `"${o.order_id || ''}"`,
+        `"${o.created_at || ''}"`,
+        `"${(o.client_name || '').replace(/"/g, '""')}"`,
+        `"${o.client_phone || ''}"`,
+        `"${(o.business_name || '').replace(/"/g, '""')}"`,
+        `"${(o.page_link || '').replace(/"/g, '""')}"`,
+        `"${(o.package_name || '').replace(/"/g, '""')}"`,
+        o.price || 0,
+        o.advance_amount || 0,
+        `"${o.status || 'pending'}"`,
+        `"${(o.notes || '').replace(/"/g, '""')}"`
+      ]);
+
+      const csvContent = "\uFEFF" + [headers.join(","), ...rows.map(r => r.join(","))].join("\r\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `ZynSite_Orders_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast("CSV ফাইল সফলভাবে ডাউনলোড হয়েছে", "success");
+    }
+
+    function exportBackupJSON() {
+      const backupData = {
+        exportedAt: new Date().toISOString(),
+        orders: allOrdersData,
+        demoBookings: allDemosData
+      };
+
+      const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `ZynSite_Full_Backup_${new Date().toISOString().slice(0, 10)}.json`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast("JSON ব্যাকআপ সফলভাবে ডাউনলোড হয়েছে", "success");
+    }
+  </script>
+
+</body>
+</html>
