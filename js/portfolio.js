@@ -102,7 +102,7 @@ function renderPortfolioGrid() {
           
           <button 
             onclick="openOrderWithTemplate('${item.title}', '${item.category}')"
-            class="text-xs px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#F9EED4] via-[#E8CD8C] to-[#D4AF37] hover:from-[#FFF4DC] hover:to-[#E8CD8C] text-[#14120D] border border-white/70 shadow-sm transition-all font-bold cursor-pointer"
+            class="text-xs px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#F9EED4] via-[#E8CD8C] to-[#D4AF37] hover:from-[#FFF4DC] hover:to-[#E8CD8C] text-[#14120D] border border-white/70 shadow-sm transition-all font-bold cursor-pointer glow-btn"
           >
             ${isEn ? 'I Want Similar Site' : 'এমন সাইট চাই'}
           </button>
@@ -113,6 +113,10 @@ function renderPortfolioGrid() {
 
   if (window.lucide) {
     lucide.createIcons();
+  }
+
+  if (typeof window.reobserveGlowCards === 'function') {
+    window.reobserveGlowCards();
   }
 }
 

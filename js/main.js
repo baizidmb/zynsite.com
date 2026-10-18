@@ -173,10 +173,12 @@ function toggleMobileMenu() {
 function initGlowCardObserver() {
   const cardSelector = ".glass-card, .price-card, .pricing-package-card, .stat-card, .golden-card-glow, #calculator .rounded-3xl, #portfolio-grid > div";
 
-  // 1. Offload animation to native CSS @property animation; fallback to rAF only on legacy browsers
-  const supportsAtProperty = window.CSS && window.CSS.supports && (window.CSS.supports("@property --snake-angle { syntax: '<angle>'; inherits: true; initial-value: 0deg; }") || window.CSS.registerProperty);
-  if (!supportsAtProperty) {
-    const SNAKE_PERIOD_MS = 4800;
+  // 1. Unconditional Monotonic Master Clock: Drives --snake-angle synchronously across all cards & buttons
+  // Sets --snake-angle on :root (~0.02ms per frame, 0 layout reflows) ensuring 100% reliable continuous motion
+  // across every browser engine without depending on custom property @keyframes repaint behavior.
+  if (!window._snakeClockRunning) {
+    window._snakeClockRunning = true;
+    const SNAKE_PERIOD_MS = 3000; // Fluid, lively tempo (3.0s per loop)
     let lastAngle = -1;
     const stepSnakeGlide = (now) => {
       const angle = Math.floor(((now / SNAKE_PERIOD_MS) * 360) % 360);
@@ -208,12 +210,16 @@ function initGlowCardObserver() {
       document.querySelectorAll(cardSelector).forEach(el => cardObserver.observe(el));
     };
 
+    window.reobserveGlowCards = observeAll;
+
     observeAll();
     setTimeout(observeAll, 300);
     setTimeout(observeAll, 1000);
   } else {
     // Graceful fallback for legacy browsers
-    document.querySelectorAll(cardSelector).forEach(el => el.classList.add("card-in-display"));
+    const forceShow = () => document.querySelectorAll(cardSelector).forEach(el => el.classList.add("card-in-display"));
+    window.reobserveGlowCards = forceShow;
+    forceShow();
   }
 }
 

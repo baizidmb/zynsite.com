@@ -783,6 +783,7 @@ select:focus {
 
 /* ========================================================
    AESTHETIC SLOW-RUNNING GOLDEN SNAKE BORDER BEAM (PREMIUM GLITTER)
+   Driven synchronously across all cards & buttons via --snake-angle master clock
    ======================================================== */
 
 @property --snake-angle {
@@ -791,14 +792,8 @@ select:focus {
   initial-value: 0deg;
 }
 
-@keyframes snakeGlide {
-  to {
-    --snake-angle: 360deg;
-  }
-}
-
 :root {
-  animation: snakeGlide 4.8s linear infinite;
+  --snake-angle: 0deg;
 }
 
 @property --beam-angle {
@@ -835,16 +830,17 @@ select:focus {
   position: absolute;
   inset: -1.5px;
   border-radius: inherit;
-  padding: 2.2px;
+  padding: 2.5px;
   background: conic-gradient(
     from var(--snake-angle, 0deg),
     transparent 0deg,
-    transparent 260deg,
-    rgba(212, 175, 55, 0.2) 280deg,
-    rgba(255, 215, 0, 0.75) 305deg,
-    #D4AF37 325deg,
-    #FFF8DE 345deg,
-    #FFFFFF 355deg,
+    transparent 230deg,
+    rgba(200, 170, 118, 0.25) 260deg,
+    rgba(212, 175, 55, 0.6) 290deg,
+    rgba(255, 215, 0, 0.85) 320deg,
+    #FFDF70 340deg,
+    #FFF8DE 350deg,
+    #FFFFFF 356deg,
     transparent 360deg
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -864,7 +860,7 @@ select:focus {
 .pricing-package-card.card-in-display::after,
 .glass-card:hover::after {
   opacity: 1 !important;
-  filter: drop-shadow(0 0 6px rgba(255, 220, 110, 0.9));
+  filter: drop-shadow(0 0 8px rgba(255, 220, 110, 0.95)) drop-shadow(0 0 16px rgba(212, 175, 55, 0.45));
 }
 
 /* Keep card interior and borders clean - NO heavy whole-card glow */
@@ -884,7 +880,7 @@ select:focus {
 .golden-btn-beam,
 .glow-btn {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   isolation: isolate;
   border-radius: 1rem;
   color: #14120D !important;
@@ -913,19 +909,20 @@ select:focus {
 .golden-btn-beam::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -1.5px;
   border-radius: inherit;
-  padding: 2.2px;
+  padding: 2.8px;
   background: conic-gradient(
     from var(--snake-angle, 0deg),
-    transparent 0deg,
-    transparent 260deg,
-    rgba(212, 175, 55, 0.25) 280deg,
-    rgba(255, 215, 0, 0.75) 305deg,
-    #D4AF37 325deg,
-    #FFFBEB 345deg,
-    #FFFFFF 355deg,
-    transparent 360deg
+    rgba(200, 170, 118, 0.18) 0deg,
+    rgba(200, 170, 118, 0.18) 220deg,
+    rgba(212, 175, 55, 0.35) 255deg,
+    rgba(245, 158, 11, 0.7) 285deg,
+    #F59E0B 310deg,
+    #FFD700 330deg,
+    #FFF8DB 348deg,
+    #FFFFFF 356deg,
+    rgba(200, 170, 118, 0.18) 360deg
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -933,17 +930,17 @@ select:focus {
   mask-composite: exclude;
   pointer-events: none;
   z-index: 2;
-  filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.85));
+  filter: drop-shadow(0 0 3px #FFFFFF) drop-shadow(0 0 8px rgba(255, 215, 0, 0.95)) drop-shadow(0 0 16px rgba(245, 158, 11, 0.65));
 }
 
 .golden-btn-beam:hover {
-  transform: translateY(-2px) scale(1.015);
-  box-shadow: 0 10px 28px -4px rgba(200, 170, 118, 0.4), 0 0 24px rgba(212, 175, 55, 0.35);
-  border-color: rgba(179, 143, 72, 0.85);
+  transform: translateY(-2.5px) scale(1.02);
+  box-shadow: 0 12px 30px -4px rgba(200, 170, 118, 0.45), 0 0 28px rgba(212, 175, 55, 0.35);
+  border-color: rgba(179, 143, 72, 0.9);
 }
 
 .golden-btn-beam:hover::before {
-  filter: drop-shadow(0 0 6px #FFFFFF) drop-shadow(0 0 12px rgba(255, 220, 110, 0.95));
+  filter: drop-shadow(0 0 5px #FFFFFF) drop-shadow(0 0 12px #FFD700) drop-shadow(0 0 22px rgba(245, 158, 11, 0.85));
 }
 
 .golden-btn-beam:active {
@@ -962,19 +959,20 @@ select:focus {
 .glow-btn::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -1.5px;
   border-radius: inherit;
-  padding: 2.5px;
+  padding: 3px;
   background: conic-gradient(
     from var(--snake-angle, 0deg),
-    transparent 0deg,
-    transparent 255deg,
-    rgba(255, 255, 255, 0.25) 275deg,
-    rgba(255, 235, 170, 0.85) 305deg,
-    #FFE89E 325deg,
-    #FFFFFF 345deg,
-    #FFFFFF 355deg,
-    transparent 360deg
+    rgba(255, 255, 255, 0.22) 0deg,
+    rgba(255, 255, 255, 0.22) 220deg,
+    rgba(255, 235, 170, 0.4) 255deg,
+    rgba(255, 215, 0, 0.8) 285deg,
+    #FFD700 310deg,
+    #FFF4D0 335deg,
+    #FFFFFF 352deg,
+    #FFFFFF 357deg,
+    rgba(255, 255, 255, 0.22) 360deg
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -982,16 +980,16 @@ select:focus {
   mask-composite: exclude;
   pointer-events: none;
   z-index: 2;
-  filter: drop-shadow(0 0 5px #FFFFFF) drop-shadow(0 0 10px rgba(255, 220, 110, 0.95));
+  filter: drop-shadow(0 0 4px #FFFFFF) drop-shadow(0 0 10px rgba(255, 220, 110, 0.95)) drop-shadow(0 0 20px rgba(212, 175, 55, 0.7));
 }
 
 .glow-btn:hover {
-  transform: translateY(-2px) scale(1.015);
-  box-shadow: 0 10px 30px -2px rgba(212, 175, 55, 0.55), 0 0 25px rgba(255, 230, 150, 0.5) !important;
+  transform: translateY(-2.5px) scale(1.02);
+  box-shadow: 0 12px 32px -2px rgba(212, 175, 55, 0.6), 0 0 30px rgba(255, 230, 150, 0.55) !important;
 }
 
 .glow-btn:hover::before {
-  filter: drop-shadow(0 0 8px #FFFFFF) drop-shadow(0 0 14px rgba(255, 220, 110, 1));
+  filter: drop-shadow(0 0 6px #FFFFFF) drop-shadow(0 0 14px #FFD700) drop-shadow(0 0 24px rgba(245, 158, 11, 0.95));
 }
 
 .glow-btn:active {
