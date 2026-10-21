@@ -362,6 +362,9 @@
       // Footer
       footer_desc: "আমরা বাংলাদেশি ব্যবসা ও ফেসবুক উদ্যোক্তাদের জন্য বিশ্বমানের, আল্ট্রা-ফাস্ট ও হাই-কনভার্টিং ওয়েবসাইট এবং ল্যান্ডিং পেজ তৈরি করি যা সেলস বাড়ায় এবং ব্র্যান্ড ভ্যালু প্রতিষ্ঠা করে।",
       footer_desc_short: "হাই-কনভার্টিং ওয়েবসাইট ও ১-ক্লিক সেলস ফানেল",
+      footer_status_online: "২৪/৭ অনলাইন",
+      footer_quick_whatsapp: "হোয়াটসঅ্যাপে চ্যাট",
+      footer_demo_btn: "ফ্রি কনসালটেশন",
       footer_services_title: "সেবাসমূহ",
       footer_tools_title: "টুলস ও সাপোর্ট",
       footer_contact_title: "যোগাযোগ",
@@ -977,6 +980,9 @@
       // Footer
       footer_desc: "We build world-class, ultra-fast, high-converting websites and landing pages engineered to accelerate sales, capture leads, and establish authority for modern businesses.",
       footer_desc_short: "High-Converting Websites & 1-Click Sales Funnels",
+      footer_status_online: "24/7 Online",
+      footer_quick_whatsapp: "Chat on WhatsApp",
+      footer_demo_btn: "Free Consultation",
       footer_services_title: "Services",
       footer_tools_title: "Tools & Support",
       footer_contact_title: "Contact",

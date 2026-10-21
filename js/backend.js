@@ -695,7 +695,7 @@ class BackendService {
   <div class="invoice-card">
     <div class="header">
       <div style="display: flex; align-items: flex-start; gap: 16px;">
-        <div style="width: 52px; height: 52px; border-radius: 12px; background: #FFFFFF; border: 1px solid #C8AA76; display: flex; align-items: center; justify-content: center; padding: 4px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(200,170,118,0.2);">
+        <div style="width: 58px; height: 58px; border-radius: 14px; background: linear-gradient(145deg, #181511 0%, #0F0D0A 100%); border: 1.5px solid #C8AA76; display: flex; align-items: center; justify-content: center; padding: 4px; flex-shrink: 0; box-shadow: 0 4px 14px rgba(20,18,13,0.3);">
           <img style="width: 100%; height: 100%; object-fit: contain;" src="${window.location.origin}/assets/zynsite-icon.png" onerror="this.src='assets/zynsite-icon.png'" alt="ZynSite Logo">
         </div>
         <div>
