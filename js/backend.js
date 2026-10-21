@@ -699,7 +699,7 @@ class BackendService {
           <img style="width: 100%; height: 100%; object-fit: contain;" src="${window.location.origin}/assets/zynsite-icon.png" onerror="this.src='assets/zynsite-icon.png'" alt="ZynSite Logo">
         </div>
         <div>
-          <h1 class="brand-title" style="margin: 0; line-height: 1.1; font-weight: 800; letter-spacing: 0.05em;">ZYNSITE<span style="color: #C8AA76; font-size: 16px; margin-left: 4px;">.COM</span></h1>
+          <img style="height: 28px; width: auto; object-fit: contain; margin-bottom: 4px; display: block;" src="${window.location.origin}/assets/zynsite-text.png" onerror="this.src='assets/zynsite-text.png'" alt="ZYNSITE.COM">
           <p class="brand-sub" style="margin-top: 4px; font-weight: 500;">High-End Web Development · Automated Sales Funnels</p>
           <p class="brand-sub">${isEn ? 'Website' : 'ওয়েবসাইট'}: <b>https://zynsite.com</b> • ${isEn ? 'Hotline' : 'হটলাইন'}: <b>+40 774 119 870</b></p>
         </div>
