@@ -695,17 +695,11 @@ class BackendService {
   <div class="invoice-card">
     <div class="header">
       <div style="display: flex; align-items: flex-start; gap: 16px;">
-        <div style="width: 52px; height: 52px; border-radius: 12px; background: #0B0B0D; border: 1px solid #C8AA76; display: flex; align-items: center; justify-content: center; padding: 6px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(200,170,118,0.2);">
-          <svg style="width: 100%; height: 100%;" viewBox="0 0 120 120" role="img" aria-label="ZynSite Monogram">
-            <circle cx="60" cy="60" r="54" fill="none" stroke="#C8AA76" stroke-opacity="0.75" stroke-width="2.5"></circle>
-            <path d="M38 42 H82 M38 78 H82" fill="none" stroke="#F3EFE6" stroke-width="3.5" stroke-linecap="round"></path>
-            <path d="M88 36 L32 84" fill="none" stroke="#C8AA76" stroke-width="3" stroke-linecap="round"></path>
-            <circle cx="88" cy="36" r="4" fill="#C8AA76"></circle>
-            <circle cx="32" cy="84" r="4" fill="#C8AA76"></circle>
-          </svg>
+        <div style="width: 52px; height: 52px; border-radius: 12px; background: #FFFFFF; border: 1px solid #C8AA76; display: flex; align-items: center; justify-content: center; padding: 4px; flex-shrink: 0; box-shadow: 0 4px 12px rgba(200,170,118,0.2);">
+          <img style="width: 100%; height: 100%; object-fit: contain;" src="${window.location.origin}/assets/zynsite-icon.png" onerror="this.src='assets/zynsite-icon.png'" alt="ZynSite Logo">
         </div>
         <div>
-          <h1 class="brand-title" style="margin: 0; line-height: 1.1;">ZYN<span>SITE</span></h1>
+          <h1 class="brand-title" style="margin: 0; line-height: 1.1; font-weight: 800; letter-spacing: 0.05em;">ZYNSITE<span style="color: #C8AA76; font-size: 16px; margin-left: 4px;">.COM</span></h1>
           <p class="brand-sub" style="margin-top: 4px; font-weight: 500;">High-End Web Development · Automated Sales Funnels</p>
           <p class="brand-sub">${isEn ? 'Website' : 'ওয়েবসাইট'}: <b>https://zynsite.com</b> • ${isEn ? 'Hotline' : 'হটলাইন'}: <b>+40 774 119 870</b></p>
         </div>
