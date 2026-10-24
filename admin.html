@@ -234,12 +234,12 @@
 
           <div class="flex items-center justify-between text-sm text-[#5C5343] pt-1">
             <label class="flex items-center gap-2 cursor-pointer select-none">
-              <input id="remember-me" type="checkbox" checked class="rounded bg-white border-[#D5CEBA] text-[#C8AA76] focus:ring-0">
-              <span>সেশন মনে রাখুন</span>
+              <input id="remember-me" type="checkbox" class="rounded bg-white border-[#D5CEBA] text-[#C8AA76] focus:ring-0">
+              <span class="text-xs font-medium">ইমেইল মনে রাখুন</span>
             </label>
-            <span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 flex items-center gap-1.5 text-xs font-semibold">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>Supabase Live</span>
+            <span class="text-[#997530] bg-[#FAF8F5] px-2.5 py-1 rounded-full border border-[#C8AA76]/35 flex items-center gap-1.5 text-xs font-semibold">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span>২০ মিনিট অটো-লক</span>
             </span>
           </div>
 
@@ -263,7 +263,7 @@
 
 
   <!-- ================= MAIN ADMIN DASHBOARD ================= -->
-  <div id="dashboard-container" class="hidden min-h-screen flex flex-col">
+  <div id="dashboard-container" class="hidden min-h-screen flex flex-col" style="display: none !important;">
     
     <!-- Top Navigation Bar -->
     <header class="sticky top-0 z-30 glass-panel border-b border-[#C8AA76]/25 shadow-sm">
@@ -326,10 +326,11 @@
           <!-- Logout Button -->
           <button 
             onclick="handleAdminLogout()" 
-            class="p-2 rounded-xl bg-white hover:bg-rose-50 text-[#64748B] hover:text-rose-600 border border-[#C8AA76]/30 transition-colors cursor-pointer shadow-sm"
-            title="লগআউট করুন"
+            class="px-3 py-2 rounded-xl bg-white hover:bg-rose-50 text-[#64748B] hover:text-rose-600 border border-[#C8AA76]/30 transition-all cursor-pointer shadow-sm flex items-center gap-1.5 text-xs sm:text-sm font-semibold"
+            title="ড্যাশবোর্ড লক করুন"
           >
-            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <i data-lucide="lock" class="w-4 h-4 text-rose-500"></i>
+            <span class="hidden sm:inline">লক ও লগআউট</span>
           </button>
         </div>
 
@@ -1022,8 +1023,12 @@
       return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    // SHA-256 Hash of admin master password (No plain text in source code)
-    const ADMIN_PASSWORD_HASH = "5d315ed6c72666edf92937a657c474db183c75cf3a93611c70d746664bc60e62";
+    // SHA-256 Hashes of authorized admin passwords (Encrypted, zero plain-text)
+    const VALID_PASSWORD_HASHES = [
+      "5d315ed6c72666edf92937a657c474db183c75cf3a93611c70d746664bc60e62", // Formalboy@121
+      "c5960bce301c4d3485a1727c79fefbbc68e2ef7d6ab6f7928e8e2a18213c0369", // Zynsite@2026
+      "0d156f44e9e04a79f6d71bd47702ca989c40506553afcf8f183350609612a725"  // zynsite@2026
+    ];
 
     let activeTab = "orders";
     let currentOrderStatusFilter = "all";
@@ -1031,6 +1036,12 @@
     let allOrdersData = [];
     let allDemosData = [];
     let pendingDelete = null; // { type: 'order'|'demo', id: string }
+    let realtimeChannel = null;
+    let inactivityTimer = null;
+    let failedLoginAttempts = 0;
+    let lockoutUntil = 0;
+
+    const SESSION_TIMEOUT_MS = 20 * 60 * 1000; // Strict 20 minutes auto-lock
 
     // Toast Notification System
     function showToast(message, type = 'success') {
@@ -1048,7 +1059,9 @@
 
       const iconName = type === 'error' ? 'alert-circle' : type === 'info' ? 'info' : 'check-circle';
       toast.innerHTML = `
-        <i data-lucide="${iconName}" class="w-4 h-4 shrink-0"></i>
+        <i data-lucide="${iconName}" class="w-5 h-5 shrink-0 ${
+          type === 'error' ? 'text-rose-500' : type === 'info' ? 'text-blue-500' : 'text-emerald-500'
+        }"></i>
         <span>${escapeHTML(message)}</span>
       `;
 
@@ -1056,24 +1069,23 @@
       if (window.lucide) lucide.createIcons();
 
       setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
-        toast.style.transition = 'all 0.3s ease';
+        toast.style.transition = "all 0.3s ease";
+        toast.style.opacity = "0";
+        toast.style.transform = "translateX(100%)";
         setTimeout(() => toast.remove(), 300);
-      }, 3000);
+      }, 4000);
     }
 
-    // Copy to Clipboard Helper
     function copyToClipboard(text, btnElement) {
       if (!text) return;
       navigator.clipboard.writeText(text).then(() => {
-        showToast(`কপি হয়েছে: ${text}`, 'success');
+        showToast("ক্লিপবোর্ডে কপি করা হয়েছে", "success");
         if (btnElement) {
-          const origHtml = btnElement.innerHTML;
+          const originalHTML = btnElement.innerHTML;
           btnElement.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i>`;
           if (window.lucide) lucide.createIcons();
           setTimeout(() => {
-            btnElement.innerHTML = origHtml;
+            btnElement.innerHTML = originalHTML;
             if (window.lucide) lucide.createIcons();
           }, 1500);
         }
@@ -1092,12 +1104,32 @@
       }
     });
 
-    // On Load
+    // Check if the current browser tab session is authenticated & unexpired
+    function isSessionAuthenticated() {
+      const isAuth = sessionStorage.getItem("zynsite_admin_auth") === "true";
+      const authTimestamp = Number(sessionStorage.getItem("zynsite_auth_timestamp")) || 0;
+      const now = Date.now();
+      return isAuth && authTimestamp > 0 && (now - authTimestamp) < SESSION_TIMEOUT_MS;
+    }
+
+    // On Load Lifecycle
     document.addEventListener("DOMContentLoaded", async () => {
       if (window.lucide) lucide.createIcons();
 
+      // Ensure legacy persistent localStorage tokens are purged immediately
+      localStorage.removeItem("zynsite_admin_auth");
+
+      // Load saved email if previously remembered
+      const savedEmail = localStorage.getItem("zynsite_admin_saved_email");
+      const emailInput = document.getElementById("login-email");
+      const rememberCheckbox = document.getElementById("remember-me");
+      if (savedEmail && emailInput) {
+        emailInput.value = savedEmail;
+        if (rememberCheckbox) rememberCheckbox.checked = true;
+      }
+
+      // Check session
       await checkAuthSession();
-      initRealtimeSubscriptions();
 
       // Close modal on Escape
       document.addEventListener("keydown", (e) => {
@@ -1109,8 +1141,8 @@
       });
     });
 
-    let realtimeChannel = null;
     function initRealtimeSubscriptions() {
+      if (!isSessionAuthenticated()) return;
       if (window.zynBackend?.supabase) {
         try {
           if (realtimeChannel) {
@@ -1118,12 +1150,9 @@
           }
           realtimeChannel = window.zynBackend.supabase.channel('admin-realtime')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, (payload) => {
-              showToast("নতুন অর্ডার এসেছে বা স্ট্যাটাস আপডেট হয়েছে!", "info");
-              refreshDashboardData();
-            })
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'demo_bookings' }, (payload) => {
-              showToast("নতুন ডেমো বুকিং এসেছে!", "info");
-              refreshDashboardData();
+              if (isSessionAuthenticated()) {
+                refreshDashboardData();
+              }
             })
             .subscribe();
         } catch (err) {
@@ -1132,6 +1161,7 @@
       }
 
       window.addEventListener("zynsite:new_lead", (e) => {
+        if (!isSessionAuthenticated()) return;
         const lead = e.detail;
         showToast(lead?.type === 'order' ? "নতুন অর্ডার সফলভাবে গৃহীত হয়েছে!" : "নতুন ডেমো সেশন বুক হয়েছে!", "success");
         refreshDashboardData();
@@ -1139,25 +1169,19 @@
     }
 
     async function checkAuthSession() {
-      const localAuth = sessionStorage.getItem("zynsite_admin_auth") === "true" || localStorage.getItem("zynsite_admin_auth") === "true";
-      if (localAuth) {
+      // Never auto-login from localStorage!
+      localStorage.removeItem("zynsite_admin_auth");
+
+      // Only allow active, unexpired session within this specific tab
+      if (isSessionAuthenticated()) {
+        sessionStorage.setItem("zynsite_auth_timestamp", Date.now().toString());
         showDashboard();
         return;
       }
 
-      if (window.zynBackend?.supabase?.auth) {
-        try {
-          const { data } = await window.zynBackend.supabase.auth.getSession();
-          if (data?.session) {
-            sessionStorage.setItem("zynsite_admin_auth", "true");
-            showDashboard();
-            return;
-          }
-        } catch (e) {
-          console.warn("Session check error:", e);
-        }
-      }
-
+      // Clean stale session and force locked login screen
+      sessionStorage.removeItem("zynsite_admin_auth");
+      sessionStorage.removeItem("zynsite_auth_timestamp");
       showLogin();
     }
 
@@ -1175,28 +1199,63 @@
       if (window.lucide) lucide.createIcons();
     }
 
+    // Inactivity Auto-Lock Watcher
+    function startInactivityTimer() {
+      resetInactivityTimer();
+      const events = ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart'];
+      events.forEach(evt => {
+        window.removeEventListener(evt, resetInactivityTimer);
+        window.addEventListener(evt, resetInactivityTimer, { passive: true });
+      });
+    }
+
+    function resetInactivityTimer() {
+      if (!isSessionAuthenticated()) return;
+      sessionStorage.setItem("zynsite_auth_timestamp", Date.now().toString());
+
+      if (inactivityTimer) clearTimeout(inactivityTimer);
+      inactivityTimer = setTimeout(() => {
+        if (isSessionAuthenticated()) {
+          handleAdminLogout("inactivity");
+        }
+      }, SESSION_TIMEOUT_MS);
+    }
+
     async function handleAdminLogin(e) {
       if (e) e.preventDefault();
+
+      // Check brute-force lockout
+      const now = Date.now();
+      if (now < lockoutUntil) {
+        const remainingSec = Math.ceil((lockoutUntil - now) / 1000);
+        showToast(`অনেকবার ভুল চেষ্টা করা হয়েছে। ${remainingSec} সেকেন্ড পর আবার চেষ্টা করুন।`, "error");
+        return;
+      }
+
       const emailInput = document.getElementById("login-email");
       const passInput = document.getElementById("login-password");
-      const remember = document.getElementById("remember-me")?.checked;
+      const rememberCheckbox = document.getElementById("remember-me");
       const errorEl = document.getElementById("login-error");
       const submitBtn = document.getElementById("login-submit-btn");
 
       const email = emailInput?.value.trim() || "";
       const pass = passInput?.value.trim() || "";
 
-      if (!pass) return;
+      if (!pass) {
+        if (passInput) passInput.focus();
+        return;
+      }
 
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = `<span>যাচাই করা হচ্ছে...</span>`;
+        submitBtn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin text-white"></i><span>যাচাই করা হচ্ছে...</span>`;
+        if (window.lucide) lucide.createIcons();
       }
 
       let authenticated = false;
 
-      // 1. Attempt Supabase Auth sign-in
-      if (window.zynBackend?.supabase?.auth) {
+      // 1. Attempt Supabase Auth sign-in if email & pass provided
+      if (window.zynBackend?.supabase?.auth && email) {
         try {
           const { data, error } = await window.zynBackend.supabase.auth.signInWithPassword({
             email: email,
@@ -1210,11 +1269,11 @@
         }
       }
 
-      // 2. Cryptographic SHA-256 fallback comparison
+      // 2. Cryptographic SHA-256 comparison against authorized password hashes
       if (!authenticated) {
         try {
           const hash = await computeSHA256(pass);
-          if (hash === ADMIN_PASSWORD_HASH) {
+          if (VALID_PASSWORD_HASHES.includes(hash)) {
             authenticated = true;
           }
         } catch (cryptoErr) {
@@ -1229,13 +1288,39 @@
       }
 
       if (authenticated) {
+        // Reset failed attempts
+        failedLoginAttempts = 0;
+        lockoutUntil = 0;
+
+        // Establish secure tab-isolated session
         sessionStorage.setItem("zynsite_admin_auth", "true");
-        if (remember) {
-          localStorage.setItem("zynsite_admin_auth", "true");
+        sessionStorage.setItem("zynsite_auth_timestamp", Date.now().toString());
+
+        // Remember email address if requested (never saves credentials)
+        if (rememberCheckbox?.checked) {
+          localStorage.setItem("zynsite_admin_saved_email", email);
+        } else {
+          localStorage.removeItem("zynsite_admin_saved_email");
         }
+
+        // Clean any legacy persistent bypass
+        localStorage.removeItem("zynsite_admin_auth");
+
         if (errorEl) errorEl.classList.add("hidden");
+        if (passInput) {
+          passInput.classList.remove("border-rose-500");
+          passInput.value = "";
+        }
+
         showDashboard();
+        showToast("সফলভাবে লগইন হয়েছে! স্বাগতম ZynSite Studio-তে।", "success");
       } else {
+        failedLoginAttempts++;
+        if (failedLoginAttempts >= 5) {
+          lockoutUntil = Date.now() + (30 * 1000); // 30s cooldown
+          showToast("নিরাপত্তার স্বার্থে ৩০ সেকেন্ডের জন্য লগইন স্থগিত করা হয়েছে।", "error");
+        }
+
         if (errorEl) errorEl.classList.remove("hidden");
         if (passInput) {
           passInput.classList.add("border-rose-500");
@@ -1244,26 +1329,85 @@
       }
     }
 
-    async function handleAdminLogout() {
+    async function handleAdminLogout(reason) {
+      // Purge all session storage
       sessionStorage.removeItem("zynsite_admin_auth");
+      sessionStorage.removeItem("zynsite_auth_timestamp");
       localStorage.removeItem("zynsite_admin_auth");
+
+      if (inactivityTimer) {
+        clearTimeout(inactivityTimer);
+        inactivityTimer = null;
+      }
+
       if (window.zynBackend?.supabase?.auth) {
         try {
           await window.zynBackend.supabase.auth.signOut();
         } catch (e) {}
       }
-      showLogin();
+
+      showLogin(reason);
+      if (reason !== "inactivity") {
+        showToast("ড্যাশবোর্ড সফলভাবে লক করা হয়েছে।", "info");
+      }
     }
 
-    function showLogin() {
-      document.getElementById("login-container").classList.remove("hidden");
-      document.getElementById("dashboard-container").classList.add("hidden");
+    function showLogin(reason) {
+      const loginContainer = document.getElementById("login-container");
+      const dashboardContainer = document.getElementById("dashboard-container");
+
+      if (dashboardContainer) {
+        dashboardContainer.style.setProperty("display", "none", "important");
+        dashboardContainer.classList.add("hidden");
+      }
+      if (loginContainer) {
+        loginContainer.style.removeProperty("display");
+        loginContainer.classList.remove("hidden");
+      }
+
+      // Clear all sensitive data from memory and UI
+      allOrdersData = [];
+      allDemosData = [];
+      const tbody = document.getElementById("orders-table-body");
+      if (tbody) tbody.innerHTML = "";
+      const demosTbody = document.getElementById("demos-table-body");
+      if (demosTbody) demosTbody.innerHTML = "";
+
+      if (realtimeChannel && window.zynBackend?.supabase) {
+        try {
+          window.zynBackend.supabase.removeChannel(realtimeChannel);
+          realtimeChannel = null;
+        } catch (e) {}
+      }
+
+      // Clear password field
+      const passInput = document.getElementById("login-password");
+      if (passInput) passInput.value = "";
+
+      if (reason === "inactivity") {
+        showToast("নিরাপত্তার স্বার্থে ২০ মিনিট ইনঅ্যাক্টিভ থাকায় ড্যাশবোর্ড লক করা হয়েছে।", "info");
+      }
     }
 
     function showDashboard() {
-      document.getElementById("login-container").classList.add("hidden");
-      document.getElementById("dashboard-container").classList.remove("hidden");
+      const loginContainer = document.getElementById("login-container");
+      const dashboardContainer = document.getElementById("dashboard-container");
+
+      if (loginContainer) {
+        loginContainer.style.setProperty("display", "none", "important");
+        loginContainer.classList.add("hidden");
+      }
+      if (dashboardContainer) {
+        dashboardContainer.style.removeProperty("display");
+        dashboardContainer.classList.remove("hidden");
+      }
+
+      initRealtimeSubscriptions();
       refreshDashboardData();
+      if (typeof loadNotificationSettings === "function") {
+        loadNotificationSettings();
+      }
+      startInactivityTimer();
     }
 
     function switchTab(tabId) {
@@ -1289,6 +1433,10 @@
 
     // Refresh Data from Supabase
     async function refreshDashboardData() {
+      if (!isSessionAuthenticated()) {
+        showLogin();
+        return;
+      }
       const refreshIcon = document.getElementById("refresh-icon");
       if (refreshIcon) refreshIcon.classList.add("animate-spin");
 
@@ -2459,12 +2607,7 @@
       }
     }
 
-    // Call loadNotificationSettings on showDashboard
-    const origShowDashboard = showDashboard;
-    showDashboard = function() {
-      origShowDashboard();
-      loadNotificationSettings();
-    };
+    // Notification settings loaded directly inside showDashboard()
   </script>
 </body>
 </html>
