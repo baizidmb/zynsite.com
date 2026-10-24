@@ -122,9 +122,25 @@ class BackendService {
     // 2. If Supabase is connected, insert into Supabase
     if (this.isConfigured && this.supabase) {
       try {
+        // Strip out fields not present in Supabase table schema (e.g. due_amount)
+        const supabasePayload = {
+          order_id: orderRecord.order_id,
+          client_name: orderRecord.client_name,
+          client_phone: orderRecord.client_phone,
+          business_name: orderRecord.business_name,
+          page_link: orderRecord.page_link,
+          package_id: orderRecord.package_id,
+          package_name: orderRecord.package_name,
+          price: orderRecord.price,
+          advance_amount: orderRecord.advance_amount,
+          notes: orderRecord.notes,
+          status: orderRecord.status,
+          created_at: orderRecord.created_at
+        };
+
         const { data, error } = await this.supabase
           .from("orders")
-          .upsert([orderRecord], { onConflict: "order_id" })
+          .upsert([supabasePayload], { onConflict: "order_id" })
           .select();
 
         if (error) {
@@ -210,16 +226,68 @@ class BackendService {
           .order("created_at", { ascending: false });
 
         if (!error && Array.isArray(data)) {
-          // Merge local cache
-          localStorage.setItem(BACKEND_CONFIG.STORAGE_ORDERS, JSON.stringify(data));
-          return data;
+          let orders = data;
+          // Auto-sync any local-only orders that were previously saved in fallback mode
+          const localOrders = this.getLocalOrders();
+          const cloudIds = new Set(data.map(o => o.order_id));
+          const unsynced = localOrders.filter(o => !cloudIds.has(o.order_id));
+          if (unsynced.length > 0) {
+            this.syncLocalOrdersToSupabase(unsynced);
+            orders = [...unsynced, ...data];
+          }
+          localStorage.setItem(BACKEND_CONFIG.STORAGE_ORDERS, JSON.stringify(orders));
+          return orders.map(o => {
+            const price = Number(o.price) || 0;
+            const advance = Number(o.advance_amount) || Math.round(price * 0.5);
+            o.advance_amount = advance;
+            o.due_amount = price - advance;
+            return o;
+          });
         }
         console.warn("Could not fetch orders from Supabase, using local cache:", error);
       } catch (err) {
         console.warn("Supabase fetch failed, falling back to local cache:", err);
       }
     }
-    return this.getLocalOrders();
+    return this.getLocalOrders().map(o => {
+      const price = Number(o.price) || 0;
+      const advance = Number(o.advance_amount) || Math.round(price * 0.5);
+      o.advance_amount = advance;
+      o.due_amount = price - advance;
+      return o;
+    });
+  }
+
+  /**
+   * Push locally cached orders to Supabase in batch
+   */
+  async syncLocalOrdersToSupabase(customList = null) {
+    if (!this.isConfigured || !this.supabase) return { success: false, synced: 0 };
+    const list = customList || this.getLocalOrders();
+    let synced = 0;
+    for (const ord of list) {
+      try {
+        const payload = {
+          order_id: ord.order_id,
+          client_name: ord.client_name,
+          client_phone: ord.client_phone,
+          business_name: ord.business_name,
+          page_link: ord.page_link,
+          package_id: ord.package_id,
+          package_name: ord.package_name,
+          price: Number(ord.price) || 0,
+          advance_amount: Number(ord.advance_amount) || Math.round((Number(ord.price) || 0) * 0.5),
+          notes: ord.notes || "",
+          status: ord.status || "pending",
+          created_at: ord.created_at || new Date().toISOString()
+        };
+        const { error } = await this.supabase.from("orders").upsert([payload], { onConflict: "order_id" });
+        if (!error) synced++;
+      } catch (e) {
+        console.warn("Sync error for order:", ord.order_id, e);
+      }
+    }
+    return { success: true, synced, total: list.length };
   }
 
   /**
@@ -458,10 +526,15 @@ class BackendService {
         admin_whatsapp_link: waLink
       };
 
-      // 3. Webhook URL (from localStorage if configured)
+      // 3. Dispatch to Telegram Bot (Async non-blocking)
+      this.dispatchTelegramNotification(type, payload, waLink).catch(e => console.warn("Telegram dispatch failed:", e));
+
+      // 4. Dispatch Email Notification to contact@zynsite.com (Async non-blocking)
+      this.dispatchEmailNotification(type, payload, waLink).catch(e => console.warn("Email dispatch failed:", e));
+
+      // 5. Custom Webhook URL (from localStorage if configured)
       const webhookUrl = localStorage.getItem("zynsite_lead_webhook_url") || "";
       if (webhookUrl && webhookUrl.startsWith("http")) {
-        // Non-blocking fire & forget
         fetch(webhookUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -471,6 +544,128 @@ class BackendService {
       }
     } catch (e) {
       console.warn("triggerLeadWebhook exception:", e);
+    }
+  }
+
+  /**
+   * Telegram Bot Instant Notification Dispatcher
+   * Uses user-configured bot token and chat_id, or defaults to official bot token
+   */
+  async dispatchTelegramNotification(type, data, waLink) {
+    try {
+      const defaultToken = "8885095686:AAEOzmapefS7Z5_vBAG0dnkiAFEvL3adssA";
+      const token = (localStorage.getItem("zynsite_telegram_bot_token") || defaultToken).trim();
+      let chatId = (localStorage.getItem("zynsite_telegram_chat_id") || "").trim();
+
+      // If chatId is not set yet, attempt to auto-discover it from getUpdates
+      if (!chatId && token) {
+        try {
+          const updRes = await fetch(`https://api.telegram.org/bot${token}/getUpdates`, { method: "GET" });
+          if (updRes.ok) {
+            const updData = await updRes.json();
+            const updates = updData?.result || [];
+            if (updates.length > 0) {
+              const lastMsg = updates[updates.length - 1]?.message;
+              if (lastMsg?.chat?.id) {
+                chatId = String(lastMsg.chat.id);
+                localStorage.setItem("zynsite_telegram_chat_id", chatId);
+              }
+            }
+          }
+        } catch (e) {
+          // ignore auto-discover error
+        }
+      }
+
+      if (!token || !chatId) {
+        console.warn("Telegram alert skipped: bot token or chat_id not available.", { hasToken: Boolean(token), hasChatId: Boolean(chatId) });
+        return { success: false, reason: "missing_credentials" };
+      }
+
+      const isOrder = type === "order";
+      const typeTitle = isOrder ? "🛒 নতুন ওয়েবসাইট অর্ডার" : "📅 নতুন ডেমো ও স্ট্র্যাটেজি সেশন বুকিং";
+      const priceText = data.budget ? `৳${Number(data.budget).toLocaleString('en-US')}` : "কাস্টম বাজেট";
+      const advanceText = data.advance_amount ? `৳${Number(data.advance_amount).toLocaleString('en-US')}` : "";
+      const dueText = data.due_amount ? `৳${Number(data.due_amount).toLocaleString('en-US')}` : "";
+      
+      const nowStr = new Date().toLocaleString("bn-BD", { timeZone: "Asia/Dhaka", dateStyle: "medium", timeStyle: "short" });
+
+      const tgLines = [
+        `⚡️ <b>${typeTitle} — ZynSite.com</b>`,
+        `━━━━━━━━━━━━━━━━━━━━`,
+        `🆔 <b>আইডি:</b> <code>#${escapeHTML(data.id || 'N/A')}</code>`,
+        `👤 <b>গ্রাহকের নাম:</b> ${escapeHTML(data.client_name || 'N/A')}`,
+        `📱 <b>মোবাইল / WA:</b> <code>${escapeHTML(data.client_phone || 'N/A')}</code>`,
+        `🏢 <b>ব্যবসার নাম:</b> ${escapeHTML(data.business_name || 'N/A')}`,
+        `🔗 <b>পেজ / লিঙ্ক:</b> ${data.page_link ? escapeHTML(data.page_link) : 'দেওয়া হয়নি'}`,
+        `📦 <b>প্যাকেজ / সার্ভিস:</b> ${escapeHTML(data.service_or_topic || 'N/A')}`,
+        `💰 <b>মোট বাজেট:</b> <b>${priceText}</b>${advanceText ? ` (অগ্রিম: ${advanceText} | বকেয়া: ${dueText})` : ''}`,
+        `📝 <b>গ্রাহকের নোট:</b> ${escapeHTML(data.notes || 'কোন বিশেষ নোট নেই')}`,
+        `⏰ <b>তারিখ ও সময়:</b> ${nowStr}`,
+        `━━━━━━━━━━━━━━━━━━━━`,
+        `👉 <a href="${waLink}">গ্রাহকের সাথে WhatsApp-এ চ্যাট করুন</a>`,
+        `🌐 <a href="https://zynsite.com/admin.html">ZynSite অ্যাডমিন প্যানেলে দেখুন</a>`
+      ];
+
+      const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: tgLines.join("\n"),
+          parse_mode: "HTML",
+          disable_web_page_preview: true
+        })
+      });
+
+      const resData = await res.json().catch(() => ({}));
+      return { success: res.ok, data: resData };
+    } catch (err) {
+      console.warn("Telegram dispatch exception:", err);
+      return { success: false, error: err };
+    }
+  }
+
+  /**
+   * Business Email Notification Dispatcher
+   * Delivers direct alert to contact@zynsite.com (or custom admin email)
+   */
+  async dispatchEmailNotification(type, data, waLink) {
+    try {
+      const email = localStorage.getItem("zynsite_notify_email") || "contact@zynsite.com";
+      const isOrder = type === "order";
+      const subject = `[ZynSite ${isOrder ? 'নতুন অর্ডার' : 'নতুন ডেমো বুকিং'}] #${data.id} — ${data.client_name || ''} (${data.business_name || ''})`;
+
+      const formData = {
+        _subject: subject,
+        _template: "table",
+        _captcha: "false",
+        "লিড টাইপ": isOrder ? "ওয়েবসাইট অর্ডার" : "ফ্রি ডেমো বুকিং",
+        "অর্ডার / বুকিং আইডি": data.id,
+        "গ্রাহকের নাম": data.client_name || "N/A",
+        "মোবাইল নম্বর": data.client_phone || "N/A",
+        "ব্যবসার নাম": data.business_name || "N/A",
+        "ফেসবুক পেজ / ওয়েবসাইট লিঙ্ক": data.page_link || "দেওয়া হয়নি",
+        "প্যাকেজ / সেবার বিবরণ": data.service_or_topic || "N/A",
+        "মোট বাজেট / মূল্য": data.budget ? `৳${data.budget}` : "N/A",
+        "অগ্রিম পেমেন্ট": data.advance_amount ? `৳${data.advance_amount}` : "N/A",
+        "বকেয়া": data.due_amount ? `৳${data.due_amount}` : "N/A",
+        "গ্রাহকের বিশেষ রিকোয়ারমেন্ট": data.notes || "কোন নোট নেই",
+        "সরাসরি WhatsApp চ্যাট লিঙ্ক": waLink,
+        "সাবমিশন সময়": new Date().toLocaleString()
+      };
+
+      // Non-blocking fire & forget via FormSubmit AJAX endpoint
+      fetch(`https://formsubmit.co/ajax/${encodeURIComponent(email)}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(formData)
+      }).catch(err => console.warn("Email notification dispatch error:", err));
+    } catch (e) {
+      console.warn("dispatchEmailNotification exception:", e);
     }
   }
 

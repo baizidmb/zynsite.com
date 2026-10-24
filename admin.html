@@ -455,10 +455,28 @@
             <span>ডেমো ও মিটিং বুকিং</span>
             <span id="tab-badge-demos" class="px-2 py-0.5 rounded-full text-xs bg-[#F5F2EA] text-[#5C5343] font-en font-bold ml-1 border border-[#C8AA76]/20">0</span>
           </button>
+
+          <button 
+            onclick="switchTab('notifications')" 
+            id="tab-btn-notifications"
+            class="px-4 sm:px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 transition-all bg-white text-[#5C5343] hover:text-[#14120D] hover:bg-[#F5F2EA] border border-[#C8AA76]/30 cursor-pointer shadow-sm"
+          >
+            <i data-lucide="bell-ring" class="w-4 h-4 text-[#B38F48]"></i>
+            <span>অ্যালার্ট ও নোটিফিকেশন</span>
+          </button>
         </div>
 
         <!-- Export tools -->
         <div class="flex items-center gap-2">
+          <button 
+            onclick="syncLocalOrdersCloud()" 
+            id="sync-cloud-btn"
+            class="px-3.5 py-2 rounded-xl bg-white hover:bg-emerald-50 border border-emerald-500/30 text-emerald-800 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm"
+            title="লোকাল ও ক্লাউড ডাটাবেস সিঙ্ক করুন"
+          >
+            <i data-lucide="cloud-upload" class="w-4 h-4 text-emerald-600"></i>
+            <span>ক্লাউড সিঙ্ক</span>
+          </button>
           <button 
             onclick="exportOrdersCSV()" 
             class="px-3.5 py-2 rounded-xl bg-white hover:bg-[#F5F2EA] border border-[#C8AA76]/30 text-[#2D281E] text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm"
@@ -627,6 +645,165 @@
             <h4 class="text-base font-bold text-[#14120D]">কোনো ডেমো বুকিং রেকর্ড পাওয়া যায়নি</h4>
             <p class="text-sm text-[#5C5343] mt-1 max-w-sm mx-auto leading-relaxed">ক্লায়েন্টরা ফ্রি ডেমো বুক করলে তা স্বয়ংক্রিয়ভাবে এখানে যুক্ত হবে।</p>
           </div>
+        </div>
+
+      </section>
+
+      <!-- TAB 3: TELEGRAM & EMAIL NOTIFICATIONS SETTINGS -->
+      <section id="tab-content-notifications" class="hidden space-y-6">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- TELEGRAM BOT ALERT CARD -->
+          <div class="glass-panel rounded-3xl p-6 sm:p-7 border border-[#C8AA76]/35 shadow-xl space-y-5">
+            <div class="flex items-center gap-3 pb-4 border-b border-[#C8AA76]/20">
+              <div class="w-12 h-12 rounded-2xl bg-[#0088cc]/15 text-[#0088cc] flex items-center justify-center shrink-0">
+                <i data-lucide="send" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold text-[#14120D]">টেলিগ্রাম ইনস্ট্যান্ট বট অ্যালার্ট</h3>
+                <p class="text-xs text-[#5C5343]">প্রতিটি নতুন অর্ডার সরাসরি টেলিগ্রামে পুশ মেসেজ হিসেবে আসবে</p>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold text-[#14120D] mb-1.5">টেলিগ্রাম বট টোকেন (Bot Token)</label>
+                <input 
+                  id="tg-bot-token" 
+                  type="text" 
+                  placeholder="8885095686:AAEOzmapefS7Z5_vBAG0dnkiAFEvL3adssA" 
+                  class="w-full px-4 py-3 rounded-xl bg-[#FAF9F5] border border-[#D5CEBA] text-sm text-[#14120D] font-mono focus:bg-white focus:outline-none focus:border-[#C8AA76] focus:ring-2 focus:ring-[#C8AA76]/20 transition-all"
+                />
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-[#14120D] mb-1.5">আপনার চ্যাট আইডি (Chat ID)</label>
+                <div class="flex gap-2">
+                  <input 
+                    id="tg-chat-id" 
+                    type="text" 
+                    placeholder="যেমন: 123456789 বা -100xxxxxxxxxx" 
+                    class="flex-1 px-4 py-3 rounded-xl bg-[#FAF9F5] border border-[#D5CEBA] text-sm text-[#14120D] font-mono focus:bg-white focus:outline-none focus:border-[#C8AA76] focus:ring-2 focus:ring-[#C8AA76]/20 transition-all"
+                  />
+                  <button 
+                    type="button" 
+                    onclick="autoDetectTelegramChatId()" 
+                    class="px-4 py-3 rounded-xl bg-white hover:bg-[#F5F2EA] border border-[#C8AA76]/40 text-xs font-bold text-[#997530] flex items-center gap-1.5 transition-colors cursor-pointer shrink-0"
+                    title="বটে মেসেজ পাঠানোর পর অটো-ডিটেক্ট করুন"
+                  >
+                    <i data-lucide="scan-search" class="w-4 h-4"></i>
+                    <span>অটো-ডিটেক্ট</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="pt-2 flex flex-wrap gap-2.5">
+                <button 
+                  type="button" 
+                  onclick="saveTelegramSettings()" 
+                  class="px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-[#C8AA76] via-[#B38F48] to-[#997530] text-white shadow-md shadow-[#C8AA76]/25 hover:opacity-95 transition-all cursor-pointer flex items-center gap-2"
+                >
+                  <i data-lucide="check" class="w-4 h-4"></i>
+                  <span>সেভ করুন</span>
+                </button>
+                <button 
+                  type="button" 
+                  onclick="sendTestTelegramAlert()" 
+                  id="tg-test-btn" 
+                  class="px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-[#0088cc] hover:bg-[#0077b5] text-white shadow-md shadow-[#0088cc]/20 transition-all cursor-pointer flex items-center gap-2"
+                >
+                  <i data-lucide="send" class="w-4 h-4"></i>
+                  <span>টেস্ট মেসেজ পাঠান</span>
+                </button>
+              </div>
+
+              <div id="tg-status-box" class="hidden p-3.5 rounded-xl text-xs font-medium"></div>
+
+              <!-- Setup Helper Instructions -->
+              <div class="p-4 rounded-2xl bg-[#F5F2EA]/80 border border-[#C8AA76]/25 text-xs text-[#5C5343] space-y-2">
+                <p class="font-bold text-[#14120D] flex items-center gap-1.5">
+                  <i data-lucide="help-circle" class="w-4 h-4 text-[#997530]"></i>
+                  <span>টেলিগ্রাম বট অ্যাক্টিভ করার সহজ ৩ ধাপ:</span>
+                </p>
+                <ol class="list-decimal list-inside space-y-1 text-[#2D281E]">
+                  <li>টেলিগ্রামে আপনার বটটি ওপেন করে <b>/start</b> লিখে সেন্ড করুন।</li>
+                  <li>উপরে <b>"অটো-ডিটেক্ট"</b> বাটনে চাপলে স্বয়ংক্রিয়ভাবে Chat ID বসে যাবে। (অথবা @userinfobot এ গিয়ে নিজের Chat ID দেখতে পারেন)।</li>
+                  <li>এরপর <b>"টেস্ট মেসেজ পাঠান"</b> দিয়ে যাচাই করে নিন।</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <!-- EMAIL NOTIFICATION & WEBHOOK CARD -->
+          <div class="glass-panel rounded-3xl p-6 sm:p-7 border border-[#C8AA76]/35 shadow-xl space-y-5">
+            <div class="flex items-center gap-3 pb-4 border-b border-[#C8AA76]/20">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-700 flex items-center justify-center shrink-0">
+                <i data-lucide="mail" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold text-[#14120D]">অফিসিয়াল ইমেইল নোটিফিকেশন</h3>
+                <p class="text-xs text-[#5C5343]">প্রতিটি অর্ডারের পূর্ণ বিবরণ সরাসরি ইনবক্সে টেবিল ফরম্যাটে যাবে</p>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold text-[#14120D] mb-1.5">নোটিফিকেশন রিসিভিং ইমেইল</label>
+                <input 
+                  id="notify-email-input" 
+                  type="email" 
+                  value="contact@zynsite.com" 
+                  placeholder="contact@zynsite.com" 
+                  class="w-full px-4 py-3 rounded-xl bg-[#FAF9F5] border border-[#D5CEBA] text-sm text-[#14120D] focus:bg-white focus:outline-none focus:border-[#C8AA76] focus:ring-2 focus:ring-[#C8AA76]/20 transition-all font-en"
+                />
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-[#14120D] mb-1.5">কাস্টম ওয়েবহুক URL (ঐচ্ছিক — Zapier / Make / API)</label>
+                <input 
+                  id="notify-webhook-input" 
+                  type="url" 
+                  placeholder="https://hook.eu1.make.com/..." 
+                  class="w-full px-4 py-3 rounded-xl bg-[#FAF9F5] border border-[#D5CEBA] text-sm text-[#14120D] focus:bg-white focus:outline-none focus:border-[#C8AA76] focus:ring-2 focus:ring-[#C8AA76]/20 transition-all font-mono"
+                />
+              </div>
+
+              <div class="pt-2 flex flex-wrap gap-2.5">
+                <button 
+                  type="button" 
+                  onclick="saveEmailWebhookSettings()" 
+                  class="px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-[#C8AA76] via-[#B38F48] to-[#997530] text-white shadow-md shadow-[#C8AA76]/25 hover:opacity-95 transition-all cursor-pointer flex items-center gap-2"
+                >
+                  <i data-lucide="check" class="w-4 h-4"></i>
+                  <span>সেভ করুন</span>
+                </button>
+                <button 
+                  type="button" 
+                  onclick="sendTestEmailAlert()" 
+                  id="email-test-btn" 
+                  class="px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-600/20 transition-all cursor-pointer flex items-center gap-2"
+                >
+                  <i data-lucide="mail-check" class="w-4 h-4"></i>
+                  <span>টেস্ট ইমেইল পাঠান</span>
+                </button>
+              </div>
+
+              <div id="email-status-box" class="hidden p-3.5 rounded-xl text-xs font-medium"></div>
+
+              <!-- Note -->
+              <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-500/25 text-xs text-emerald-900 space-y-1.5">
+                <p class="font-bold flex items-center gap-1.5">
+                  <i data-lucide="shield-check" class="w-4 h-4 text-emerald-700"></i>
+                  <span>স্বয়ংক্রিয় ইমেইল ডেলিভারি সক্রিয়</span>
+                </p>
+                <p class="text-emerald-800 leading-relaxed">
+                  গ্রাহক যেকোনো নতুন ওয়েবসাইট অর্ডার বা ডেমো বুকিং সাবমিট করার সাথে সাথেই বিস্তারিত ডাটা <b>contact@zynsite.com</b> এ সেন্ড হবে।
+                </p>
+              </div>
+            </div>
+          </div>
+
         </div>
 
       </section>
@@ -1091,7 +1268,7 @@
 
     function switchTab(tabId) {
       activeTab = tabId;
-      const tabs = ["orders", "demos"];
+      const tabs = ["orders", "demos", "notifications"];
       
       tabs.forEach(t => {
         const content = document.getElementById(`tab-content-${t}`);
@@ -2012,7 +2189,264 @@
       document.body.removeChild(link);
       showToast("JSON ব্যাকআপ সফলভাবে ডাউনলোড হয়েছে", "success");
     }
-  </script>
+  
+    // ================= NOTIFICATION TAB CONTROLLERS =================
 
+    function loadNotificationSettings() {
+      const defaultToken = "8885095686:AAEOzmapefS7Z5_vBAG0dnkiAFEvL3adssA";
+      const tgToken = localStorage.getItem("zynsite_telegram_bot_token") || defaultToken;
+      const tgChatId = localStorage.getItem("zynsite_telegram_chat_id") || "";
+      const notifyEmail = localStorage.getItem("zynsite_notify_email") || "contact@zynsite.com";
+      const webhookUrl = localStorage.getItem("zynsite_lead_webhook_url") || "";
+
+      const tokenEl = document.getElementById("tg-bot-token");
+      const chatEl = document.getElementById("tg-chat-id");
+      const emailEl = document.getElementById("notify-email-input");
+      const webhookEl = document.getElementById("notify-webhook-input");
+
+      if (tokenEl) tokenEl.value = tgToken;
+      if (chatEl) chatEl.value = tgChatId;
+      if (emailEl) emailEl.value = notifyEmail;
+      if (webhookEl) webhookEl.value = webhookUrl;
+    }
+
+    function saveTelegramSettings() {
+      const token = document.getElementById("tg-bot-token")?.value.trim() || "";
+      const chatId = document.getElementById("tg-chat-id")?.value.trim() || "";
+      if (token) localStorage.setItem("zynsite_telegram_bot_token", token);
+      if (chatId) localStorage.setItem("zynsite_telegram_chat_id", chatId);
+
+      const statusBox = document.getElementById("tg-status-box");
+      if (statusBox) {
+        statusBox.className = "p-3.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-500/30";
+        statusBox.textContent = "✓ টেলিগ্রাম সেটিংস সফলভাবে সেভ হয়েছে!";
+        statusBox.classList.remove("hidden");
+        setTimeout(() => statusBox.classList.add("hidden"), 4000);
+      }
+    }
+
+    async function autoDetectTelegramChatId() {
+      const token = document.getElementById("tg-bot-token")?.value.trim() || "8885095686:AAEOzmapefS7Z5_vBAG0dnkiAFEvL3adssA";
+      const statusBox = document.getElementById("tg-status-box");
+
+      if (statusBox) {
+        statusBox.className = "p-3.5 rounded-xl text-xs font-semibold bg-blue-50 text-blue-800 border border-blue-500/30";
+        statusBox.textContent = "বট থেকে সাম্প্রতিক আপডেট যাচাই করা হচ্ছে...";
+        statusBox.classList.remove("hidden");
+      }
+
+      try {
+        const res = await fetch(`https://api.telegram.org/bot${token}/getUpdates`);
+        const json = await res.json();
+        
+        if (!json.ok) {
+          if (statusBox) {
+            statusBox.className = "p-3.5 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-500/30";
+            statusBox.textContent = `ত্রুটি: ${json.description || 'বট টোকেন সঠিক নয় বা অনুমোদিত নয়'}`;
+          }
+          return;
+        }
+
+        const updates = json.result || [];
+        if (updates.length === 0) {
+          if (statusBox) {
+            statusBox.className = "p-3.5 rounded-xl text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-500/30";
+            statusBox.textContent = "কোনো নতুন মেসেজ পাওয়া যায়নি। টেলিগ্রামে বটের চ্যাটে গিয়ে /start লিখে সেন্ড করুন, তারপর আবার এই বাটনে চাপুন।";
+          }
+          return;
+        }
+
+        // Get chat id from the latest message
+        let foundId = null;
+        for (let i = updates.length - 1; i >= 0; i--) {
+          const u = updates[i];
+          const chatId = u?.message?.chat?.id || u?.my_chat_member?.chat?.id || u?.callback_query?.message?.chat?.id;
+          if (chatId) {
+            foundId = String(chatId);
+            break;
+          }
+        }
+
+        if (foundId) {
+          const chatInput = document.getElementById("tg-chat-id");
+          if (chatInput) chatInput.value = foundId;
+          localStorage.setItem("zynsite_telegram_chat_id", foundId);
+
+          if (statusBox) {
+            statusBox.className = "p-3.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-500/30";
+            statusBox.textContent = `✓ Chat ID (${foundId}) স্বয়ংক্রিয়ভাবে ডিটেক্ট ও সেভ হয়েছে!`;
+          }
+        } else {
+          if (statusBox) {
+            statusBox.className = "p-3.5 rounded-xl text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-500/30";
+            statusBox.textContent = "Chat ID পাওয়া যায়নি। বটের চ্যাটে /start পাঠান।";
+          }
+        }
+      } catch (err) {
+        if (statusBox) {
+          statusBox.className = "p-3.5 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-500/30";
+          statusBox.textContent = `কানেকশন ত্রুটি: ${err.message}`;
+        }
+      }
+    }
+
+    async function sendTestTelegramAlert() {
+      const token = document.getElementById("tg-bot-token")?.value.trim() || "";
+      const chatId = document.getElementById("tg-chat-id")?.value.trim() || "";
+      const statusBox = document.getElementById("tg-status-box");
+      const btn = document.getElementById("tg-test-btn");
+
+      if (!token || !chatId) {
+        alert("দয়া করে টেলিগ্রাম Bot Token এবং Chat ID লিখুন!");
+        return;
+      }
+
+      if (btn) btn.disabled = true;
+      if (statusBox) {
+        statusBox.className = "p-3.5 rounded-xl text-xs font-semibold bg-blue-50 text-blue-800 border border-blue-500/30";
+        statusBox.textContent = "টেস্ট টেলিগ্রাম মেসেজ পাঠানো হচ্ছে...";
+        statusBox.classList.remove("hidden");
+      }
+
+      const sampleMsg = [
+        "🧪 <b>[টেস্ট অ্যালার্ট] ZynSite নোটিফিকেশন সিস্টেম</b>",
+        "━━━━━━━━━━━━━━━━━━━━",
+        "অভিনন্দন! আপনার ZynSite টেলিগ্রাম বট ইন্টিগ্রেশন ১০০% সক্রিয় রয়েছে।",
+        `⏰ সময়: ${new Date().toLocaleString('bn-BD', { timeZone: 'Asia/Dhaka' })}`,
+        "━━━━━━━━━━━━━━━━━━━━",
+        "🌐 <a href=\"https://zynsite.com/admin.html\">অ্যাডমিন ড্যাশবোর্ড দেখুন</a>"
+      ].join("\n");
+
+      try {
+        const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: sampleMsg,
+            parse_mode: "HTML"
+          })
+        });
+
+        const json = await res.json();
+        if (json.ok) {
+          if (statusBox) {
+            statusBox.className = "p-3.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-500/30";
+            statusBox.textContent = "✓ চমৎকার! আপনার টেলিগ্রামে টেস্ট মেসেজ সফলভাবে পৌঁছেছে।";
+          }
+        } else {
+          if (statusBox) {
+            statusBox.className = "p-3.5 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-500/30";
+            statusBox.textContent = `পাঠানো সম্ভব হয়নি: ${json.description || 'ত্রুটি'}`;
+          }
+        }
+      } catch (err) {
+        if (statusBox) {
+          statusBox.className = "p-3.5 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-500/30";
+          statusBox.textContent = `নেটওয়ার্ক ত্রুটি: ${err.message}`;
+        }
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    function saveEmailWebhookSettings() {
+      const email = document.getElementById("notify-email-input")?.value.trim() || "contact@zynsite.com";
+      const webhook = document.getElementById("notify-webhook-input")?.value.trim() || "";
+
+      localStorage.setItem("zynsite_notify_email", email);
+      localStorage.setItem("zynsite_lead_webhook_url", webhook);
+
+      const statusBox = document.getElementById("email-status-box");
+      if (statusBox) {
+        statusBox.className = "p-3.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-500/30";
+        statusBox.textContent = "✓ ইমেইল ও ওয়েবহুক কনফিগারেশন সেভ হয়েছে!";
+        statusBox.classList.remove("hidden");
+        setTimeout(() => statusBox.classList.add("hidden"), 4000);
+      }
+    }
+
+    async function sendTestEmailAlert() {
+      const email = document.getElementById("notify-email-input")?.value.trim() || "contact@zynsite.com";
+      const statusBox = document.getElementById("email-status-box");
+      const btn = document.getElementById("email-test-btn");
+
+      if (btn) btn.disabled = true;
+      if (statusBox) {
+        statusBox.className = "p-3.5 rounded-xl text-xs font-semibold bg-blue-50 text-blue-800 border border-blue-500/30";
+        statusBox.textContent = `${email} এ টেস্ট ইমেইল পাঠানো হচ্ছে...`;
+        statusBox.classList.remove("hidden");
+      }
+
+      try {
+        const payload = {
+          _subject: "[ZynSite টেস্ট অ্যালার্ট] ইমেইল নোটিফিকেশন ভেরিফিকেশন",
+          _template: "table",
+          "টেস্ট স্ট্যাটাস": "সফল",
+          "সিস্টেম": "ZynSite Cloud Automation",
+          "নোটিফিকেশন প্রাপক": email,
+          "তারিখ ও সময়": new Date().toLocaleString()
+        };
+
+        const res = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(email)}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          if (statusBox) {
+            statusBox.className = "p-3.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-500/30";
+            statusBox.textContent = `✓ টেস্ট ইমেইল সফলভাবে পাঠানো হয়েছে! অনুগ্রহ করে ${email} এর ইনবক্স চেক করুন।`;
+          }
+        } else {
+          if (statusBox) {
+            statusBox.className = "p-3.5 rounded-xl text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-500/30";
+            statusBox.textContent = "ইমেইল ডিসপ্যাচ হয়েছে। প্রথমবার ব্যবহারের সময় FormSubmit একটি অ্যাক্টিভেশন ইমেইল পাঠাতে পারে।";
+          }
+        }
+      } catch (err) {
+        if (statusBox) {
+          statusBox.className = "p-3.5 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-500/30";
+          statusBox.textContent = `ত্রুটি: ${err.message}`;
+        }
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    async function syncLocalOrdersCloud() {
+      const btn = document.getElementById("sync-cloud-btn");
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin text-emerald-600"></i><span>সিঙ্ক হচ্ছে...</span>`;
+        if (window.lucide) lucide.createIcons();
+      }
+
+      try {
+        if (window.zynBackend?.syncLocalOrdersToSupabase) {
+          const res = await window.zynBackend.syncLocalOrdersToSupabase();
+          await refreshDashboardData();
+          alert(`সিঙ্ক সম্পন্ন! ${res.synced}টি অর্ডার ক্লাউড ডাটাবেসে সফলভাবে আপলোড হয়েছে।`);
+        }
+      } catch (err) {
+        console.error("Sync error:", err);
+        alert("ক্লাউড সিঙ্ক করার সময় সমস্যা হয়েছে: " + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `<i data-lucide="cloud-upload" class="w-4 h-4 text-emerald-600"></i><span>ক্লাউড সিঙ্ক</span>`;
+          if (window.lucide) lucide.createIcons();
+        }
+      }
+    }
+
+    // Call loadNotificationSettings on showDashboard
+    const origShowDashboard = showDashboard;
+    showDashboard = function() {
+      origShowDashboard();
+      loadNotificationSettings();
+    };
+  </script>
 </body>
 </html>
