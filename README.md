@@ -65,4 +65,4 @@ zynsite.com/
 - **WhatsApp নম্বর:** `+40 774 119 870`
 - **অফিসিয়াল ওয়েবসাইট:** `https://zynsite.com`
 - **ফেসবুক পেজ:** `https://www.facebook.com/zynsite`
-- **সাপোর্ট ও বিজনেস ইমেইল:** `support.zynsite@gmail.com`
+- **সাপোর্ট ও বিজনেস ইমেইল:** `contact@zynsite.com`

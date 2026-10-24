@@ -570,7 +570,7 @@
               <p class="font-semibold text-[#14120D] mb-1.5">📍 Contact & Official Support:</p>
               <ul class="text-xs text-[#14120D]/80 space-y-1 mb-2.5">
                 <li>• <b>WhatsApp / Hotline:</b> <a href="https://wa.me/40774119870" target="_blank" class="text-emerald-700 font-semibold underline">+40 774 119 870</a> (10:00 AM – 12:00 AM BST)</li>
-                <li>• <b>Email:</b> support@zynsite.com</li>
+                <li>• <b>Email:</b> contact@zynsite.com</li>
                 <li>• <b>HQ:</b> Dhaka, Bangladesh (Global Cloud Delivery)</li>
               </ul>
               <a href="https://wa.me/40774119870?text=${encodeURIComponent('Hello ZynSite, I want to discuss a new website project.')}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-md shadow-emerald-600/30 transition-all">
@@ -585,7 +585,7 @@
               <p class="font-semibold text-[#14120D] mb-1.5">📍 যোগাযোগ ও অফিসিয়াল সাপোর্ট:</p>
               <ul class="text-xs text-[#14120D]/80 space-y-1 mb-2.5">
                 <li>• <b>হোয়াটসঅ্যাপ / হটলাইন:</b> <a href="https://wa.me/40774119870" target="_blank" class="text-emerald-700 font-semibold underline">+40 774 119 870</a> (সকাল ১০টা – রাত ১২টা)</li>
-                <li>• <b>ইমেইল:</b> support@zynsite.com</li>
+                <li>• <b>ইমেইল:</b> contact@zynsite.com</li>
                 <li>• <b>ঠিকানা:</b> ঢাকা, বাংলাদেশ (গ্লোবাল ক্লাউড সার্ভিস)</li>
               </ul>
               <a href="https://wa.me/40774119870?text=${encodeURIComponent('হ্যালো ZynSite, আমি একটি ওয়েবসাইট প্রজেক্ট নিয়ে কথা বলতে চাই।')}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-md shadow-emerald-600/30 transition-all">

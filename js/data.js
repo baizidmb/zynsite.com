@@ -460,7 +460,7 @@ const PRICING_PACKAGES_BN = [
       { text: "সার্ভিস ক্যাটালগ ও প্রজেক্ট গ্যালারি", included: true },
       { text: "কাস্টমার এনকোয়ারি ও কোটেশন রিকোয়েস্ট ফর্ম", included: true },
       { text: "গুগল সার্চ ও গুগল ম্যাপসে বিজনেস ভেরিফিকেশন", included: true },
-      { text: "অফিসিয়াল বিজনেস ইমেইল (support.zynsite@gmail.com)", included: true },
+      { text: "অফিসিয়াল বিজনেস ইমেইল (contact@zynsite.com)", included: true },
       { text: "১ বছরের টপ-লেভেল .com ডোমেইন ও হোস্টিং", included: true },
       { text: "মাল্টি-ল্যাঙ্গুয়েজ (বাংলা ও ইংরেজি অপশন)", included: true },
       { text: "৬ মাসের ডেডিকেটেড ফ্রি মেইনটেন্যান্স", included: true }
@@ -548,7 +548,7 @@ const PRICING_PACKAGES_EN = [
       { text: "Dynamic service catalog & case studies gallery", included: true },
       { text: "High-intent client inquiry & custom quote funnel", included: true },
       { text: "Google Search Console & Google Maps verification", included: true },
-      { text: "Official business email (support.zynsite@gmail.com)", included: true },
+      { text: "Official business email (contact@zynsite.com)", included: true },
       { text: "1 year top-level .com domain & cloud hosting", included: true },
       { text: "Seamless bilingual support (Bengali & English)", included: true },
       { text: "6 months dedicated free maintenance & warranty", included: true }

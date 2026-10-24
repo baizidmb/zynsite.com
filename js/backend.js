@@ -720,7 +720,7 @@ class BackendService {
       <div>
         <div class="meta-label">${isEn ? 'Service Provider:' : 'সার্ভিস প্রোভাইডার:'}</div>
         <div class="meta-value">ZynSite</div>
-        <div style="font-size:13px; color:#475569; margin-top:2px;">${isEn ? 'Email' : 'ইমেইল'}: support.zynsite@gmail.com</div>
+        <div style="font-size:13px; color:#475569; margin-top:2px;">${isEn ? 'Email' : 'ইমেইল'}: contact@zynsite.com</div>
         <div style="font-size:13px; color:#475569;">${isEn ? 'Delivery Window: 48–72 Hours' : 'ডেলিভারি উইন্ডো: ৪৮-৭২ ঘণ্টা'}</div>
       </div>
     </div>
@@ -783,7 +783,7 @@ class BackendService {
 
     <div class="footer">
       <div>
-        <b>ZynSite</b> • ${isEn ? 'Helpdesk' : 'হেল্পডেস্ক'}: support.zynsite@gmail.com
+        <b>ZynSite</b> • ${isEn ? 'Helpdesk' : 'হেল্পডেস্ক'}: contact@zynsite.com
       </div>
       <div>
         ${isEn ? 'Verification Link' : 'যাচাইকরণ লিংক'}: <a href="https://zynsite.com" style="color:#2563eb; text-decoration:none;">https://zynsite.com</a>
