@@ -32,6 +32,49 @@
       nav_demo: "ফ্রি ডেমো বুক করুন",
       nav_order: "সরাসরি অর্ডার",
       nav_popular_badge: "হট",
+      // Blog & Knowledge Hub
+      nav_blog: "ব্লগ ও গাইড",
+      blog_badge: "ZynSite জ্ঞানকোষ ও প্র্যাকটিক্যাল গাইড",
+      blog_title: "অনলাইন ব্যবসা ও সেলস বৃদ্ধির প্র্যাকটিক্যাল গাইড",
+      blog_subtitle: "বাংলাদেশের অনলাইন ও এফ-কমার্স বিক্রেতাদের জন্য প্রমাণিত স্ট্র্যাটেজি: সঠিক ওয়েবসাইটের দাম, ফেক অর্ডার কমানোর অটোমেশন, সেলস ফানেল ও বেশি কনভার্সনের উপায়।",
+      blog_search_placeholder: "🔍 আর্টিকেলের নাম বা বিষয় দিয়ে খুঁজুন...",
+      blog_filter_all: "সকল লেখা (৪)",
+      blog_filter_checklist: "চেকলিস্ট",
+      blog_filter_strategy: "বিজনেস স্ট্র্যাটেজি",
+      blog_filter_pricing: "প্রাইসিং ও বাজেট",
+      blog_filter_fraud: "ফেক অর্ডার প্রতিরোধ",
+      blog_read_btn: "পড়ুন",
+      blog_min_read: "মিনিট পড়া",
+      blog_read_time_5: "৫ মিনিট পড়া",
+      blog_read_time_6: "৬ মিনিট পড়া",
+      blog_read_time_7: "৭ মিনিট পড়া",
+      blog_read_time_8: "৮ মিনিট পড়া",
+      blog_card1_title: "ওয়েবসাইট তৈরির আগে যা যা লাগবে: লোগো, ছবি ও তথ্যের চেকলিস্ট",
+      blog_card1_desc: "লোগো, পণ্যের ছবি, সঠিক দাম, ডেলিভারি নিয়ম ও ডোমেইন সহ ৭টি দরকারি জিনিস গুছিয়ে রাখলে ওয়েবসাইটের কাজ দ্রুত ও নিখুঁত হয়।",
+      blog_card1_cat: "প্রিপারেশন চেকলিস্ট",
+      blog_card2_title: "ফেসবুক পেজ vs ওয়েবসাইট: কোনটা আগে দরকার?",
+      blog_card2_desc: "অনলাইন ব্যবসা শুরু করতে পেজ নাকি ওয়েবসাইট আগে লাগবে? দুটোর সুবিধা, সীমাবদ্ধতা, মাসিক খরচ ও সঠিক বাস্তবায়নের ক্রম নিয়ে স্পষ্ট ব্যাখ্যা।",
+      blog_card2_cat: "বিজনেস স্ট্র্যাটেজি",
+      blog_card3_title: "ল্যান্ডিং পেজের দাম কত? বাংলাদেশে তৈরির পূর্ণ গাইড",
+      blog_card3_desc: "ল্যান্ডিং পেজের দাম নির্ভর করে কিসের উপর, বাজারের বিভিন্ন অফারের আসল তফাত, লুকানো খরচের চেকলিস্ট ও কেন সস্তা পেজ বেশি লোকসান করায়।",
+      blog_card3_cat: "প্রাইসিং ও বাজেট",
+      blog_card4_title: "ফেক অর্ডার কমানোর উপায়: ফেসবুক ব্যবসার জন্য ৭টি পদ্ধতি",
+      blog_card4_desc: "ভুল নম্বর ও কুরিয়ার রিটার্ন ফেসবুক সেলারদের বড় ক্ষতি। ফোন ভ্যালিডেশন, কুরিয়ার ফ্রড চেক ও ডেলিভারি চার্জ অগ্রিম নেওয়ার প্রমাণিত কৌশল।",
+      blog_card4_cat: "লজিস্টিকস ও প্রফিট",
+      blog_no_results: "কোনো আর্টিকেল পাওয়া যায়নি। অন্য কোনো কি-ওয়ার্ড দিয়ে খুঁজুন।",
+      blog_all_link: "সকল ব্লগ ও গাইড দেখুন",
+      blog_author_team: "ZynSite সম্পাদকীয় ও প্রযুক্তি টিম",
+      blog_share_wa: "WhatsApp Share",
+      blog_share_fb: "Facebook Share",
+      blog_share_copy: "Copy Link",
+      blog_toc_title: "আর্টিকেলের সূচিপত্র",
+      blog_related_title: "আরও দরকারি গাইড পড়ুন",
+      blog_cta_title: "পড়া শেষ, এবার নিজের ব্যবসার জন্য ওয়েবসাইট বানান",
+      blog_cta_desc: "১-ক্লিক ক্যাশ অন ডেলিভারি ফর্ম, Meta Pixel CAPI ও কুরিয়ার অটোমেশন সহ সম্পূর্ণ ল্যান্ডিং পেজ মাত্র ৳৩,৯৯০ থেকে শুরু। ফ্রি ডোমেইন ও হোস্টিং সহ ৪৮-৭২ ঘণ্টায় ডেলিভারি।",
+      blog_cta_wa_btn: "WhatsApp এ অর্ডার করুন",
+      blog_cta_pricing_btn: "সব প্যাকেজের দাম দেখুন",
+      blog_back_to_blog: "সকল ব্লগ ও গাইড",
+
 
       // Hero
       hero_badge: "কাজ পছন্দ না হলে ১০০% মানি-ব্যাক গ্যারান্টি • ৪৮-৭২ ঘণ্টায় ফাস্ট ডেলিভারি",
@@ -647,6 +690,49 @@
       nav_demo: "Book Free Demo",
       nav_order: "Order Now",
       nav_popular_badge: "HOT",
+      // Blog & Knowledge Hub
+      nav_blog: "Blog & Guides",
+      blog_badge: "ZynSite Knowledge Base & Practical Guides",
+      blog_title: "Practical Guides to Scaling Facebook Commerce, Landing Pages & Online Sales",
+      blog_subtitle: "Battle-tested growth playbooks for online businesses: realistic website pricing, automated courier return elimination, high-ROI sales funnels, and conversion rate optimization.",
+      blog_search_placeholder: "🔍 Search articles by title or keyword...",
+      blog_filter_all: "All Articles (4)",
+      blog_filter_checklist: "Checklist",
+      blog_filter_strategy: "Business Strategy",
+      blog_filter_pricing: "Pricing & Budget",
+      blog_filter_fraud: "Fraud Prevention",
+      blog_read_btn: "Read Guide",
+      blog_min_read: "min read",
+      blog_read_time_5: "5 min read",
+      blog_read_time_6: "6 min read",
+      blog_read_time_7: "7 min read",
+      blog_read_time_8: "8 min read",
+      blog_card1_title: "What You Need Before Building a Website: Logo, Images, Pricing & Checklist",
+      blog_card1_desc: "7 crucial essentials to organize before developing your website so your project launches rapidly without delays.",
+      blog_card1_cat: "Preparation Checklist",
+      blog_card2_title: "Facebook Page vs Website: Which One Do You Need First?",
+      blog_card2_desc: "Starting an online business: page or website? Clear pros, cons, costs & the exact roadmap for maximum ROI.",
+      blog_card2_cat: "Business Strategy",
+      blog_card3_title: "Landing Page Cost in Bangladesh: Full Pricing & Packages Guide",
+      blog_card3_desc: "What factors determine the price of a landing page, hidden costs checklist, and why ultra-cheap pages hurt profits.",
+      blog_card3_cat: "Pricing & Budget",
+      blog_card4_title: "7 Proven Ways to Reduce Fake Orders for Facebook Businesses",
+      blog_card4_desc: "Phone verification, courier fraud checks, and advance delivery fee strategies to slash courier returns and protect margins.",
+      blog_card4_cat: "Logistics & Profit",
+      blog_no_results: "No articles found matching your query. Try a different keyword.",
+      blog_all_link: "Explore All Guides & Articles",
+      blog_author_team: "ZynSite Editorial & Tech Team",
+      blog_share_wa: "Share on WhatsApp",
+      blog_share_fb: "Share on Facebook",
+      blog_share_copy: "Copy Link",
+      blog_toc_title: "Table of Contents",
+      blog_related_title: "More Recommended Guides",
+      blog_cta_title: "Done Reading? Let's Build Your High-Converting Website",
+      blog_cta_desc: "1-Click COD checkout, Meta Pixel CAPI, and courier API automation. Complete landing pages starting at only $39 (৳3,990). Delivered in 48-72 hours with free domain & cloud hosting.",
+      blog_cta_wa_btn: "Order on WhatsApp",
+      blog_cta_pricing_btn: "View All Package Prices",
+      blog_back_to_blog: "All Blogs & Guides",
+
 
       // Hero
       hero_badge: "100% Money-Back Guarantee if Not Satisfied • Rapid 48-72h Delivery",
@@ -1337,7 +1423,12 @@
       }
 
       // 1. Update Title and Meta
-      document.title = this.t('page_title');
+      const customTitle = document.body ? (isEn ? document.body.getAttribute('data-title-en') : document.body.getAttribute('data-title-bn')) : null;
+      if (customTitle) {
+        document.title = customTitle;
+      } else if (!document.body || !document.body.hasAttribute('data-no-title-sync')) {
+        document.title = this.t('page_title');
+      }
       const metaDesc = document.querySelector('meta[name="description"]');
       if (metaDesc) {
         metaDesc.setAttribute('content', this.t('meta_description'));
@@ -1399,6 +1490,9 @@
       if (typeof window.updateZynBotLanguage === 'function') {
         window.updateZynBotLanguage(lang);
       }
+
+      // Dispatch global event for custom component listeners
+      window.dispatchEvent(new CustomEvent('zynLanguageChanged', { detail: { lang } }));
 
       // 7. Refresh Lucide Icons
       if (window.lucide) {

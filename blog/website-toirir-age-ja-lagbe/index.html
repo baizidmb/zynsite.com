@@ -23,6 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Hind+Siliguri:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
+<script src="/js/i18n.js"></script>
 
 <script type="application/ld+json">
 {
@@ -815,14 +816,106 @@ footer {
 }
 
 @media (max-width: 640px) {
-  .article-header h1 { font-size: 28px; }
-  .article-lead { font-size: 16.5px; }
-  .in-article-cta { flex-direction: column; text-align: center; }
+  .nav-row { padding: 10px 0; gap: 8px; }
+  .brand-text-logo { font-size: 20px; }
+  .brand-icon-box { width: 34px; height: 34px; padding: 4px; }
+  .nav-back-link span { display: none; }
+  .nav-cta span { display: none; }
+  .nav-cta { padding: 7px 10px; }
+  .lang-switcher-pill button { padding: 3px 7px; font-size: 10.5px; }
+  .article-header h1 { font-size: 24px; line-height: 1.35; }
+  .article-lead { font-size: 15px; line-height: 1.6; }
+  .in-article-cta { flex-direction: column; text-align: center; padding: 24px 18px; }
+  .in-article-cta div { text-align: center; }
+  .blog-cta-banner { padding: 30px 18px; }
+  .blog-cta-banner h2 { font-size: 22px; }
+  .blog-cta-banner p { font-size: 14.5px; }
+  .pricing-snippet { grid-template-columns: 1fr; }
+  .timeline-grid { grid-template-columns: 1fr; }
   .footer-bottom { text-align: center; justify-content: center; }
 }
+
+/* Bilingual Display Rules */
+body.lang-en-active .lang-bn { display: none !important; }
+body.lang-en-active .lang-en { display: block !important; }
+body:not(.lang-en-active) .lang-en { display: none !important; }
+body:not(.lang-en-active) .lang-bn { display: block !important; }
+
+body.lang-en-active .lang-bn-inline { display: none !important; }
+body.lang-en-active .lang-en-inline { display: inline !important; }
+body:not(.lang-en-active) .lang-en-inline { display: none !important; }
+body:not(.lang-en-active) .lang-bn-inline { display: inline !important; }
+
+/* Language Switcher Pill */
+.lang-switcher-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2.5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(200, 170, 118, 0.45);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+}
+.lang-switcher-pill button {
+  padding: 3.5px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: 0.5px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #64748B;
+}
+body.lang-bn-active .lang-btn-bn,
+body:not(.lang-en-active) .lang-btn-bn {
+  background: linear-gradient(135deg, #1C1914, #14120D);
+  color: #FAF8F5;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+body.lang-en-active .lang-btn-en {
+  background: linear-gradient(135deg, #1C1914, #14120D);
+  color: #FAF8F5;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+body.lang-en-active .lang-btn-bn {
+  background: transparent;
+  color: #64748B;
+  box-shadow: none;
+}
+
+
+/* Bilingual Display Rules */
+.lang-en { display: none; }
+.lang-en-inline { display: none; }
+body.lang-en .lang-bn { display: none !important; }
+body.lang-en .lang-en { display: block !important; }
+body.lang-bn .lang-en { display: none !important; }
+body.lang-bn .lang-bn { display: block !important; }
+
+body.lang-en .lang-bn-inline { display: none !important; }
+body.lang-en .lang-en-inline { display: inline !important; }
+body.lang-bn .lang-en-inline { display: none !important; }
+body.lang-bn .lang-bn-inline { display: inline !important; }
+
+body.lang-en .lang-btn-en,
+body.lang-bn .lang-btn-bn {
+  background: linear-gradient(135deg, #1C1914, #14120D) !important;
+  color: #FAF8F5 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+}
+body.lang-en .lang-btn-bn,
+body.lang-bn .lang-btn-en {
+  background: transparent !important;
+  color: #64748B !important;
+  box-shadow: none !important;
+}
+
 </style>
 </head>
-<body>
+<body data-title-bn="ওয়েবসাইট তৈরির আগে যা যা লাগবে: লোগো, ছবি, দাম ও তথ্যের চেকলিস্ট | ZynSite" data-title-en="What You Need Before Building a Website: Logo, Images, Pricing & Checklist | ZynSite">
 
 <!-- Reading Progress Bar -->
 <div id="reading-progress"></div>
@@ -830,7 +923,7 @@ footer {
 <!-- Sticky Header -->
 <header>
   <div class="wrap nav-row">
-    <a class="brand-link" href="/" aria-label="ZynSite হোমপেজ">
+    <a class="brand-link" href="/" aria-label="ZynSite">
       <div class="brand-icon-box">
         <img src="/assets/zynsite-icon.png" alt="ZynSite Logo">
       </div>
@@ -841,24 +934,34 @@ footer {
 
     <a href="/blog/" class="nav-back-link">
       <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
-      <span>সকল ব্লগ ও গাইড</span>
+      <span class="lang-bn-inline">সকল ব্লগ ও গাইড</span>
+      <span class="lang-en-inline">All Blogs & Guides</span>
     </a>
 
-    <a class="nav-cta" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20have%20my%20website%20details%20ready" target="_blank" rel="noopener noreferrer">
-      <i data-lucide="message-circle" style="width:15px;height:15px;"></i>
-      <span>অর্ডার করুন</span>
-    </a>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="lang-switcher-pill" role="group" aria-label="Language switcher">
+        <button type="button" class="lang-btn-bn" onclick="window.zynI18n.setLanguage('bn', true)" title="BN">BN</button>
+        <button type="button" class="lang-btn-en" onclick="window.zynI18n.setLanguage('en', true)" title="EN">EN</button>
+      </div>
+
+      <a class="nav-cta" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20have%20my%20website%20details%20ready" target="_blank" rel="noopener noreferrer">
+        <i data-lucide="message-circle" style="width:15px;height:15px;"></i>
+        <span class="lang-bn-inline">অর্ডার করুন</span>
+        <span class="lang-en-inline">Order Now</span>
+      </a>
+    </div>
   </div>
 </header>
 
 <main class="wrap">
   <!-- Breadcrumb -->
   <div class="breadcrumb">
-    <a href="/">হোম</a>
+    <a href="/" class="lang-bn-inline">হোম</a><a href="/" class="lang-en-inline">Home</a>
     <span>/</span>
-    <a href="/blog/">ব্লগ</a>
+    <a href="/blog/" class="lang-bn-inline">ব্লগ</a><a href="/blog/" class="lang-en-inline">Blog</a>
     <span>/</span>
-    <span style="color:var(--ink);font-weight:600;">ওয়েবসাইট তৈরির চেকলিস্ট</span>
+    <span style="color:var(--ink);font-weight:600;" class="lang-bn-inline">ওয়েবসাইট তৈরির চেকলিস্ট</span>
+    <span style="color:var(--ink);font-weight:600;" class="lang-en-inline">Website Preparation Checklist</span>
   </div>
 
   <!-- Article Header -->
@@ -866,19 +969,24 @@ footer {
     <header class="article-header">
       <div class="cat-badge">
         <i data-lucide="sparkles" style="width:13px;height:13px;"></i>
-        <span>প্রিপারেশন চেকলিস্ট</span>
+        <span class="lang-bn-inline">প্রিপারেশন চেকলিস্ট</span>
+        <span class="lang-en-inline">Preparation Checklist</span>
       </div>
-      <h1>ওয়েবসাইট তৈরির আগে যা যা লাগবে: লোগো, ছবি, দাম ও তথ্যের চেকলিস্ট</h1>
+      <h1>
+        <span class="lang-bn">ওয়েবসাইট তৈরির আগে যা যা লাগবে: লোগো, ছবি, দাম ও তথ্যের চেকলিস্ট</span>
+        <span class="lang-en">What You Need Before Building a Website: Logo, Images, Pricing & Checklist</span>
+      </h1>
       <p class="article-lead">
-        ওয়েবসাইট বানাতে দেরি হওয়ার আসল কারণ সাধারণত কোডিং বা ডিজাইন নয়—তথ্য হাতে না থাকা। এই দরকারি চেকলিস্ট ধরে ধরে প্রয়োজনীয় বিষয়গুলো গুছিয়ে রাখলে আপনার সাইটের কাজ শুরু হবে দ্রুত, আর কোনো বাধা ছাড়াই ডেলিভারি পাবেন সময়মতো।
+        <span class="lang-bn">ওয়েবসাইট বানাতে দেরি হওয়ার আসল কারণ সাধারণত কোডিং বা ডিজাইন নয়—তথ্য হাতে না থাকা। এই দরকারি চেকলিস্ট ধরে ধরে প্রয়োজনীয় বিষয়গুলো গুছিয়ে রাখলে আপনার সাইটের কাজ শুরু হবে দ্রুত, আর কোনো বাধা ছাড়াই ডেলিভারি পাবেন সময়মতো।</span>
+        <span class="lang-en">Website delays are almost never caused by coding or design—they happen when business data isn't ready. Following this practical checklist ensures your project launches rapidly without roadblocks.</span>
       </p>
 
       <div class="meta-share-row">
         <div class="author-pill">
           <div class="avatar-box">ZS</div>
           <div class="author-details">
-            <div class="author-name">ZynSite সম্পাদকীয় ও টেকনিক্যাল টিম</div>
-            <div class="author-date">২৫ অক্টোবর ২০২৬ • ৫ মিনিট পড়া</div>
+            <div class="author-name"><span class="lang-bn-inline">ZynSite সম্পাদকীয় ও টেকনিক্যাল টিম</span><span class="lang-en-inline">ZynSite Editorial & Tech Team</span></div>
+            <div class="author-date"><span class="lang-bn-inline">২৫ অক্টোবর ২০২৬ • ৫ মিনিট পড়া</span><span class="lang-en-inline">October 25, 2026 • 5 min read</span></div>
           </div>
         </div>
 
@@ -903,9 +1011,9 @@ footer {
     <nav class="toc-box" aria-label="সূচিপত্র">
       <div class="toc-title">
         <i data-lucide="list" style="width:18px;height:18px;color:var(--gold);"></i>
-        <span>আর্টিকেলের সূচিপত্র</span>
+        <span class="lang-bn-inline">আর্টিকেলের সূচিপত্র</span><span class="lang-en-inline">Table of Contents</span>
       </div>
-      <ul class="toc-list">
+      <ul class="toc-list lang-bn">
         <li><a href="#why-prep">১. আগে থেকে তথ্য গোছানো কেন জরুরি?</a></li>
         <li><a href="#checklist-items">২. চেকলিস্টের ৭টি দরকারি জিনিস</a></li>
         <li><a href="#common-mistakes">৩. তথ্য দেওয়ার সময় সাধারণ ভুলসমূহ</a></li>
@@ -915,10 +1023,21 @@ footer {
         <li><a href="#delivery-pricing">৭. ডেলিভারি টাইম ও প্যাকেজের দাম</a></li>
         <li><a href="#faqs">৮. সাধারণ জিজ্ঞাসা (FAQ)</a></li>
       </ul>
+      <ul class="toc-list lang-en">
+        <li><a href="#why-prep">1. Why Organizing Ahead is Critical</a></li>
+        <li><a href="#checklist-items">2. The 7 Essential Checklist Items</a></li>
+        <li><a href="#common-mistakes">3. Common Asset Submission Mistakes</a></li>
+        <li><a href="#one-day-plan">4. 1-Day Quick Preparation Routine</a></li>
+        <li><a href="#missing-items">5. What If Some Items Aren't Ready?</a></li>
+        <li><a href="#personal-corporate">6. Personal Brand & Corporate Assets</a></li>
+        <li><a href="#delivery-pricing">7. Delivery Timelines & Packages</a></li>
+        <li><a href="#faqs">8. Frequently Asked Questions (FAQ)</a></li>
+      </ul>
     </nav>
 
     <!-- Article Content -->
     <div class="article-content">
+    <div class="lang-bn">
       <h2 id="why-prep">কেন আগে থেকে তথ্য গোছানো জরুরি</h2>
       <p>অনেক উদ্যোক্তা বা অনলাইন সেলার অত্যন্ত আগ্রহ নিয়ে ওয়েবসাইট অর্ডার করেন। কিন্তু এরপর লোগো খুঁজতে, ছবি তুলতে আর দাম বা অফার ঠিক করতে দিনের পর দিন পার হয়ে যায়। ডেভেলপারের কাজ তখন মাঝপথে আটকে থাকে, আর সাইট লাইভ হতে অকারণ বিলম্ব ঘটে।</p>
       <p>অথচ বাস্তব সত্য হলো—একটি নিখুঁত ল্যান্ডিং পেজ বা ওয়েবসাইট বানানো কঠিন কাজ নয়; আসল চ্যালেঞ্জ হলো নিজের ব্যবসার কোর ডেটা এক জায়গায় সাজানো। নিচের ৭টি পয়েন্ট আগে গুছিয়ে নিলে ZynSite টিম অর্ডার কনফার্মের সাথে সাথেই কাজ শুরু করতে পারে এবং ৪৮ থেকে ৭২ ঘণ্টার মধ্যেই সাইট লাইভ করে দিতে পারে।</p>
@@ -1182,22 +1301,305 @@ footer {
         </div>
       </div>
 
+        </div>
+
+    <div class="lang-en">
+      <h2 id="why-prep">Why Organizing Your Assets Early is Critical</h2>
+      <p>Many entrepreneurs and online sellers eagerly place an order for a website. But afterwards, days and even weeks pass by trying to track down a logo, take decent product photos, and finalize sale prices. The developer's workflow grinds to a halt, and site launch experiences unnecessary delays.</p>
+      <p>The plain reality is this: building a high-converting landing page is not an insurmountable technical hurdle; the real bottleneck is gathering your core business information in one central place. By checking off the following 7 items in advance, the ZynSite engineering team can begin development the minute your order is confirmed and launch your live site within 48 to 72 hours.</p>
+
+      <h2 id="checklist-items">The 7 Essential Checklist Items</h2>
+      <div class="check-cards">
+
+        <!-- Card 1 -->
+        <div class="check-card">
+          <div class="check-card-header">
+            <div class="check-num-badge">1</div>
+            <div class="check-card-title">Official Business Name & Logo</div>
+          </div>
+          <p>
+            Your official brand name and logo take center stage at the top of your website. If you have an existing logo, provide it in high-resolution PNG format with a transparent background or in vector format (AI/SVG). <strong>No logo yet? Don't worry</strong>—we can initially launch your site with a sleek typographic luxury wordmark, and replace it with your final logo later free of charge.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="check-card">
+          <div class="check-card-header">
+            <div class="check-num-badge">2</div>
+            <div class="check-card-title">Product Catalog & Transparent Pricing</div>
+          </div>
+          <p>
+            Compile a complete list of products or services featured on the site, along with regular retail prices and promotional discount rates. Clearly state delivery terms (free shipping or flat rate) and bundle offers (e.g., Buy 2 get Free Shipping). Upfront pricing eliminates repetitive inbox inquiries and empowers customers to complete immediate checkout.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="check-card">
+          <div class="check-card-header">
+            <div class="check-num-badge">3</div>
+            <div class="check-card-title">High-Resolution Photos & Short Demo Videos</div>
+          </div>
+          <p>
+            Online shoppers cannot touch or feel your merchandise—high-fidelity photography provides the trust they need to purchase. Clear photos shot on a smartphone against a clean background in natural daylight work wonderfully. Adding multiple angles, lifestyle shots, and a brief 5-10 second video demonstration increases conversion rates by 30-40%. Never use blurry, stolen Google images.
+          </p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="check-card">
+          <div class="check-card-header">
+            <div class="check-num-badge">4</div>
+            <div class="check-card-title">Active WhatsApp Business Number & Social Links</div>
+          </div>
+          <p>
+            To allow prospective buyers to connect in a single click, provide your active WhatsApp Business number, Facebook page URL, and Instagram profile. Every ZynSite landing page includes automated order notifications dispatched directly to your WhatsApp and email the second an order arrives, making accurate contact details crucial.
+          </p>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="check-card">
+          <div class="check-card-header">
+            <div class="check-num-badge">5</div>
+            <div class="check-card-title">Preferred Domain Name (e.g., yourbrand.com)</div>
+          </div>
+          <p>
+            A domain name is your brand's permanent address on the web. Prepare 2 to 3 shortlist candidates matching your business identity (e.g., mybrand.com or mybrandstore.com) in case your primary choice is already taken. Every ZynSite development tier includes a free top-level domain and ultra-fast cloud hosting for your first year.
+          </p>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="check-card">
+          <div class="check-card-header">
+            <div class="check-num-badge">6</div>
+            <div class="check-card-title">Courier Fees & Clear Payment Terms</div>
+          </div>
+          <p>
+            Specify whether you offer Cash on Delivery (COD) or require an advance delivery fee, along with delivery rates inside Dhaka vs outside Dhaka. If you partner with Steadfast, Pathao Courier, or RedX, integration hooks and courier tracking notes can be embedded directly. Clear expectations prevent post-order cancellations.
+          </p>
+        </div>
+
+        <!-- Card 7 -->
+        <div class="check-card">
+          <div class="check-card-header">
+            <div class="check-num-badge">7</div>
+            <div class="check-card-title">Meta Pixel & Facebook Ads Conversion Data</div>
+          </div>
+          <p>
+            Share your Facebook Pixel ID or Business Manager access so Meta Pixel and Conversions API (CAPI) can be seamlessly integrated into your checkout flow. This guarantees 100% accurate tracking for ad performance and doubles return on ad spend (ROAS).
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Pro Tip Callout -->
+      <div class="callout">
+        <div class="callout-header">
+          <i data-lucide="lightbulb" style="width:18px;height:18px;"></i>
+          <span>Pro Tip: The Best Way to Transfer Assets</span>
+        </div>
+        <p>Sending photos through standard WhatsApp chats compresses images and destroys crispness. Always send images via WhatsApp using the <strong>"Document"</strong> attachment option or upload them into a shared Google Drive folder to preserve full 4K/HD clarity.</p>
+      </div>
+
+      <h2 id="common-mistakes">Common Mistakes When Submitting Assets</h2>
+      <p>Most post-launch complications stem from a few preventable submission mistakes:</p>
+      <ul style="margin: 0 0 20px 24px;">
+        <li style="margin-bottom:8px;"><strong>Incorrect WhatsApp Numbers:</strong> A single transposed digit redirects incoming customer order notifications to strangers.</li>
+        <li style="margin-bottom:8px;"><strong>Outdated Pricing:</strong> Displaying outdated pricing causes buyer friction and order cancellations at the time of confirmation.</li>
+        <li style="margin-bottom:8px;"><strong>Ambiguous Shipping Rates:</strong> Stating vague phrases like "Nationwide shipping" without specifying city vs suburban rates leads to checkout drop-offs.</li>
+      </ul>
+
+      <!-- In-Article CTA -->
+      <div class="in-article-cta">
+        <div>
+          <h3>Have All Your Details Ready?</h3>
+          <p>Send your assets over WhatsApp—our team will review them and craft a high-converting website tailored to your brand.</p>
+        </div>
+        <a class="btn-wa-gold" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20have%20my%20website%20checklist%20ready" target="_blank" rel="noopener noreferrer">
+          <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
+          <span>Send via WhatsApp</span>
+        </a>
+      </div>
+
+      <h2 id="one-day-plan">Practical 1-Day Asset Preparation Routine</h2>
+      <p>Many sellers assume preparing website content takes weeks. By following this 4-step routine, everything can be organized in a single afternoon:</p>
+
+      <div class="timeline-grid">
+        <div class="timeline-card">
+          <span class="timeline-pill">Morning (1 Hour)</span>
+          <h4>Brand & Pricing Catalog</h4>
+          <p>Jot down your official brand name, phone number, and product catalog with retail prices in a note.</p>
+        </div>
+        <div class="timeline-card">
+          <span class="timeline-pill">Noon (1 Hour)</span>
+          <h4>Daylight Photography</h4>
+          <p>Use your smartphone in bright daylight on a neat tabletop to capture 3-4 clean angles of your products.</p>
+        </div>
+        <div class="timeline-card">
+          <span class="timeline-pill">Afternoon (30 Mins)</span>
+          <h4>Delivery & Policies</h4>
+          <p>Define courier rates and checkout terms. Copy your social media profile URLs.</p>
+        </div>
+        <div class="timeline-card">
+          <span class="timeline-pill">Evening (15 Mins)</span>
+          <h4>Submit to ZynSite</h4>
+          <p>Bundle your files in a ZIP or Google Drive link, share on WhatsApp, and confirm your project.</p>
+        </div>
+      </div>
+
+      <h2 id="missing-items">What If Some Items Aren't Ready Yet?</h2>
+      <p>Don't let perfectionism stall your business momentum. You can launch with whatever materials you currently have:</p>
+      <ul style="margin: 0 0 20px 24px;">
+        <li style="margin-bottom:8px;">No logo? We launch with an elegant typographic mark and update it later free of charge.</li>
+        <li style="margin-bottom:8px;">Limited photos? Launch your hero bestselling products first, and add more items anytime.</li>
+        <li style="margin-bottom:8px;">No Meta Pixel? Our engineering team assists with setup and server configuration.</li>
+      </ul>
+      <p>Taking immediate decisive action instead of waiting for perfection is the hallmark of successful entrepreneurs.</p>
+
+      <h2 id="personal-corporate">Extra Assets for Personal Brands & Corporate Sites</h2>
+      <p>If you are a consultant, educator, healthcare professional, freelancer, or corporation, you will also need:</p>
+      <ul style="margin: 0 0 20px 24px;">
+        <li style="margin-bottom:8px;"><strong>Short Bio & Credentials:</strong> Professional overview, industry experience, and certifications.</li>
+        <li style="margin-bottom:8px;"><strong>Professional Headshots:</strong> High-resolution profile portrait that establishes trust and authority.</li>
+        <li style="margin-bottom:8px;"><strong>Services & Testimonials:</strong> Service offerings with authentic client praise and case studies.</li>
+      </ul>
+
+      <h2 id="delivery-pricing">Delivery Timelines & Package Pricing</h2>
+      <p>Once assets are in hand, ZynSite launches websites in record time. Our transparent pricing packages:</p>
+
+      <div class="pricing-snippet">
+        <div class="pkg-box">
+          <div class="pkg-name">F-Commerce Landing Page</div>
+          <div class="pkg-price">$39 / ৳3,990</div>
+          <div class="pkg-delivery">Delivery: 48 - 72 Hours</div>
+        </div>
+        <div class="pkg-box">
+          <div class="pkg-name">Personal Brand Website</div>
+          <div class="pkg-price">$49 / ৳4,990</div>
+          <div class="pkg-delivery">Delivery: 3 - 4 Days</div>
+        </div>
+        <div class="pkg-box">
+          <div class="pkg-name">Corporate Website</div>
+          <div class="pkg-price">$79 / ৳7,990</div>
+          <div class="pkg-delivery">Delivery: 5 - 7 Days</div>
+        </div>
+        <div class="pkg-box">
+          <div class="pkg-name">Mega E-Commerce Store</div>
+          <div class="pkg-price">$149 / ৳14,990</div>
+          <div class="pkg-delivery">Delivery: 7 - 10 Days</div>
+        </div>
+      </div>
+      <p>Explore full package comparisons on our <a href="/website-price-bangladesh/" style="color:var(--gold-dark);font-weight:700;text-decoration:underline;">Website Packages & Pricing Page</a>. All projects start with a 50% deposit and full client satisfaction before final sign-off.</p>
+
+      <!-- Author Box -->
+      <div class="author-box">
+        <div class="author-box-avatar">ZS</div>
+        <div class="author-box-content">
+          <h4>ZynSite Editorial & Engineering Team</h4>
+          <p>Empowering ambitious entrepreneurs with high-converting landing pages, automated sales funnels, and enterprise-grade tech architecture.</p>
+        </div>
+      </div>
+
+      <!-- FAQ Section -->
+      <div class="faq-section" id="faqs">
+        <h2 style="margin-top:0;">Frequently Asked Questions (FAQ)</h2>
+
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Can I create a website if I don't have a logo yet?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform 0.2s;"></i>
+          </div>
+          <div class="faq-body" style="display:none;">
+            Yes, absolutely. We can launch your site using a luxury typographic wordmark of your brand name and seamlessly update it whenever your permanent logo is ready at no extra cost.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>What if my product photos aren't taken in a professional studio?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform 0.2s;"></i>
+          </div>
+          <div class="faq-body" style="display:none;">
+            Natural smartphone photos taken in bright daylight on a tidy background convert exceptionally well because customers appreciate authentic product representations.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>How quickly does work start after submitting my checklist?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform 0.2s;"></i>
+          </div>
+          <div class="faq-body" style="display:none;">
+            Development starts immediately upon receiving your business details and the 50% initial deposit. F-Commerce landing pages are delivered within 48 to 72 hours.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>What is ZynSite's most affordable package?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform 0.2s;"></i>
+          </div>
+          <div class="faq-body" style="display:none;">
+            Our F-Commerce Landing Page at $39 (৳3,990). It includes a 1-click Cash on Delivery order form, Meta Pixel CAPI, free custom domain, and cloud hosting.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Related Articles Section -->
+      <div class="related-section">
+        <h2>More Recommended Guides</h2>
+        <div class="related-grid">
+
+          <a href="/blog/facebook-page-vs-website/" class="related-card">
+            <h4>Facebook Page vs Website: Which One Do You Need First?</h4>
+            <p>Starting an online business: page or website? Clear pros, cons, costs, and the exact roadmap for maximum ROI.</p>
+          </a>
+
+          <a href="/blog/landing-page-price-bangladesh/" class="related-card">
+            <h4>Landing Page Cost in Bangladesh: Full Pricing & Packages Guide</h4>
+            <p>What determines landing page cost, hidden fees checklist, and why cheap pages hurt profits.</p>
+          </a>
+
+          <a href="/blog/reduce-fake-orders/" class="related-card">
+            <h4>7 Proven Ways to Reduce Fake Orders for Facebook Businesses</h4>
+            <p>Phone verification, courier fraud checks, and advance delivery fee strategies to slash courier returns.</p>
+          </a>
+
+        </div>
+      </div>
+
+    </div>
     </div>
   </article>
 
   <!-- CTA Banner -->
   <div class="blog-cta-banner">
-    <h2>তথ্য গুছিয়ে ফেলেছেন? এবার নিজের ওয়েবসাইট তৈরি করুন</h2>
-    <p>১-ক্লিক ক্যাশ অন ডেলিভারি ফর্ম, Meta Pixel CAPI ও সম্পূর্ণ কুরিয়ার অটোমেশন সহ ল্যান্ডিং পেজ মাত্র ৳৩,৯৯০ থেকে শুরু। কোনো লুকানো চার্জ নেই।</p>
-    <div class="cta-buttons">
-      <a class="btn-wa-gold" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20have%20my%20details%20ready%20for%20a%20website" target="_blank" rel="noopener noreferrer">
-        <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
-        <span>WhatsApp এ অর্ডার শুরু করুন</span>
-      </a>
-      <a class="btn-gold" href="/website-price-bangladesh/">
-        <i data-lucide="tags" style="width:18px;height:18px;"></i>
-        <span>সব প্যাকেজের দাম দেখুন</span>
-      </a>
+    <div class="lang-bn">
+      <h2>তথ্য গুছিয়ে ফেলেছেন? এবার নিজের ওয়েবসাইট তৈরি করুন</h2>
+      <p>১-ক্লিক ক্যাশ অন ডেলিভারি ফর্ম, Meta Pixel CAPI ও সম্পূর্ণ কুরিয়ার অটোমেশন সহ ল্যান্ডিং পেজ মাত্র ৳৩,৯৯০ থেকে শুরু। কোনো লুকানো চার্জ নেই।</p>
+      <div class="cta-buttons">
+        <a class="btn-wa-gold" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20have%20my%20details%20ready%20for%20a%20website" target="_blank" rel="noopener noreferrer">
+          <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
+          <span>WhatsApp এ অর্ডার শুরু করুন</span>
+        </a>
+        <a class="btn-gold" href="/website-price-bangladesh/">
+          <i data-lucide="tags" style="width:18px;height:18px;"></i>
+          <span>সব প্যাকেজের দাম দেখুন</span>
+        </a>
+      </div>
+    </div>
+    <div class="lang-en">
+      <h2>Gathered Your Assets? Let's Build Your Website</h2>
+      <p>1-Click Cash on Delivery checkout, Meta Pixel CAPI, and courier API automation. Complete landing pages starting at only $39 (৳3,990). Zero hidden fees.</p>
+      <div class="cta-buttons">
+        <a class="btn-wa-gold" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20have%20my%20details%20ready%20for%20a%20website" target="_blank" rel="noopener noreferrer">
+          <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
+          <span>Order on WhatsApp</span>
+        </a>
+        <a class="btn-gold" href="/website-price-bangladesh/">
+          <i data-lucide="tags" style="width:18px;height:18px;"></i>
+          <span>View All Package Prices</span>
+        </a>
+      </div>
     </div>
   </div>
 </main>
@@ -1206,21 +1608,22 @@ footer {
 <footer>
   <div class="wrap">
     <div class="footer-links">
-      <a href="/">হোম</a>
+      <a href="/"><span class="lang-bn-inline">হোম</span><span class="lang-en-inline">Home</span></a>
       <span>•</span>
-      <a href="/landing-page-bangladesh/">ল্যান্ডিং পেজ তৈরি</a>
+      <a href="/landing-page-bangladesh/"><span class="lang-bn-inline">ল্যান্ডিং পেজ তৈরি</span><span class="lang-en-inline">Landing Page</span></a>
       <span>•</span>
-      <a href="/f-commerce-website/">F-Commerce ওয়েবসাইট</a>
+      <a href="/f-commerce-website/"><span class="lang-bn-inline">F-Commerce ওয়েবসাইট</span><span class="lang-en-inline">F-Commerce</span></a>
       <span>•</span>
-      <a href="/ecommerce-website/">ই-কমার্স ওয়েবসাইট</a>
+      <a href="/ecommerce-website/"><span class="lang-bn-inline">ই-কমার্স ওয়েবসাইট</span><span class="lang-en-inline">E-Commerce</span></a>
       <span>•</span>
-      <a href="/website-price-bangladesh/">ওয়েবসাইটের দাম ও খরচ</a>
+      <a href="/website-price-bangladesh/"><span class="lang-bn-inline">ওয়েবসাইটের দাম ও খরচ</span><span class="lang-en-inline">Pricing</span></a>
       <span>•</span>
-      <a href="/blog/">ব্লগ ও নলেজ হাব</a>
+      <a href="/blog/"><span class="lang-bn-inline">ব্লগ ও নলেজ হাব</span><span class="lang-en-inline">Blog & Guides</span></a>
     </div>
     <div class="footer-bottom">
-      <p>© ২০২৬ ZynSite.com — ল্যান্ডিং পেজ ও ওয়েবসাইট ডেভেলপমেন্ট, বাংলাদেশ।</p>
-      <p>অফিসিয়াল ইমেইল: <a href="mailto:contact@zynsite.com" style="color:var(--gold-dark);font-weight:600;">contact@zynsite.com</a> • WhatsApp: +40 774 119 870</p>
+      <p class="lang-bn">© ২০২৬ ZynSite.com — ল্যান্ডিং পেজ ও ওয়েবসাইট ডেভেলপমেন্ট, বাংলাদেশ।</p>
+      <p class="lang-en">© 2026 ZynSite.com — Premium Landing Page & Web Engineering, Bangladesh.</p>
+      <p><span class="lang-bn-inline">অফিসিয়াল ইমেইল:</span><span class="lang-en-inline">Official Email:</span> <a href="mailto:contact@zynsite.com" style="color:var(--gold-dark);font-weight:600;">contact@zynsite.com</a> • WhatsApp: +40 774 119 870</p>
     </div>
   </div>
 </footer>

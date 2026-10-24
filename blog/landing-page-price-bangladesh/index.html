@@ -23,6 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Hind+Siliguri:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
+<script src="/js/i18n.js"></script>
 
 <script type="application/ld+json">
 {
@@ -509,16 +510,95 @@ footer {
   .in-article-cta { flex-direction: column; text-align: center; }
   .footer-bottom { text-align: center; justify-content: center; }
 }
+
+/* Bilingual Display Rules */
+body.lang-en-active .lang-bn { display: none !important; }
+body.lang-en-active .lang-en { display: block !important; }
+body:not(.lang-en-active) .lang-en { display: none !important; }
+body:not(.lang-en-active) .lang-bn { display: block !important; }
+
+body.lang-en-active .lang-bn-inline { display: none !important; }
+body.lang-en-active .lang-en-inline { display: inline !important; }
+body:not(.lang-en-active) .lang-en-inline { display: none !important; }
+body:not(.lang-en-active) .lang-bn-inline { display: inline !important; }
+
+/* Language Switcher Pill */
+.lang-switcher-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2.5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(200, 170, 118, 0.45);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+}
+.lang-switcher-pill button {
+  padding: 3.5px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: 0.5px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #64748B;
+}
+body.lang-bn-active .lang-btn-bn,
+body:not(.lang-en-active) .lang-btn-bn {
+  background: linear-gradient(135deg, #1C1914, #14120D);
+  color: #FAF8F5;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+body.lang-en-active .lang-btn-en {
+  background: linear-gradient(135deg, #1C1914, #14120D);
+  color: #FAF8F5;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+body.lang-en-active .lang-btn-bn {
+  background: transparent;
+  color: #64748B;
+  box-shadow: none;
+}
+
+
+/* Bilingual Display Rules */
+.lang-en { display: none; }
+.lang-en-inline { display: none; }
+body.lang-en .lang-bn { display: none !important; }
+body.lang-en .lang-en { display: block !important; }
+body.lang-bn .lang-en { display: none !important; }
+body.lang-bn .lang-bn { display: block !important; }
+
+body.lang-en .lang-bn-inline { display: none !important; }
+body.lang-en .lang-en-inline { display: inline !important; }
+body.lang-bn .lang-en-inline { display: none !important; }
+body.lang-bn .lang-bn-inline { display: inline !important; }
+
+body.lang-en .lang-btn-en,
+body.lang-bn .lang-btn-bn {
+  background: linear-gradient(135deg, #1C1914, #14120D) !important;
+  color: #FAF8F5 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+}
+body.lang-en .lang-btn-bn,
+body.lang-bn .lang-btn-en {
+  background: transparent !important;
+  color: #64748B !important;
+  box-shadow: none !important;
+}
+
 </style>
 </head>
-<body>
+<body data-title-bn="ল্যান্ডিং পেজের দাম কত? বাংলাদেশে তৈরির পূর্ণ গাইড ও প্যাকেজ খরচ | ZynSite" data-title-en="Landing Page Cost in Bangladesh: Full Pricing & Packages Guide | ZynSite">
 
 <div id="reading-progress"></div>
 
 <!-- Header -->
 <header>
   <div class="wrap nav-row">
-    <a class="brand-link" href="/" aria-label="ZynSite হোমপেজ">
+    <a class="brand-link" href="/" aria-label="ZynSite">
       <div class="brand-icon-box">
         <img src="/assets/zynsite-icon.png" alt="ZynSite Logo">
       </div>
@@ -529,43 +609,58 @@ footer {
 
     <a href="/blog/" class="nav-back-link">
       <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
-      <span>সকল ব্লগ ও গাইড</span>
+      <span class="lang-bn-inline">সকল ব্লগ ও গাইড</span>
+      <span class="lang-en-inline">All Blogs & Guides</span>
     </a>
 
-    <a class="nav-cta" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20want%20to%20know%20the%20landing%20page%20price%20details" target="_blank" rel="noopener noreferrer">
-      <i data-lucide="message-circle" style="width:15px;height:15px;"></i>
-      <span>পরামর্শ ও অর্ডার</span>
-    </a>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="lang-switcher-pill" role="group" aria-label="Language switcher">
+        <button type="button" class="lang-btn-bn" onclick="window.zynI18n.setLanguage('bn', true)" title="BN">BN</button>
+        <button type="button" class="lang-btn-en" onclick="window.zynI18n.setLanguage('en', true)" title="EN">EN</button>
+      </div>
+
+      <a class="nav-cta" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20want%20to%20discuss%20a%20website%20project" target="_blank" rel="noopener noreferrer">
+        <i data-lucide="message-circle" style="width:15px;height:15px;"></i>
+        <span class="lang-bn-inline">অর্ডার করুন</span>
+        <span class="lang-en-inline">Order Now</span>
+      </a>
+    </div>
   </div>
 </header>
 
 <main class="wrap">
   <!-- Breadcrumb -->
   <div class="breadcrumb">
-    <a href="/">হোম</a>
+    <a href="/" class="lang-bn-inline">হোম</a><a href="/" class="lang-en-inline">Home</a>
     <span>/</span>
-    <a href="/blog/">ব্লগ</a>
+    <a href="/blog/" class="lang-bn-inline">ব্লগ</a><a href="/blog/" class="lang-en-inline">Blog</a>
     <span>/</span>
-    <span style="color:var(--ink);font-weight:600;">ল্যান্ডিং পেজের দাম কত?</span>
+    <span style="color:var(--ink);font-weight:600;" class="lang-bn-inline">ল্যান্ডিং পেজের দাম কত?</span>
+    <span style="color:var(--ink);font-weight:600;" class="lang-en-inline">Landing Page Pricing Guide</span>
   </div>
 
   <article>
     <header class="article-header">
       <div class="cat-badge">
-        <i data-lucide="tag" style="width:13px;height:13px;"></i>
-        <span>প্রাইসিং ও খরচ বিশ্লেষণ গাইড</span>
+        <i data-lucide="sparkles" style="width:13px;height:13px;"></i>
+        <span class="lang-bn-inline">প্রাইসিং ও মার্কেট অ্যানালাইসিস</span>
+        <span class="lang-en-inline">Pricing & Market Analysis</span>
       </div>
-      <h1>ল্যান্ডিং পেজের দাম কত? বাংলাদেশে ল্যান্ডিং পেজ তৈরির খরচের পূর্ণ গাইড</h1>
+      <h1>
+        <span class="lang-bn">ল্যান্ডিং পেজের দাম কত? বাংলাদেশে তৈরির পূর্ণ গাইড</span>
+        <span class="lang-en">Landing Page Cost in Bangladesh: Full Pricing & Packages Guide</span>
+      </h1>
       <p class="article-lead">
-        ল্যান্ডিং পেজ কিনতে গিয়ে সবাই প্রথমে দাম জিজ্ঞেস করে, কিন্তু দামের পেছনের আসল হিসাব না বুঝলে সস্তা পেজটাই প্রতি মাসে সবচেয়ে বেশি লোকসান করায়। এই গাইডে পাবেন দাম নির্ভর করে কিসের উপর, বাজারের বিভিন্ন অফারের আসল তফাত ও লুকানো খরচের চেকলিস্ট।
+        <span class="lang-bn">বাংলাদেশে ল্যান্ডিং পেজের দাম ৳১,৫০০ থেকে শুরু করে ৳২০,০০০ পর্যন্ত হতে পারে। এই বিপুল পার্থক্যের পেছনের কারণ, প্যাকেজভিত্তিক তুলনা, গোপন চার্জের ফাঁদ এবং কোন ধরনের ব্যবসার জন্য কোন প্যাকেজ লাভজনক—তা তুলে ধরা হলো।</span>
+        <span class="lang-en">Landing page prices in Bangladesh range from ৳1,500 to ৳20,000+. Discover the exact reasons behind this wide gap, hidden hosting & domain traps, and which package maximizes profit for your business model.</span>
       </p>
 
       <div class="meta-share-row">
         <div class="author-pill">
           <div class="avatar-box">ZS</div>
           <div class="author-details">
-            <div class="author-name">ZynSite রিসার্চ ও স্ট্র্যাটেজি টিম</div>
-            <div class="author-date">২৪ অক্টোবর ২০২৬ • ৬ মিনিট পড়া</div>
+            <div class="author-name"><span class="lang-bn-inline">ZynSite রিসার্চ ও স্ট্র্যাটেজি টিম</span><span class="lang-en-inline">ZynSite Research & Strategy Team</span></div>
+            <div class="author-date"><span class="lang-bn-inline">২৪ অক্টোবর ২০২৬ • ৬ মিনিট পড়া</span><span class="lang-en-inline">October 24, 2026 • 6 min read</span></div>
           </div>
         </div>
 
@@ -590,20 +685,30 @@ footer {
     <nav class="toc-box" aria-label="সূচিপত্র">
       <div class="toc-title">
         <i data-lucide="list" style="width:18px;height:18px;color:var(--gold);"></i>
-        <span>আর্টিকেলের সূচিপত্র</span>
+        <span class="lang-bn-inline">আর্টিকেলের সূচিপত্র</span><span class="lang-en-inline">Table of Contents</span>
       </div>
-      <ul class="toc-list">
-        <li><a href="#direct-answer">১. প্রথমেই সোজা স্পষ্ট উত্তর</a></li>
-        <li><a href="#pricing-factors">২. দাম নির্ভর করে যেসব বিষয়ের উপর</a></li>
-        <li><a href="#market-offers">৩. বাজারে প্রচলিত ৪ ধরনের অফার</a></li>
-        <li><a href="#hidden-costs">৪. যেসব লুকানো খরচ খেয়াল করবেন</a></li>
-        <li><a href="#cheap-pitfall">৫. সস্তা পেজ কেন বেশি খরচ করায়</a></li>
-        <li><a href="#decision-rule">৬. সিদ্ধান্ত নেওয়ার সহজ নিয়ম</a></li>
+      <ul class="toc-list lang-bn">
+        <li><a href="#direct-answer">১. সংক্ষেপে দামের রেঞ্জ</a></li>
+        <li><a href="#pricing-factors">২. দাম নির্ধারণের প্রধান বিষয়সমূহ</a></li>
+        <li><a href="#market-offers">৩. বাজারে যেসব অফার পাবেন</a></li>
+        <li><a href="#hidden-costs">৪. গোপন খরচের চেকলিস্ট</a></li>
+        <li><a href="#cheap-pitfall">৫. অতিরিক্ত সস্তা পেজের লুকানো বিপদ</a></li>
+        <li><a href="#decision-rule">৬. আপনার জন্য কোনটি সঠিক?</a></li>
         <li><a href="#faqs">৭. সাধারণ জিজ্ঞাসা (FAQ)</a></li>
+      </ul>
+      <ul class="toc-list lang-en">
+        <li><a href="#direct-answer">1. Straightforward Pricing Overview</a></li>
+        <li><a href="#pricing-factors">2. Key Cost Determination Factors</a></li>
+        <li><a href="#market-offers">3. Types of Market Offerings</a></li>
+        <li><a href="#hidden-costs">4. Hidden Costs Checklist</a></li>
+        <li><a href="#cheap-pitfall">5. Hidden Traps of Dirt-Cheap Pages</a></li>
+        <li><a href="#decision-rule">6. Which Option Fits Your Business?</a></li>
+        <li><a href="#faqs">7. Frequently Asked Questions (FAQ)</a></li>
       </ul>
     </nav>
 
     <div class="article-content">
+    <div class="lang-bn">
       <h2 id="direct-answer">প্রথমেই সোজা উত্তর</h2>
       <p>বাংলাদেশে একটি ভালো মানের ল্যান্ডিং পেজের দাম সাধারণত কয়েক হাজার টাকা থেকে শুরু হয়, আর ফিচার যত বাড়ে দাম তত বাড়ে। ZynSite এ একটি সম্পূর্ণ F-Commerce ল্যান্ডিং পেজের দাম <b>৳৩,৯৯০ এককালীন</b>, যার মধ্যে কাস্টম ডিজাইন, ১-ক্লিক ক্যাশ অন ডেলিভারি অর্ডার ফর্ম, Meta Pixel CAPI সেটআপ, কুরিয়ার ইন্টিগ্রেশন এবং প্রথম বছরের ডোমেইন ও ক্লাউড হোস্টিং সবই অন্তর্ভুক্ত। এই লেখায় আমরা ব্যাখ্যা করছি ল্যান্ডিং পেজের দাম আসলে নির্ভর করে কিসের উপর, যাতে আপনি যেকোনো জায়গা থেকে কিনলেও তুলনা করে স্মার্ট সিদ্ধান্ত নিতে পারেন।</p>
 
@@ -732,6 +837,139 @@ footer {
         </div>
       </section>
     </div>
+
+    <div class="lang-en">
+      <h2 id="direct-answer">Straightforward Pricing Overview</h2>
+      <p>In Bangladesh, the price of a high-converting landing page generally starts around a few thousand Taka and increases based on automation depth and custom engineering. At ZynSite, a complete F-Commerce landing page costs <b>$39 / ৳3,990 one-time</b>—which includes custom luxury UI design, a 1-click Cash on Delivery order form, Meta Pixel and Conversions API (CAPI) integration, courier tracking hooks, plus free custom domain registration and high-speed cloud hosting for the entire first year. This guide details what really drives landing page development costs so you can make informed decisions regardless of which vendor you evaluate.</p>
+
+      <h2 id="pricing-factors">Key Factors Determining Landing Page Costs</h2>
+      
+      <h3>1. Custom Design Architecture vs Generic Templates</h3>
+      <p>Re-using free, generic templates and simply swapping photos is cheap to assemble, but the page looks identical to hundreds of low-trust competitors. In contrast, crafting a bespoke layout aligned with your specific merchandise, psychological copywriting, and clear conversion flow requires specialized design hours—and yields exponentially higher conversion rates.</p>
+
+      <h3>2. Frictionless Order Processing & Checkout System</h3>
+      <p>Having a rudimentary static contact form is vastly different from a true automated sales system. Phone number digit validation, duplicate order protection, live admin dashboards, and instantaneous WhatsApp order alerts save countless hours of manual reconciliation and prevent costly fake deliveries.</p>
+
+      <h3>3. Accurate Tracking & Ad Attribution (Meta Pixel + CAPI)</h3>
+      <p>To run profitable Facebook and Instagram ad campaigns, Meta Pixel and Conversions API (CAPI) must be integrated at the server level. Without this architecture, cheap pages misreport ad events, wasting hundreds of dollars in advertising budget every month—vastly exceeding the price of the page itself.</p>
+
+      <h3>4. Courier & Logistics Automation</h3>
+      <p>Integrating with leading courier networks like Steadfast and Pathao, verifying customer delivery histories, and printing automated invoices reduces manual friction and slashes courier return rates significantly.</p>
+
+      <!-- In-Article Conversion Banner -->
+      <div class="in-article-cta">
+        <div class="in-cta-text">
+          <h4>ZynSite Complete Landing Page for only $39 / ৳3,990</h4>
+          <p>Includes free .com domain, high-speed cloud hosting, Meta CAPI, and courier automation. Live in 48-72 hours!</p>
+        </div>
+        <a class="btn-wa-gold" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20want%20to%20order%20the%20landing%20page%20package" target="_blank" rel="noopener noreferrer">
+          <i data-lucide="message-circle" style="width:16px;height:16px;"></i>
+          <span>Order on WhatsApp</span>
+        </a>
+      </div>
+
+      <h2 id="market-offers">Types of Market Offerings in Bangladesh</h2>
+      <ul>
+        <li><strong>Free or Ultra-Cheap Template Pages:</strong> Requires manual assembly, lacking automated checkout, phone validation, or reliable server-side tracking. Suitable for hobbyists, but risky for real commerce.</li>
+        <li><strong>SaaS Subscription Platforms:</strong> Charge recurring monthly fees of ৳1,000 to ৳2,500 ($10-$25/mo). Over an annual period, the cumulative cost is substantial, and you often lack direct ownership of your domain and source database.</li>
+        <li><strong>Solo Freelancers:</strong> Moderately priced, but turnaround speed, warranty fixes, and continuous technical support rely entirely on one individual's schedule.</li>
+        <li><strong>Specialized Web Agencies (such as ZynSite):</strong> Transparent one-time investment, tailored conversion features engineered specifically for Facebook commerce, with ongoing post-launch warranty and free support.</li>
+      </ul>
+
+      <h2 id="hidden-costs">Hidden Costs & Traps to Watch Out For</h2>
+      <div class="callout pro-tip">
+        <div class="callout-title">
+          <i data-lucide="alert-circle" style="width:18px;height:18px;color:var(--gold);"></i>
+          <span>Always Ask These 5 Questions Before Placing an Order:</span>
+        </div>
+        <ul style="margin: 8px 0 0 16px;">
+          <li>Are domain registration and high-speed hosting included in the upfront price, or billed separately?</li>
+          <li>What is the exact renewal fee starting in year two?</li>
+          <li>Are there hidden monthly maintenance fees or per-order transaction commissions?</li>
+          <li>Is the domain officially registered under your own name and legal ownership?</li>
+          <li>Will you be billed extra for basic text, pricing, or product image updates post-delivery?</li>
+        </ul>
+      </div>
+
+      <p>Unless you obtain transparent answers to these questions, an apparently inexpensive offer often becomes an ongoing financial drain. At ZynSite, terms are crystal clear: first-year domain and cloud hosting are 100% free, zero recurring commissions, and your domain is legally registered in your name. Explore comprehensive comparisons on our <a href="/website-price-bangladesh/" style="color:var(--gold-dark);font-weight:700;text-decoration:underline;">Website Pricing Page</a>.</p>
+
+      <h2 id="cheap-pitfall">Why Dirt-Cheap Pages End Up Costing You Far More</h2>
+      <p>Consider an online seller investing $150 to $300 (৳15,000 to ৳30,000) monthly on Facebook ads. If a landing page loads slowly or features a clumsy checkout flow, a high percentage of paid visitors abandon without purchasing. Furthermore, without proper Conversions API tracking, Meta's algorithm misidentifies your target demographic. These two issues can easily burn through hundreds of dollars in wasted advertising each month. When purchasing a landing page, evaluate the problems it solves rather than just the lowest sticker price. Learn more about our high-converting architecture on our <a href="/landing-page-bangladesh/" style="color:var(--gold-dark);font-weight:700;text-decoration:underline;">Landing Page Services Page</a>.</p>
+
+      <h2 id="decision-rule">Simple Decision Rule for Online Businesses</h2>
+      <p>If you are marketing 1 to 5 hero products via social ads, an all-inclusive landing page with 1-click Cash on Delivery and Meta Pixel tracking is ideal. If your store features dozens of items across multiple categories, opt for a <a href="/ecommerce-website/" style="color:var(--gold-dark);font-weight:700;text-decoration:underline;">Full E-Commerce Store</a>. For new ventures on a lean budget, launching with a landing page first and upgrading as revenue scales is the most capital-efficient strategy.</p>
+
+      <!-- FAQ Section -->
+      <section class="faq-section" id="faqs">
+        <h2>Frequently Asked Questions (FAQ)</h2>
+        
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>What is the standard price of a landing page in Bangladesh?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform 0.2s;"></i>
+          </div>
+          <div class="faq-body">
+            Prices vary depending on depth of features. At ZynSite, a complete high-converting landing page is $39 (৳3,990) one-time, including custom domain and cloud hosting for the first year with zero hidden charges.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Why is a landing page priced differently than a full e-commerce website?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform 0.2s;"></i>
+          </div>
+          <div class="faq-body">
+            A landing page focuses on converting a single hero product with maximum speed and minimum friction. A full e-commerce website manages extensive category catalogs, user accounts, and multiple payment gateways, priced at $149 (৳14,990).
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>What are the risks of choosing an ultra-cheap landing page?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform 0.2s;"></i>
+          </div>
+          <div class="faq-body">
+            They typically lack phone number validation, Meta Pixel CAPI, and courier APIs, leading to elevated fake order returns, distorted ad analytics, and poor conversion rates.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Are there recurring expenses beyond the package price?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform 0.2s;"></i>
+          </div>
+          <div class="faq-body">
+            None for the first year—domain and hosting are included free. Starting in year two, only regular domain and cloud hosting renewal costs apply.
+          </div>
+        </div>
+      </section>
+
+      <!-- Related Articles -->
+      <section class="related-section">
+        <h2>More Recommended Guides</h2>
+        <div class="related-grid">
+          <a class="related-card" href="/blog/website-toirir-age-ja-lagbe/">
+            <span style="font-size:11px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;">Preparation Checklist</span>
+            <h4>What You Need Before Building a Website: Checklist</h4>
+            <p>7 crucial essentials to gather beforehand to ensure rapid and painless website development.</p>
+          </a>
+
+          <a class="related-card" href="/blog/facebook-page-vs-website/">
+            <span style="font-size:11px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;">Strategy Guide</span>
+            <h4>Facebook Page vs Website: Which One Do You Need First?</h4>
+            <p>Starting an online business: page or website? Clear pros, cons, costs, and the exact roadmap.</p>
+          </a>
+          <a class="related-card" href="/blog/reduce-fake-orders/">
+            <span style="font-size:11px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;">Logistics & Profit</span>
+            <h4>7 Ways to Reduce Fake Orders for Online Sellers</h4>
+            <p>Phone verification, courier fraud checks, and advance delivery fee tactics to protect margins.</p>
+          </a>
+        </div>
+      </section>
+    </div>
+
+  </div>
+
   </article>
 </main>
 

@@ -23,6 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Hind+Siliguri:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
+<script src="/js/i18n.js"></script>
 
 <script type="application/ld+json">
 {
@@ -67,7 +68,7 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  font-family: 'Hind Siliguri', 'Noto Sans Bengali', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--bg);
   color: var(--body);
   line-height: 1.7;
@@ -77,364 +78,436 @@ body {
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; height: auto; display: block; }
 
-.wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 20px; }
 
 /* Sticky Header */
 header {
   position: sticky;
   top: 0;
-  background: rgba(250, 249, 245, 0.94);
+  background: rgba(250, 249, 245, 0.96);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  z-index: 50;
-  transition: all 0.25s ease;
+  border-bottom: 1px solid var(--border-gold);
+  z-index: 100;
+  transition: all 0.2s;
 }
 .nav-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 0;
+  padding: 12px 0;
   gap: 16px;
 }
 .brand-link {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  text-decoration: none;
 }
 .brand-icon-box {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: #C8AA76;
-  border: 1px solid rgba(179, 143, 72, 0.7);
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(200, 170, 118, 0.28);
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1C1914, #14120D);
+  border: 1px solid rgba(200, 170, 118, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 5px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   flex-shrink: 0;
 }
-.brand-icon-box img { width: 100%; height: 100%; object-fit: cover; }
+.brand-icon-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 .brand-text-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 26px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 25px;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: -0.5px;
   color: var(--ink);
-  line-height: 1;
 }
 .brand-text-logo span { color: var(--gold); }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 20px;
-  font-size: 14px;
+  gap: 22px;
+  font-size: 14.5px;
   font-weight: 600;
+  color: #334155;
 }
-.nav-links a {
-  color: var(--muted);
-  transition: color 0.2s;
-  padding: 6px 0;
+.nav-links a:hover { color: var(--gold); }
+.nav-links a.active { color: var(--gold-dark); font-weight: 700; }
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
-.nav-links a:hover, .nav-links a.active {
-  color: var(--gold-dark);
+
+/* Language Switcher Pill */
+.lang-switcher-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(200, 170, 118, 0.45);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
 }
-.nav-links a.active {
+.lang-switcher-pill button {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11.5px;
   font-weight: 700;
-  border-bottom: 2px solid var(--gold);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: 0.5px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #64748B;
+}
+.lang-switcher-pill button.active-lang,
+body.lang-bn-active .lang-btn-bn,
+body:not(.lang-en-active) .lang-btn-bn {
+  background: linear-gradient(135deg, #1C1914, #14120D);
+  color: #FAF8F5;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+body.lang-en-active .lang-btn-en {
+  background: linear-gradient(135deg, #1C1914, #14120D);
+  color: #FAF8F5;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+body.lang-en-active .lang-btn-bn {
+  background: transparent;
+  color: #64748B;
+  box-shadow: none;
 }
 
 .nav-cta {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, #15803D, #16A34A);
+  background: #15803D;
   color: #fff;
   font-weight: 700;
   font-size: 13.5px;
-  padding: 10px 18px;
-  border-radius: 9999px;
-  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
-  transition: all 0.25s;
+  padding: 8px 18px;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(21, 128, 61, 0.25);
+  transition: all 0.2s;
+  white-space: nowrap;
 }
 .nav-cta:hover {
+  background: #16A34A;
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(22, 163, 74, 0.35);
 }
 
 /* Breadcrumb */
 .breadcrumb {
-  font-size: 13px;
-  color: var(--muted);
-  padding: 20px 0 6px;
   display: flex;
   align-items: center;
   gap: 8px;
+  font-size: 13.5px;
+  color: var(--muted);
+  padding: 22px 0 10px;
 }
-.breadcrumb a:hover { color: var(--gold-dark); }
+.breadcrumb a:hover { color: var(--gold); }
 
-/* Hero Banner */
+/* Hero Section */
 .blog-hero {
-  padding: 36px 0 44px;
+  padding: 24px 0 36px;
   text-align: center;
-  position: relative;
 }
 .badge-chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: var(--gold-soft);
+  background: rgba(200, 170, 118, 0.15);
   color: var(--gold-dark);
-  font-weight: 700;
-  font-size: 13px;
-  padding: 6px 16px;
-  border-radius: 9999px;
   border: 1px solid rgba(200, 170, 118, 0.4);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 16px;
+  border-radius: 999px;
   margin-bottom: 16px;
 }
 .blog-hero h1 {
-  font-size: clamp(26px, 4.5vw, 40px);
+  font-size: 36px;
+  line-height: 1.3;
   font-weight: 800;
   color: var(--ink);
-  line-height: 1.3;
-  max-width: 840px;
+  max-width: 820px;
   margin: 0 auto 16px;
+  letter-spacing: -0.5px;
 }
 .blog-hero p {
-  font-size: clamp(15px, 2vw, 17px);
+  font-size: 17px;
   color: var(--muted);
-  max-width: 680px;
-  margin: 0 auto 24px;
+  max-width: 720px;
+  margin: 0 auto 26px;
   line-height: 1.65;
 }
 
-/* Filter Pills */
+/* Interactive Search Bar */
+.search-container {
+  max-width: 520px;
+  margin: 0 auto 22px;
+  position: relative;
+}
+.search-icon-box {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94A3B8;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+.blog-search-input {
+  width: 100%;
+  padding: 12px 18px 12px 46px;
+  border-radius: 999px;
+  border: 1px solid rgba(200, 170, 118, 0.45);
+  background: #FFFFFF;
+  font-size: 14.5px;
+  color: var(--ink);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  transition: all 0.2s;
+}
+.blog-search-input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 4px 20px rgba(200, 170, 118, 0.2);
+}
+
+/* Interactive Filter Bar */
 .filter-bar {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   flex-wrap: wrap;
+  gap: 8px;
   margin-top: 10px;
 }
 .filter-pill {
-  font-size: 13.5px;
-  font-weight: 600;
-  padding: 7px 18px;
-  border-radius: 9999px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--muted);
+  border: 1px solid var(--border-gold);
+  background: #FFFFFF;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 7px 16px;
+  border-radius: 999px;
   cursor: pointer;
   transition: all 0.2s;
+  user-select: none;
 }
-.filter-pill.active, .filter-pill:hover {
-  background: #14120D;
-  color: #FFFFFF;
+.filter-pill:hover {
+  background: #FDFBF7;
+  border-color: var(--gold);
+  color: var(--ink);
+}
+.filter-pill.active {
+  background: linear-gradient(135deg, #1C1914, #14120D);
+  color: #FAF8F5;
   border-color: #14120D;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
 }
 
-/* Articles Grid */
+/* Articles Section */
 .articles-section {
-  padding: 10px 0 50px;
+  padding: 20px 0 60px;
 }
 .articles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 24px;
 }
-
 .article-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 18px;
   overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 16px rgba(20, 18, 13, 0.04);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
 }
 .article-card:hover {
   transform: translateY(-4px);
   border-color: var(--gold-brand);
-  box-shadow: 0 12px 30px rgba(200, 170, 118, 0.18);
+  box-shadow: 0 12px 28px rgba(200, 170, 118, 0.18);
 }
-
 .card-top-accent {
-  height: 4px;
+  height: 5px;
   background: linear-gradient(90deg, #C8AA76, #B38F48, #997530);
 }
-
 .card-body {
-  padding: 24px 24px 20px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
-
 .card-category-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
   margin-bottom: 12px;
 }
 .cat-badge {
   font-size: 11.5px;
   font-weight: 700;
+  text-transform: uppercase;
   color: var(--gold-dark);
   background: var(--gold-soft);
-  border: 1px solid rgba(200, 170, 118, 0.35);
   padding: 3px 10px;
-  border-radius: 9999px;
-  text-transform: uppercase;
+  border-radius: 6px;
+  letter-spacing: 0.3px;
 }
 .read-time {
-  font-size: 12px;
+  font-size: 12.5px;
   color: var(--muted);
   display: flex;
   align-items: center;
   gap: 4px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
-
 .card-title {
-  font-size: 20px;
+  font-size: 18.5px;
   font-weight: 800;
-  line-height: 1.4;
   color: var(--ink);
+  line-height: 1.4;
   margin-bottom: 10px;
   transition: color 0.2s;
 }
-.article-card:hover .card-title {
-  color: var(--gold-dark);
-}
-
+.card-title a:hover { color: var(--gold-dark); }
 .card-desc {
   font-size: 14.5px;
-  color: var(--muted);
-  line-height: 1.6;
-  margin-bottom: 18px;
+  color: #475569;
+  line-height: 1.65;
+  margin-bottom: 20px;
   flex: 1;
 }
-
 .card-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 14px;
+  padding-top: 16px;
   border-top: 1px solid #F1EAD9;
-  font-size: 12.5px;
-  color: var(--muted);
+  margin-top: auto;
+  font-size: 13px;
 }
 .card-author-info {
   display: flex;
   align-items: center;
   gap: 8px;
+  color: var(--muted);
 }
 .author-avatar {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: #C8AA76;
-  color: #fff;
-  font-weight: 800;
+  background: #14120D;
+  color: var(--gold-brand);
+  font-weight: 700;
   font-size: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid var(--gold-brand);
 }
 .read-more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-weight: 700;
   color: var(--gold-dark);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  transition: transform 0.2s;
+  transition: all 0.2s;
 }
-.article-card:hover .read-more-link {
+.read-more-link:hover {
+  color: var(--ink);
   transform: translateX(3px);
 }
 
-/* Consultation & Order CTA Banner */
-.blog-cta-banner {
-  margin: 20px 0 60px;
-  background: linear-gradient(135deg, #14120D 0%, #1E1B15 50%, #29241B 100%);
-  border: 1px solid rgba(200, 170, 118, 0.35);
-  border-radius: 28px;
-  padding: 44px 32px;
-  color: #FAF9F5;
+/* Empty search state */
+#empty-state {
+  display: none;
   text-align: center;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 16px 40px rgba(20, 18, 13, 0.2);
+  padding: 48px 20px;
+  color: var(--muted);
 }
-.blog-cta-banner::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 500px;
-  height: 200px;
-  background: radial-gradient(ellipse, rgba(200, 170, 118, 0.22), transparent 70%);
-  pointer-events: none;
+
+/* Bottom CTA Banner */
+.blog-cta-banner {
+  background: linear-gradient(135deg, #1C1914, #14120D);
+  color: #FAF8F5;
+  border: 1px solid rgba(200, 170, 118, 0.35);
+  border-radius: 20px;
+  padding: 44px 36px;
+  text-align: center;
+  margin-top: 50px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.18);
 }
 .blog-cta-banner h2 {
-  font-size: clamp(22px, 3.5vw, 32px);
+  font-size: 28px;
   font-weight: 800;
   color: #FFFFFF;
   margin-bottom: 12px;
 }
 .blog-cta-banner p {
-  color: #D6CEBC;
-  font-size: clamp(14px, 1.8vw, 16px);
-  max-width: 640px;
+  font-size: 16px;
+  color: #D8CFBB;
+  max-width: 720px;
   margin: 0 auto 24px;
-  line-height: 1.65;
+  line-height: 1.7;
 }
 .cta-buttons {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
   flex-wrap: wrap;
-}
-.btn-gold {
-  background: linear-gradient(135deg, #C8AA76, #B38F48);
-  color: #FFFFFF;
-  font-weight: 700;
-  font-size: 14.5px;
-  padding: 12px 26px;
-  border-radius: 12px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 14px rgba(200, 170, 118, 0.35);
-  transition: all 0.25s;
-}
-.btn-gold:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(200, 170, 118, 0.45);
+  gap: 14px;
 }
 .btn-wa {
-  background: #15803D;
-  color: #FFFFFF;
-  font-weight: 700;
-  font-size: 14.5px;
-  padding: 12px 26px;
-  border-radius: 12px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  background: #15803D;
+  color: #fff;
+  font-weight: 700;
+  padding: 12px 26px;
+  border-radius: 12px;
+  font-size: 15px;
+  transition: all 0.2s;
   box-shadow: 0 4px 14px rgba(21, 128, 61, 0.3);
-  transition: all 0.25s;
 }
 .btn-wa:hover {
   background: #16A34A;
   transform: translateY(-2px);
+}
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #C8AA76, #B38F48);
+  color: #14120D;
+  font-weight: 700;
+  padding: 12px 26px;
+  border-radius: 12px;
+  font-size: 15px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(200, 170, 118, 0.3);
+}
+.btn-gold:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
 }
 
 /* Footer */
@@ -444,13 +517,14 @@ footer {
   padding: 40px 0 30px;
   font-size: 13.5px;
   color: var(--muted);
+  margin-top: 40px;
 }
 .footer-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
   flex-wrap: wrap;
+  gap: 16px;
   padding-bottom: 20px;
   border-bottom: 1px solid rgba(200, 170, 118, 0.2);
 }
@@ -479,17 +553,54 @@ footer {
 @media (max-width: 768px) {
   .nav-links { display: none; }
   .articles-grid { grid-template-columns: 1fr; }
+  .blog-hero h1 { font-size: 26px; }
+  .blog-hero p { font-size: 15px; }
+  .filter-bar {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+  }
+  .filter-pill { flex-shrink: 0; }
   .blog-cta-banner { padding: 32px 20px; }
-  .footer-bottom { text-align: center; justify-content: center; }
+  .footer-row, .footer-bottom { text-align: center; justify-content: center; }
 }
+
+/* Bilingual Display Rules */
+.lang-en { display: none; }
+.lang-en-inline { display: none; }
+body.lang-en .lang-bn { display: none !important; }
+body.lang-en .lang-en { display: block !important; }
+body.lang-bn .lang-en { display: none !important; }
+body.lang-bn .lang-bn { display: block !important; }
+
+body.lang-en .lang-bn-inline { display: none !important; }
+body.lang-en .lang-en-inline { display: inline !important; }
+body.lang-bn .lang-en-inline { display: none !important; }
+body.lang-bn .lang-bn-inline { display: inline !important; }
+
+body.lang-en .lang-btn-en,
+body.lang-bn .lang-btn-bn {
+  background: linear-gradient(135deg, #1C1914, #14120D) !important;
+  color: #FAF8F5 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+}
+body.lang-en .lang-btn-bn,
+body.lang-bn .lang-btn-en {
+  background: transparent !important;
+  color: #64748B !important;
+  box-shadow: none !important;
+}
+
 </style>
 </head>
-<body>
+<body data-title-bn="ব্লগ ও নলেজ হাব — অনলাইন ব্যবসার প্র্যাকটিক্যাল গাইড | ZynSite" data-title-en="Blog & Knowledge Hub — Practical Online Business Guides | ZynSite">
 
 <!-- Header -->
 <header>
   <div class="wrap nav-row">
-    <a class="brand-link" href="/" aria-label="ZynSite হোমপেজ">
+    <a class="brand-link" href="/" aria-label="ZynSite">
       <div class="brand-icon-box">
         <img src="/assets/zynsite-icon.png" alt="ZynSite Emblem">
       </div>
@@ -499,27 +610,35 @@ footer {
     </a>
 
     <nav class="nav-links" aria-label="Main Navigation">
-      <a href="/">হোম</a>
-      <a href="/landing-page-bangladesh/">ল্যান্ডিং পেজ</a>
+      <a href="/" data-i18n="nav_home">হোম</a>
+      <a href="/landing-page-bangladesh/" data-i18n="nav_fcommerce">ল্যান্ডিং পেজ</a>
       <a href="/f-commerce-website/">F-Commerce</a>
       <a href="/ecommerce-website/">ই-কমার্স</a>
-      <a href="/website-price-bangladesh/">প্যাকেজ ও দাম</a>
-      <a href="/blog/" class="active">ব্লগ ও গাইড</a>
+      <a href="/website-price-bangladesh/" data-i18n="nav_pricing">প্যাকেজ ও দাম</a>
+      <a href="/blog/" class="active" data-i18n="nav_blog">ব্লগ ও গাইড</a>
     </nav>
 
-    <a class="nav-cta" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20want%20to%20build%20a%20website%20for%20my%20business" target="_blank" rel="noopener noreferrer">
-      <i data-lucide="message-circle" style="width:16px;height:16px;"></i>
-      <span>অর্ডার ও পরামর্শ</span>
-    </a>
+    <div class="header-right">
+      <!-- Aesthetic Language Switcher Pill -->
+      <div class="lang-switcher-pill" role="group" aria-label="Language switcher">
+        <button type="button" class="lang-btn-bn" onclick="window.zynI18n.setLanguage('bn', true)" title="BN">BN</button>
+        <button type="button" class="lang-btn-en" onclick="window.zynI18n.setLanguage('en', true)" title="EN">EN</button>
+      </div>
+
+      <a class="nav-cta" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20want%20to%20build%20a%20website%20for%20my%20business" target="_blank" rel="noopener noreferrer">
+        <i data-lucide="message-circle" style="width:15px;height:15px;"></i>
+        <span data-i18n="nav_order">অর্ডার ও পরামর্শ</span>
+      </a>
+    </div>
   </div>
 </header>
 
 <!-- Breadcrumb -->
 <div class="wrap">
   <div class="breadcrumb">
-    <a href="/">হোম</a>
+    <a href="/" data-i18n="nav_home">হোম</a>
     <span>/</span>
-    <span style="color:var(--ink);font-weight:600;">ব্লগ ও গাইড</span>
+    <span style="color:var(--ink);font-weight:600;" data-i18n="nav_blog">ব্লগ ও গাইড</span>
   </div>
 </div>
 
@@ -528,17 +647,44 @@ footer {
   <div class="wrap">
     <div class="badge-chip">
       <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
-      <span>ZynSite জ্ঞানকোষ ও প্র্যাকটিক্যাল গাইড</span>
+      <span data-i18n="blog_badge">ZynSite জ্ঞানকোষ ও প্র্যাকটিক্যাল গাইড</span>
     </div>
-    <h1>ফেসবুক ব্যবসা, ল্যান্ডিং পেজ ও সেলস বৃদ্ধির প্র্যাকটিক্যাল গাইড</h1>
-    <p>বাংলাদেশের অনলাইন ও এফ-কমার্স বিক্রেতাদের জন্য প্রমাণিত স্ট্র্যাটেজি: সঠিক ওয়েবসাইটের দাম, ফেক অর্ডার কমানোর অটোমেশন, সেলস ফানেল ও বেশি কনভার্সনের উপায়।</p>
+    <h1 data-i18n="blog_title">ফেসবুক ব্যবসা, ল্যান্ডিং পেজ ও সেলস বৃদ্ধির প্র্যাকটিক্যাল গাইড</h1>
+    <p data-i18n="blog_subtitle">বাংলাদেশের অনলাইন ও এফ-কমার্স বিক্রেতাদের জন্য প্রমাণিত স্ট্র্যাটেজি: সঠিক ওয়েবসাইটের দাম, ফেক অর্ডার কমানোর অটোমেশন, সেলস ফানেল ও বেশি কনভার্সনের উপায়।</p>
     
-    <div class="filter-bar">
-      <span class="filter-pill active">সকল লেখা (৪)</span>
-      <a href="/blog/website-toirir-age-ja-lagbe/" class="filter-pill">ওয়েবসাইট চেকলিস্ট</a>
-      <a href="/blog/facebook-page-vs-website/" class="filter-pill">ফেসবুক পেজ vs ওয়েবসাইট</a>
-      <a href="/blog/landing-page-price-bangladesh/" class="filter-pill">ল্যান্ডিং পেজের দাম</a>
-      <a href="/blog/reduce-fake-orders/" class="filter-pill">ফেক অর্ডার প্রতিরোধ</a>
+    <!-- Live Search Bar -->
+    <div class="search-container">
+      <div class="search-icon-box">
+        <i data-lucide="search" style="width:18px;height:18px;"></i>
+      </div>
+      <input 
+        type="text" 
+        id="blog-search-input" 
+        placeholder="🔍 আর্টিকেলের নাম বা বিষয় দিয়ে খুঁজুন..." 
+        data-i18n-placeholder="blog_search_placeholder" 
+        oninput="handleBlogSearch(this.value)" 
+        class="blog-search-input" 
+        aria-label="Search articles"
+      />
+    </div>
+
+    <!-- Category Filter Bar -->
+    <div class="filter-bar" role="tablist">
+      <button type="button" class="filter-pill active" onclick="handleBlogFilter('all', this)" data-cat="all">
+        <span data-i18n="blog_filter_all">সকল লেখা (৪)</span>
+      </button>
+      <button type="button" class="filter-pill" onclick="handleBlogFilter('checklist', this)" data-cat="checklist">
+        <span data-i18n="blog_filter_checklist">চেকলিস্ট</span>
+      </button>
+      <button type="button" class="filter-pill" onclick="handleBlogFilter('strategy', this)" data-cat="strategy">
+        <span data-i18n="blog_filter_strategy">বিজনেস স্ট্র্যাটেজি</span>
+      </button>
+      <button type="button" class="filter-pill" onclick="handleBlogFilter('pricing', this)" data-cat="pricing">
+        <span data-i18n="blog_filter_pricing">প্রাইসিং ও বাজেট</span>
+      </button>
+      <button type="button" class="filter-pill" onclick="handleBlogFilter('fraud', this)" data-cat="fraud">
+        <span data-i18n="blog_filter_fraud">ফেক অর্ডার প্রতিরোধ</span>
+      </button>
     </div>
   </div>
 </section>
@@ -546,20 +692,27 @@ footer {
 <!-- Articles Section -->
 <section class="articles-section">
   <div class="wrap">
-    <div class="articles-grid">
+    
+    <!-- Empty Search State -->
+    <div id="empty-state">
+      <i data-lucide="file-question" style="width:48px;height:48px;margin:0 auto 12px;opacity:0.5;"></i>
+      <p data-i18n="blog_no_results">কোনো আর্টিকেল পাওয়া যায়নি। অন্য কোনো কি-ওয়ার্ড দিয়ে খুঁজুন।</p>
+    </div>
+
+    <div class="articles-grid" id="articles-grid">
 
       <!-- Article Card 1: Checklist -->
-      <article class="article-card">
+      <article class="article-card" data-category="checklist">
         <div class="card-top-accent"></div>
         <div class="card-body">
           <div class="card-category-row">
-            <span class="cat-badge">প্রিপারেশন চেকলিস্ট</span>
-            <span class="read-time"><i data-lucide="clock" style="width:13px;height:13px;"></i> ৫ মিনিট পড়া</span>
+            <span class="cat-badge" data-i18n="blog_card1_cat">প্রিপারেশন চেকলিস্ট</span>
+            <span class="read-time"><i data-lucide="clock" style="width:13px;height:13px;"></i> <span data-i18n="blog_read_time_5">৫ মিনিট পড়া</span></span>
           </div>
           <h2 class="card-title">
-            <a href="/blog/website-toirir-age-ja-lagbe/">ওয়েবসাইট তৈরির আগে যা যা লাগবে: লোগো, ছবি ও তথ্যের চেকলিস্ট</a>
+            <a href="/blog/website-toirir-age-ja-lagbe/" data-i18n="blog_card1_title">ওয়েবসাইট তৈরির আগে যা যা লাগবে: লোগো, ছবি ও তথ্যের চেকলিস্ট</a>
           </h2>
-          <p class="card-desc">
+          <p class="card-desc" data-i18n="blog_card1_desc">
             লোগো, পণ্যের ছবি, সঠিক দাম, ডেলিভারি নিয়ম ও ডোমেইন সহ ৭টি দরকারি জিনিস গুছিয়ে রাখলে ওয়েবসাইটের কাজ দ্রুত ও নিখুঁত হয়।
           </p>
           <div class="card-footer">
@@ -568,7 +721,7 @@ footer {
               <span>২৫ অক্টোবর ২০২৬</span>
             </div>
             <a href="/blog/website-toirir-age-ja-lagbe/" class="read-more-link">
-              <span>পড়ুন</span>
+              <span data-i18n="blog_read_btn">পড়ুন</span>
               <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
             </a>
           </div>
@@ -576,17 +729,17 @@ footer {
       </article>
 
       <!-- Article Card 2: FB vs Web -->
-      <article class="article-card">
+      <article class="article-card" data-category="strategy">
         <div class="card-top-accent"></div>
         <div class="card-body">
           <div class="card-category-row">
-            <span class="cat-badge">বিজনেস স্ট্র্যাটেজি</span>
-            <span class="read-time"><i data-lucide="clock" style="width:13px;height:13px;"></i> ৬ মিনিট পড়া</span>
+            <span class="cat-badge" data-i18n="blog_card2_cat">বিজনেস স্ট্র্যাটেজি</span>
+            <span class="read-time"><i data-lucide="clock" style="width:13px;height:13px;"></i> <span data-i18n="blog_read_time_6">৬ মিনিট পড়া</span></span>
           </div>
           <h2 class="card-title">
-            <a href="/blog/facebook-page-vs-website/">ফেসবুক পেজ vs ওয়েবসাইট: কোনটা আগে দরকার?</a>
+            <a href="/blog/facebook-page-vs-website/" data-i18n="blog_card2_title">ফেসবুক পেজ vs ওয়েবসাইট: কোনটা আগে দরকার?</a>
           </h2>
-          <p class="card-desc">
+          <p class="card-desc" data-i18n="blog_card2_desc">
             অনলাইন ব্যবসা শুরু করতে পেজ নাকি ওয়েবসাইট আগে লাগবে? দুটোর সুবিধা, সীমাবদ্ধতা, মাসিক খরচ ও সঠিক বাস্তবায়নের ক্রম নিয়ে স্পষ্ট ব্যাখ্যা।
           </p>
           <div class="card-footer">
@@ -595,7 +748,7 @@ footer {
               <span>২৫ অক্টোবর ২০২৬</span>
             </div>
             <a href="/blog/facebook-page-vs-website/" class="read-more-link">
-              <span>পড়ুন</span>
+              <span data-i18n="blog_read_btn">পড়ুন</span>
               <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
             </a>
           </div>
@@ -603,17 +756,17 @@ footer {
       </article>
 
       <!-- Article Card 3: Price Guide -->
-      <article class="article-card">
+      <article class="article-card" data-category="pricing">
         <div class="card-top-accent"></div>
         <div class="card-body">
           <div class="card-category-row">
-            <span class="cat-badge">প্রাইসিং ও বাজেট</span>
-            <span class="read-time"><i data-lucide="clock" style="width:13px;height:13px;"></i> ৮ মিনিট পড়া</span>
+            <span class="cat-badge" data-i18n="blog_card3_cat">প্রাইসিং ও বাজেট</span>
+            <span class="read-time"><i data-lucide="clock" style="width:13px;height:13px;"></i> <span data-i18n="blog_read_time_8">৮ মিনিট পড়া</span></span>
           </div>
           <h2 class="card-title">
-            <a href="/blog/landing-page-price-bangladesh/">ল্যান্ডিং পেজের দাম কত? বাংলাদেশে তৈরির পূর্ণ গাইড</a>
+            <a href="/blog/landing-page-price-bangladesh/" data-i18n="blog_card3_title">ল্যান্ডিং পেজের দাম কত? বাংলাদেশে তৈরির পূর্ণ গাইড</a>
           </h2>
-          <p class="card-desc">
+          <p class="card-desc" data-i18n="blog_card3_desc">
             ল্যান্ডিং পেজের দাম নির্ভর করে কিসের উপর, বাজারের বিভিন্ন অফারের আসল তফাত, লুকানো খরচের চেকলিস্ট ও কেন সস্তা পেজ বেশি লোকসান করায়।
           </p>
           <div class="card-footer">
@@ -622,7 +775,7 @@ footer {
               <span>২৪ অক্টোবর ২০২৬</span>
             </div>
             <a href="/blog/landing-page-price-bangladesh/" class="read-more-link">
-              <span>পড়ুন</span>
+              <span data-i18n="blog_read_btn">পড়ুন</span>
               <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
             </a>
           </div>
@@ -630,17 +783,17 @@ footer {
       </article>
 
       <!-- Article Card 4: Reduce Fake Orders -->
-      <article class="article-card">
+      <article class="article-card" data-category="fraud">
         <div class="card-top-accent"></div>
         <div class="card-body">
           <div class="card-category-row">
-            <span class="cat-badge">লজিস্টিকস ও প্রফিট</span>
-            <span class="read-time"><i data-lucide="clock" style="width:13px;height:13px;"></i> ৭ মিনিট পড়া</span>
+            <span class="cat-badge" data-i18n="blog_card4_cat">লজিস্টিকস ও প্রফিট</span>
+            <span class="read-time"><i data-lucide="clock" style="width:13px;height:13px;"></i> <span data-i18n="blog_read_time_7">৭ মিনিট পড়া</span></span>
           </div>
           <h2 class="card-title">
-            <a href="/blog/reduce-fake-orders/">ফেক অর্ডার কমানোর উপায়: ফেসবুক ব্যবসার জন্য ৭টি পদ্ধতি</a>
+            <a href="/blog/reduce-fake-orders/" data-i18n="blog_card4_title">ফেক অর্ডার কমানোর উপায়: ফেসবুক ব্যবসার জন্য ৭টি পদ্ধতি</a>
           </h2>
-          <p class="card-desc">
+          <p class="card-desc" data-i18n="blog_card4_desc">
             ভুল নম্বর ও কুরিয়ার রিটার্ন ফেসবুক সেলারদের বড় ক্ষতি। ফোন ভ্যালিডেশন, কুরিয়ার ফ্রড চেক ও ডেলিভারি চার্জ অগ্রিম নেওয়ার প্রমাণিত কৌশল।
           </p>
           <div class="card-footer">
@@ -649,7 +802,7 @@ footer {
               <span>২৪ অক্টোবর ২০২৬</span>
             </div>
             <a href="/blog/reduce-fake-orders/" class="read-more-link">
-              <span>পড়ুন</span>
+              <span data-i18n="blog_read_btn">পড়ুন</span>
               <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
             </a>
           </div>
@@ -660,16 +813,16 @@ footer {
 
     <!-- CTA Banner -->
     <div class="blog-cta-banner">
-      <h2>পড়া শেষ, এবার নিজের ব্যবসার জন্য ওয়েবসাইট বানান</h2>
-      <p>১-ক্লিক ক্যাশ অন ডেলিভারি ফর্ম, Meta Pixel CAPI ও কুরিয়ার অটোমেশন সহ সম্পূর্ণ ল্যান্ডিং পেজ মাত্র ৳৩,৯৯০ থেকে শুরু। ফ্রি ডোমেইন ও হোস্টিং সহ ৪৮-৭২ ঘণ্টায় ডেলিভারি।</p>
+      <h2 data-i18n="blog_cta_title">পড়া শেষ, এবার নিজের ব্যবসার জন্য ওয়েবসাইট বানান</h2>
+      <p data-i18n="blog_cta_desc">১-ক্লিক ক্যাশ অন ডেলিভারি ফর্ম, Meta Pixel CAPI ও কুরিয়ার অটোমেশন সহ সম্পূর্ণ ল্যান্ডিং পেজ মাত্র ৳৩,৯৯০ থেকে শুরু। ফ্রি ডোমেইন ও হোস্টিং সহ ৪৮-৭২ ঘণ্টায় ডেলিভারি।</p>
       <div class="cta-buttons">
         <a class="btn-wa" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20want%20to%20build%20a%20website%20for%20my%20business" target="_blank" rel="noopener noreferrer">
           <i data-lucide="message-circle" style="width:18px;height:18px;"></i>
-          <span>WhatsApp এ অর্ডার করুন</span>
+          <span data-i18n="blog_cta_wa_btn">WhatsApp এ অর্ডার করুন</span>
         </a>
         <a class="btn-gold" href="/website-price-bangladesh/">
           <i data-lucide="tags" style="width:18px;height:18px;"></i>
-          <span>সব প্যাকেজের দাম দেখুন</span>
+          <span data-i18n="blog_cta_pricing_btn">সব প্যাকেজের দাম দেখুন</span>
         </a>
       </div>
     </div>
@@ -694,7 +847,7 @@ footer {
     </div>
 
     <div class="footer-links">
-      <a href="/">হোম</a>
+      <a href="/" data-i18n="nav_home">হোম</a>
       <span>•</span>
       <a href="/landing-page-bangladesh/">ল্যান্ডিং পেজ তৈরি</a>
       <span>•</span>
@@ -702,13 +855,13 @@ footer {
       <span>•</span>
       <a href="/ecommerce-website/">ই-কমার্স ওয়েবসাইট</a>
       <span>•</span>
-      <a href="/personal-brand-website/">পার্সোনাল ব্র্যান্ড ওয়েবসাইট</a>
+      <a href="/personal-brand-website/">পার্সোনাল ব্র্যান্ড</a>
       <span>•</span>
       <a href="/corporate-website/">কর্পোরেট ওয়েবসাইট</a>
       <span>•</span>
-      <a href="/website-price-bangladesh/">ওয়েবসাইটের দাম ও খরচ</a>
+      <a href="/website-price-bangladesh/" data-i18n="nav_pricing">ওয়েবসাইটের দাম ও খরচ</a>
       <span>•</span>
-      <a href="/blog/">ব্লগ ও নলেজ হাব</a>
+      <a href="/blog/" data-i18n="nav_blog">ব্লগ ও নলেজ হাব</a>
     </div>
 
     <div class="footer-bottom">
@@ -719,6 +872,47 @@ footer {
 </footer>
 
 <script>
+  let currentCategory = 'all';
+  let searchQuery = '';
+
+  function handleBlogFilter(category, btnEl) {
+    currentCategory = category;
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    if (btnEl) btnEl.classList.add('active');
+    applyFilters();
+  }
+
+  function handleBlogSearch(query) {
+    searchQuery = (query || '').trim().toLowerCase();
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const cards = document.querySelectorAll('.article-card');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      const cat = card.getAttribute('data-category');
+      const text = card.innerText.toLowerCase();
+
+      const matchesCat = (currentCategory === 'all' || cat === currentCategory);
+      const matchesSearch = (!searchQuery || text.includes(searchQuery));
+
+      if (matchesCat && matchesSearch) {
+        card.style.display = 'flex';
+        card.style.opacity = '1';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    const emptyBox = document.getElementById('empty-state');
+    if (emptyBox) {
+      emptyBox.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+  }
+
   if (window.lucide) {
     lucide.createIcons();
   }
