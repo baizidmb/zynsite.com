@@ -226,7 +226,7 @@ class BackendService {
           .order("created_at", { ascending: false });
 
         if (!error && Array.isArray(data)) {
-          let orders = data;
+          let orders = data.filter(o => o.status !== "system" && !o.order_id?.startsWith("SETTINGS_"));
           // Auto-sync any local-only orders that were previously saved in fallback mode
           const localOrders = this.getLocalOrders();
           const cloudIds = new Set(data.map(o => o.order_id));
@@ -422,7 +422,7 @@ class BackendService {
       const raw = localStorage.getItem(BACKEND_CONFIG.STORAGE_ORDERS);
       if (!raw) return [];
       const parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? parsed : [];
+      return (Array.isArray(parsed) ? parsed : []).filter(o => o.status !== "system" && !o.order_id?.startsWith("SETTINGS_"));
     } catch (e) {
       return [];
     }
@@ -551,13 +551,91 @@ class BackendService {
    * Telegram Bot Instant Notification Dispatcher
    * Uses user-configured bot token and chat_id, or defaults to official bot token
    */
+  /**
+   * Fetch Telegram notification configuration (Token & Chat ID) from Supabase or localStorage
+   */
+  async getCloudTelegramConfig() {
+    let chatId = localStorage.getItem("zynsite_telegram_chat_id") || "";
+    let token = localStorage.getItem("zynsite_telegram_bot_token") || "8885095686:AAGT6BXeyVa2HgWg8TXqYc1cf0L7Yc4DMM4";
+
+    if ((!chatId || !token) && this.isConfigured && this.supabase) {
+      try {
+        const { data } = await this.supabase
+          .from("orders")
+          .select("order_id, notes")
+          .in("order_id", ["SETTINGS_TELEGRAM_CHAT_ID", "SETTINGS_TELEGRAM_BOT_TOKEN"]);
+        if (Array.isArray(data)) {
+          data.forEach(row => {
+            if (row.order_id === "SETTINGS_TELEGRAM_CHAT_ID" && row.notes) {
+              chatId = row.notes.trim();
+              localStorage.setItem("zynsite_telegram_chat_id", chatId);
+            }
+            if (row.order_id === "SETTINGS_TELEGRAM_BOT_TOKEN" && row.notes) {
+              token = row.notes.trim();
+              localStorage.setItem("zynsite_telegram_bot_token", token);
+            }
+          });
+        }
+      } catch (e) {
+        console.warn("Could not fetch cloud telegram settings:", e);
+      }
+    }
+    return { token, chatId };
+  }
+
+  /**
+   * Save Telegram notification configuration (Token & Chat ID) to both localStorage and Supabase
+   */
+  async saveCloudTelegramConfig(token, chatId) {
+    if (token) localStorage.setItem("zynsite_telegram_bot_token", token.trim());
+    if (chatId) localStorage.setItem("zynsite_telegram_chat_id", chatId.trim());
+
+    if (this.isConfigured && this.supabase) {
+      try {
+        const rows = [];
+        if (token) {
+          rows.push({
+            order_id: "SETTINGS_TELEGRAM_BOT_TOKEN",
+            client_name: "SYSTEM_SETTING",
+            client_phone: "SYSTEM",
+            package_name: "TELEGRAM_CONFIG",
+            notes: token.trim(),
+            status: "system"
+          });
+        }
+        if (chatId) {
+          rows.push({
+            order_id: "SETTINGS_TELEGRAM_CHAT_ID",
+            client_name: "SYSTEM_SETTING",
+            client_phone: "SYSTEM",
+            package_name: "TELEGRAM_CONFIG",
+            notes: chatId.trim(),
+            status: "system"
+          });
+        }
+        if (rows.length > 0) {
+          await this.supabase.from("orders").upsert(rows, { onConflict: "order_id" });
+        }
+      } catch (e) {
+        console.warn("Could not save cloud telegram config:", e);
+      }
+    }
+  }
+
   async dispatchTelegramNotification(type, data, waLink) {
     try {
-      const defaultToken = "8885095686:AAEOzmapefS7Z5_vBAG0dnkiAFEvL3adssA";
-      const token = (localStorage.getItem("zynsite_telegram_bot_token") || defaultToken).trim();
+      const defaultToken = "8885095686:AAGT6BXeyVa2HgWg8TXqYc1cf0L7Yc4DMM4";
+      let token = (localStorage.getItem("zynsite_telegram_bot_token") || defaultToken).trim();
       let chatId = (localStorage.getItem("zynsite_telegram_chat_id") || "").trim();
 
-      // If chatId is not set yet, attempt to auto-discover it from getUpdates
+      // 1. If chatId is missing, check cloud Supabase config
+      if (!chatId) {
+        const cloudCfg = await this.getCloudTelegramConfig();
+        if (cloudCfg.chatId) chatId = cloudCfg.chatId;
+        if (cloudCfg.token) token = cloudCfg.token;
+      }
+
+      // 2. If still missing, attempt to auto-discover it from getUpdates
       if (!chatId && token) {
         try {
           const updRes = await fetch(`https://api.telegram.org/bot${token}/getUpdates`, { method: "GET" });
@@ -565,10 +643,14 @@ class BackendService {
             const updData = await updRes.json();
             const updates = updData?.result || [];
             if (updates.length > 0) {
-              const lastMsg = updates[updates.length - 1]?.message;
-              if (lastMsg?.chat?.id) {
-                chatId = String(lastMsg.chat.id);
-                localStorage.setItem("zynsite_telegram_chat_id", chatId);
+              for (let i = updates.length - 1; i >= 0; i--) {
+                const u = updates[i];
+                const foundChat = u.message?.chat || u.channel_post?.chat || u.my_chat_member?.chat || u.callback_query?.message?.chat;
+                if (foundChat?.id) {
+                  chatId = String(foundChat.id);
+                  this.saveCloudTelegramConfig(token, chatId).catch(() => {});
+                  break;
+                }
               }
             }
           }
