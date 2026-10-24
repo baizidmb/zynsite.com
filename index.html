@@ -40,150 +40,189 @@
 
   <!-- JSON-LD Structured Data Schema -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "ProfessionalService",
-        "@id": "https://www.zynsite.com/#organization",
-        "name": "ZynSite",
-        "url": "https://www.zynsite.com/",
-        "logo": "https://www.zynsite.com/assets/zynsite-logo.png",
-        "image": "https://www.zynsite.com/assets/og-image.png",
-        "telephone": "+40774119870",
-        "email": "contact@zynsite.com",
-        "description": "১-ক্লিক ক্যাশ-অন-ডেলিভারি ল্যান্ডিং পেজ, মেটা CAPI ট্র্যাকিং এবং Steadfast/Pathao অটোমেশন। ফ্রি .com ডোমেইন ও হোস্টিং সহ ৪৮-৭২ ঘণ্টায় ডেলিভারি! ZynSite — landing page and website design in Bangladesh for Facebook commerce sellers, from ৳3,990.",
-        "sameAs": [
-          "https://www.facebook.com/zynsite",
-          "https://www.youtube.com/@zynsite"
-        ],
-        "priceRange": "৳3990 - ৳14990",
-        "currenciesAccepted": "BDT, USD",
-        "paymentAccepted": "Cash on Delivery, bKash, Nagad, Bank Transfer, Cards",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Global Operations • Bucharest (EU) & Dhaka Digital Hub",
-          "addressCountry": "RO, BD"
-        },
-        "hasOfferCatalog": {
-          "@type": "OfferCatalog",
-          "name": "Web Development Services",
-          "itemListElement": [
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "F-Commerce Landing Page",
-                "description": "হাই-কনভার্টিং ১-পেজ সেলস ফানেল, ক্যাশ অন ডেলিভারি ফর্ম, মেটা পিক্সেল CAPI ও কুরিয়ার এপিআই।"
-              },
-              "price": "3990",
-              "priceCurrency": "BDT"
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Personal Brand Master",
-                "description": "ডাক্তার, কনসালট্যান্ট, শিক্ষক ও ফ্রিল্যান্সারদের নিজস্ব আধুনিক পোর্টফোলিও।"
-              },
-              "price": "4990",
-              "priceCurrency": "BDT"
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Corporate Business Pro",
-                "description": "কোম্পানি প্রোফাইল, সার্ভিস ক্যাটালগ ও কর্পোরেট বিজনেস প্ল্যাটফর্ম।"
-              },
-              "price": "7990",
-              "priceCurrency": "BDT"
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": "Mega E-Commerce Empire",
-                "description": "মাল্টি-প্রোডাক্ট স্বয়ংক্রিয় অনলাইন স্টোর, ইনভেন্টরি, গেটওয়ে ও কুরিয়ার অটোমেশন।"
-              },
-              "price": "14990",
-              "priceCurrency": "BDT"
-            }
-          ]
-        }
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://www.zynsite.com/#organization",
+      "name": "ZynSite",
+      "url": "https://www.zynsite.com/",
+      "logo": "https://www.zynsite.com/assets/zynsite-logo.png",
+      "image": "https://www.zynsite.com/assets/og-image.png",
+      "telephone": "+40774119870",
+      "email": "contact@zynsite.com",
+      "description": "১-ক্লিক ক্যাশ-অন-ডেলিভারি ল্যান্ডিং পেজ, মেটা CAPI ট্র্যাকিং এবং Steadfast/Pathao অটোমেশন। ফ্রি .com ডোমেইন ও হোস্টিং সহ ৪৮-৭২ ঘণ্টায় ডেলিভারি! ZynSite — landing page and website design in Bangladesh for Facebook commerce sellers, from ৳3,990.",
+      "sameAs": [
+        "https://www.facebook.com/zynsite",
+        "https://www.youtube.com/@zynsite"
+      ],
+      "priceRange": "৳3990 - ৳14990",
+      "currenciesAccepted": "BDT, USD",
+      "paymentAccepted": "Cash on Delivery, bKash, Nagad, Bank Transfer, Cards",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Global Operations • Bucharest (EU) & Dhaka Digital Hub",
+        "addressCountry": "RO, BD"
       },
-      {
-        "@type": "FAQPage",
-        "@id": "https://www.zynsite.com/#faq",
-        "mainEntity": [
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Web Development Services",
+        "itemListElement": [
           {
-            "@type": "Question",
-            "name": "ডোমেইন ও হোস্টিংয়ের পূর্ণ মালিকানা কি আমি পাবো?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "হ্যাঁ, অবশ্যই! ডোমেইন ও হোস্টিংয়ের ১০০% পূর্ণ মালিকানা আপনার নিজের নামেই থাকবে। সিপ্যানেল (cPanel), ডিএনএস কন্ট্রোল এবং ডেডিকেটেড অ্যাডমিন লগইন অ্যাক্সেস লাইভ হওয়ার সাথে সাথেই আপনাকে বুঝিয়ে দেওয়া হবে।"
-            }
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "F-Commerce Landing Page",
+              "description": "হাই-কনভার্টিং ১-পেজ সেলস ফানেল, ক্যাশ অন ডেলিভারি ফর্ম, মেটা পিক্সেল CAPI ও কুরিয়ার এপিআই।"
+            },
+            "price": "3990",
+            "priceCurrency": "BDT"
           },
           {
-            "@type": "Question",
-            "name": "ফেইক অর্ডার বা ভুয়া কাস্টমার আটকাবো কীভাবে?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "আমাদের সেলস ফানেলে অটোমেটেড ফোন নম্বর ভ্যালিডেশন, ওটিপি (OTP) ভেরিফিকেশন, আইপি রেট লিমিটার এবং কুরিয়ার ফ্রড চেকার ইন্টিগ্রেট করা থাকে। এর ফলে ভুয়া মোবাইল নম্বর দিয়ে কোনো কাস্টমার অর্ডার সাবমিট করতে পারে না এবং কুরিয়ার রিটার্ন রেট শূন্যের কোঠায় নেমে আসে।"
-            }
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Personal Brand Master",
+              "description": "ডাক্তার, কনসালট্যান্ট, শিক্ষক ও ফ্রিল্যান্সারদের নিজস্ব আধুনিক পোর্টফোলিও।"
+            },
+            "price": "4990",
+            "priceCurrency": "BDT"
           },
           {
-            "@type": "Question",
-            "name": "ওয়েবসাইট তৈরির কাজ শেষ হতে কত দিন সময় লাগবে?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "এফ-কমার্স ল্যান্ডিং পেজ মাত্র ৪৮ থেকে ৭২ ঘণ্টার মধ্যে সম্পূর্ণ রেডি হয়ে যায়। কর্পোরেট ওয়েবসাইটের জন্য ৫-৭ দিন এবং বড় ই-কমার্স প্রজেক্টের জন্য সাধারণত ৭-১০ দিন সময় লাগে।"
-            }
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Corporate Business Pro",
+              "description": "কোম্পানি প্রোফাইল, সার্ভিস ক্যাটালগ ও কর্পোরেট বিজনেস প্ল্যাটফর্ম।"
+            },
+            "price": "7990",
+            "priceCurrency": "BDT"
           },
           {
-            "@type": "Question",
-            "name": "ডেলিভারির পর কি আমি নিজে প্রোডাক্ট বা কনটেন্ট পরিবর্তন করতে পারব?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "অবশ্যই! আমরা এমন সহজ এবং ইউজার-ফ্রেন্ডলি ড্যাশবোর্ড তৈরি করে দিই যাতে টেকনিক্যাল কোনো জ্ঞান ছাড়াই আপনি ছবি, লেখা, দাম পরিবর্তন ও অর্ডার দেখতে পারবেন। সাথে থাকবে বিস্তারিত বাংলা ভিডিও গাইড।"
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "কুরিয়ার (Steadfast/Pathao) এবং পেমেন্ট কিভাবে কানেক্ট হবে?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "আমরা আপনার কুরিয়ার অ্যাকাউন্টের এপিআই (API) সরাসরি ওয়েবসাইটের সাথে যুক্ত করে দেব, যাতে কাস্টমার অর্ডার দিলে এক ক্লিকেই আপনার কুরিয়ার ড্যাশবোর্ডে পার্সেল ক্রিয়েট হয়ে যায়।"
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "পেমেন্ট কিভাবে করতে হবে? অগ্রিম কত দিতে হয়?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "আমাদের কাজের স্বচ্ছতা নিশ্চিত করতে আমরা প্রজেক্ট শুরুর আগে মাত্র ৫০% অ্যাডভান্স নিই। কাজ সম্পন্ন হওয়ার পর আপনি ডেমো দেখে সন্তুষ্ট হলে অবশিষ্ট ৫০% পরিশোধ করবেন। পেমেন্ট বিকাশ, নগদ বা ব্যাংক অ্যাকাউন্টে করা যায়।"
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "ফেসবুক পিক্সেল ও কনভার্শন এপিআই (CAPI) কি আপনারা সেট করে দেবেন?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "হ্যাঁ! মেটা পিক্সেল, কনভার্শন এপিআই (CAPI), গুগল ট্যাগ ম্যানেজার ও গুগল অ্যানালিটিক্স ৪ প্রফেশনালি সেটআপ করে দিব যাতে আপনার বিজ্ঞাপনের আরওআই (ROAS) সর্বোচ্চ হয় এবং কাস্টমার ট্র্যাকিং নিখুঁত থাকে।"
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "ওয়েবসাইট ডেলিভারির পর যদি কোনো টেকনিক্যাল সমস্যা হয়?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "আমাদের প্রতিটি প্যাকেজের সাথেই ফ্রি সাপোর্ট যুক্ত রয়েছে। ডেলিভারির পরেও কোনো সমস্যা হলে আমাদের সাপোর্ট টিম সার্বক্ষণিক সহযোগিতা করবে।"
-            }
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Mega E-Commerce Empire",
+              "description": "মাল্টি-প্রোডাক্ট স্বয়ংক্রিয় অনলাইন স্টোর, ইনভেন্টরি, গেটওয়ে ও কুরিয়ার অটোমেশন।"
+            },
+            "price": "14990",
+            "priceCurrency": "BDT"
           }
         ]
       }
-    ]
-  }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://www.zynsite.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "ডোমেইন ও হোস্টিংয়ের পূর্ণ মালিকানা কি আমি পাবো?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "হ্যাঁ, অবশ্যই! ডোমেইন ও হোস্টিংয়ের ১০০% পূর্ণ মালিকানা আপনার নিজের নামেই থাকবে। সিপ্যানেল (cPanel), ডিএনএস কন্ট্রোল এবং ডেডিকেটেড অ্যাডমিন লগইন অ্যাক্সেস লাইভ হওয়ার সাথে সাথেই আপনাকে বুঝিয়ে দেওয়া হবে।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ফেইক অর্ডার বা ভুয়া কাস্টমার আটকাবো কীভাবে?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "আমাদের সেলস ফানেলে অটোমেটেড ফোন নম্বর ভ্যালিডেশন, ওটিপি (OTP) ভেরিফিকেশন, আইপি রেট লিমিটার এবং কুরিয়ার ফ্রড চেকার ইন্টিগ্রেট করা থাকে। এর ফলে ভুয়া মোবাইল নম্বর দিয়ে কোনো কাস্টমার অর্ডার সাবমিট করতে পারে না এবং কুরিয়ার রিটার্ন রেট শূন্যের কোঠায় নেমে আসে।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ওয়েবসাইট তৈরির কাজ শেষ হতে কত দিন সময় লাগবে?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "এফ-কমার্স ল্যান্ডিং পেজ মাত্র ৪৮ থেকে ৭২ ঘণ্টার মধ্যে সম্পূর্ণ রেডি হয়ে যায়। কর্পোরেট ওয়েবসাইটের জন্য ৫-৭ দিন এবং বড় ই-কমার্স প্রজেক্টের জন্য সাধারণত ৭-১০ দিন সময় লাগে।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ডেলিভারির পর কি আমি নিজে প্রোডাক্ট বা কনটেন্ট পরিবর্তন করতে পারব?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "অবশ্যই! আমরা এমন সহজ এবং ইউজার-ফ্রেন্ডলি ড্যাশবোর্ড তৈরি করে দিই যাতে টেকনিক্যাল কোনো জ্ঞান ছাড়াই আপনি ছবি, লেখা, দাম পরিবর্তন ও অর্ডার দেখতে পারবেন। সাথে থাকবে বিস্তারিত বাংলা ভিডিও গাইড।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "কুরিয়ার (Steadfast/Pathao) এবং পেমেন্ট কিভাবে কানেক্ট হবে?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "আমরা আপনার কুরিয়ার অ্যাকাউন্টের এপিআই (API) সরাসরি ওয়েবসাইটের সাথে যুক্ত করে দেব, যাতে কাস্টমার অর্ডার দিলে এক ক্লিকেই আপনার কুরিয়ার ড্যাশবোর্ডে পার্সেল ক্রিয়েট হয়ে যায়।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "পেমেন্ট কিভাবে করতে হবে? অগ্রিম কত দিতে হয়?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "আমাদের কাজের স্বচ্ছতা নিশ্চিত করতে আমরা প্রজেক্ট শুরুর আগে মাত্র ৫০% অ্যাডভান্স নিই। কাজ সম্পন্ন হওয়ার পর আপনি ডেমো দেখে সন্তুষ্ট হলে অবশিষ্ট ৫০% পরিশোধ করবেন। পেমেন্ট বিকাশ, নগদ বা ব্যাংক অ্যাকাউন্টে করা যায়।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ফেসবুক পিক্সেল ও কনভার্শন এপিআই (CAPI) কি আপনারা সেট করে দেবেন?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "হ্যাঁ! মেটা পিক্সেল, কনভার্শন এপিআই (CAPI), গুগল ট্যাগ ম্যানেজার ও গুগল অ্যানালিটিক্স ৪ প্রফেশনালি সেটআপ করে দিব যাতে আপনার বিজ্ঞাপনের আরওআই (ROAS) সর্বোচ্চ হয় এবং কাস্টমার ট্র্যাকিং নিখুঁত থাকে।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ওয়েবসাইট ডেলিভারির পর যদি কোনো টেকনিক্যাল সমস্যা হয়?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "আমাদের প্রতিটি প্যাকেজের সাথেই ফ্রি সাপোর্ট যুক্ত রয়েছে। ডেলিভারির পরেও কোনো সমস্যা হলে আমাদের সাপোর্ট টিম সার্বক্ষণিক সহযোগিতা করবে।"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "VideoObject",
+      "name": "ZynSite - Stop Losing Orders in Your Inbox",
+      "description": "ইনবক্সে অর্ডার হারাচ্ছেন? ZynSite ল্যান্ডিং পেজে কাস্টমার নিজেই অর্ডার করে।",
+      "thumbnailUrl": "https://i.ytimg.com/vi/px694jjAGes/hqdefault.jpg",
+      "uploadDate": "2026-10-25",
+      "contentUrl": "https://www.youtube.com/shorts/px694jjAGes",
+      "embedUrl": "https://www.youtube.com/embed/px694jjAGes"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "ZynSite - Your Shop, Open 24 Hours",
+      "description": "আপনার দোকান ২৪ ঘণ্টা খোলা থাকুক, ZynSite ওয়েবসাইটের মাধ্যমে।",
+      "thumbnailUrl": "https://i.ytimg.com/vi/M1ClLwpyqgM/hqdefault.jpg",
+      "uploadDate": "2026-10-25",
+      "contentUrl": "https://www.youtube.com/shorts/M1ClLwpyqgM",
+      "embedUrl": "https://www.youtube.com/embed/M1ClLwpyqgM"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "ZynSite - Landing Page Price Questions, Answered",
+      "description": "ল্যান্ডিং পেজের দাম নিয়ে যত প্রশ্ন, তার উত্তর এই ভিডিওতে।",
+      "thumbnailUrl": "https://i.ytimg.com/vi/GVEAx2X87SY/hqdefault.jpg",
+      "uploadDate": "2026-10-25",
+      "contentUrl": "https://www.youtube.com/shorts/GVEAx2X87SY",
+      "embedUrl": "https://www.youtube.com/embed/GVEAx2X87SY"
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://www.zynsite.com/#localbusiness",
+      "name": "ZynSite",
+      "url": "https://www.zynsite.com",
+      "telephone": "+40 774 119 870",
+      "areaServed": "Bangladesh",
+      "sameAs": [
+        "https://www.facebook.com/zynsite",
+        "https://www.youtube.com/@zynsite"
+      ]
+    }
+  ]
+}
   </script>
 
   <!-- Tailwind CSS CDN -->
@@ -1714,6 +1753,39 @@
         <!-- Rendered via js/main.js -->
       </div>
 
+    </div>
+  </section>
+
+  <!-- WATCH: ZYNSITE VIDEOS -->
+  <section class="py-16 relative overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl sm:text-4xl font-black text-[#14120D] leading-snug">ভিডিওতে দেখুন: ZynSite কীভাবে কাজ করে</h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-3 max-w-2xl mx-auto leading-relaxed">ছোট ছোট ভিডিওতে দেখে নিন, কীভাবে একটি ল্যান্ডিং পেজ আপনার ইনবক্সের চাপ কমায় আর বিক্রি বাড়ায়।</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div>
+          <div class="rounded-2xl overflow-hidden border border-[#C8AA76]/30 shadow-lg bg-black">
+            <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/px694jjAGes" title="ZynSite - Stop Losing Orders in Your Inbox" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="text-center text-sm text-slate-600 mt-3 leading-relaxed">ইনবক্সের ঝামেলা শেষ, অর্ডার আসবে গোছানোভাবে</p>
+        </div>
+        <div>
+          <div class="rounded-2xl overflow-hidden border border-[#C8AA76]/30 shadow-lg bg-black">
+            <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/M1ClLwpyqgM" title="ZynSite - Your Shop, Open 24 Hours" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="text-center text-sm text-slate-600 mt-3 leading-relaxed">২৪ ঘণ্টা খোলা আপনার অনলাইন দোকান</p>
+        </div>
+        <div>
+          <div class="rounded-2xl overflow-hidden border border-[#C8AA76]/30 shadow-lg bg-black">
+            <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/GVEAx2X87SY" title="ZynSite - Landing Page Price Questions, Answered" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="text-center text-sm text-slate-600 mt-3 leading-relaxed">ল্যান্ডিং পেজের দাম নিয়ে সব প্রশ্নের উত্তর</p>
+        </div>
+      </div>
+      <div class="text-center mt-8">
+        <a href="https://www.youtube.com/@zynsite" target="_blank" rel="noopener noreferrer" class="inline-block px-6 py-3 rounded-xl font-bold text-base text-[#14120D] border border-[#C8AA76]/40 bg-white/80 hover:bg-white shadow-sm">আরও ভিডিও দেখুন: YouTube এ ZynSite</a>
+      </div>
     </div>
   </section>
 
