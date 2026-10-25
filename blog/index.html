@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Hind+Siliguri:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
-<script src="/js/i18n.js"></script>
+<script src="/js/i18n.js" onerror="this.onerror=null;this.src='../js/i18n.js';"></script>
 
 <script type="application/ld+json">
 {
@@ -81,7 +81,7 @@ img { max-width: 100%; height: auto; display: block; }
 .wrap { max-width: 1160px; margin: 0 auto; padding: 0 20px; }
 
 /* Sticky Header */
-header {
+header.site-header {
   position: sticky;
   top: 0;
   background: rgba(250, 249, 245, 0.96);
@@ -172,21 +172,30 @@ header {
   color: #64748B;
 }
 .lang-switcher-pill button.active-lang,
+body.lang-bn .lang-btn-bn,
 body.lang-bn-active .lang-btn-bn,
-body:not(.lang-en-active) .lang-btn-bn {
-  background: linear-gradient(135deg, #1C1914, #14120D);
-  color: #FAF8F5;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+body:not(.lang-en) .lang-btn-bn {
+  background: linear-gradient(135deg, #1C1914, #14120D) !important;
+  color: #FAF8F5 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
 }
+body.lang-en .lang-btn-en,
 body.lang-en-active .lang-btn-en {
-  background: linear-gradient(135deg, #1C1914, #14120D);
-  color: #FAF8F5;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  background: linear-gradient(135deg, #1C1914, #14120D) !important;
+  color: #FAF8F5 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
 }
+body.lang-en .lang-btn-bn,
 body.lang-en-active .lang-btn-bn {
-  background: transparent;
-  color: #64748B;
-  box-shadow: none;
+  background: transparent !important;
+  color: #64748B !important;
+  box-shadow: none !important;
+}
+body.lang-bn .lang-btn-en,
+body.lang-bn-active .lang-btn-en {
+  background: transparent !important;
+  color: #64748B !important;
+  box-shadow: none !important;
 }
 
 .nav-cta {
@@ -598,7 +607,7 @@ body.lang-bn .lang-btn-en {
 <body data-title-bn="ব্লগ ও নলেজ হাব — অনলাইন ব্যবসার প্র্যাকটিক্যাল গাইড | ZynSite" data-title-en="Blog & Knowledge Hub — Practical Online Business Guides | ZynSite">
 
 <!-- Header -->
-<header>
+<header class="site-header">
   <div class="wrap nav-row">
     <a class="brand-link" href="/" aria-label="ZynSite">
       <div class="brand-icon-box">

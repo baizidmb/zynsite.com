@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Hind+Siliguri:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
-<script src="/js/i18n.js"></script>
+<script src="/js/i18n.js" onerror="this.onerror=null;this.src='../../js/i18n.js';"></script>
 
 <script type="application/ld+json">
 {
@@ -132,14 +132,14 @@ img { max-width: 100%; height: auto; display: block; }
 .wrap { max-width: 920px; margin: 0 auto; padding: 0 20px; }
 
 /* Sticky Header */
-header {
+header.site-header {
   position: sticky;
   top: 0;
   background: rgba(250, 249, 245, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
-  z-index: 50;
+  z-index: 100;
 }
 .nav-row {
   display: flex;
@@ -213,6 +213,10 @@ header {
 
 /* Article Header */
 .article-header {
+  position: static !important;
+  top: auto !important;
+  z-index: auto !important;
+  background: transparent !important;
   padding: 24px 0 32px;
   border-bottom: 1px solid var(--border);
 }
@@ -612,17 +616,6 @@ footer {
   .footer-bottom { text-align: center; justify-content: center; }
 }
 
-/* Bilingual Display Rules */
-body.lang-en-active .lang-bn { display: none !important; }
-body.lang-en-active .lang-en { display: block !important; }
-body:not(.lang-en-active) .lang-en { display: none !important; }
-body:not(.lang-en-active) .lang-bn { display: block !important; }
-
-body.lang-en-active .lang-bn-inline { display: none !important; }
-body.lang-en-active .lang-en-inline { display: inline !important; }
-body:not(.lang-en-active) .lang-en-inline { display: none !important; }
-body:not(.lang-en-active) .lang-bn-inline { display: inline !important; }
-
 /* Language Switcher Pill */
 .lang-switcher-pill {
   display: inline-flex;
@@ -646,48 +639,77 @@ body:not(.lang-en-active) .lang-bn-inline { display: inline !important; }
   transition: all 0.2s;
   color: #64748B;
 }
+.lang-switcher-pill button.active-lang,
+body.lang-bn .lang-btn-bn,
 body.lang-bn-active .lang-btn-bn,
-body:not(.lang-en-active) .lang-btn-bn {
-  background: linear-gradient(135deg, #1C1914, #14120D);
-  color: #FAF8F5;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+body:not(.lang-en) .lang-btn-bn {
+  background: linear-gradient(135deg, #1C1914, #14120D) !important;
+  color: #FAF8F5 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
 }
-body.lang-en-active .lang-btn-en {
-  background: linear-gradient(135deg, #1C1914, #14120D);
-  color: #FAF8F5;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-}
-body.lang-en-active .lang-btn-bn {
-  background: transparent;
-  color: #64748B;
-  box-shadow: none;
-}
-
-
-/* Bilingual Display Rules */
-.lang-en { display: none; }
-.lang-en-inline { display: none; }
-body.lang-en .lang-bn { display: none !important; }
-body.lang-en .lang-en { display: block !important; }
-body.lang-bn .lang-en { display: none !important; }
-body.lang-bn .lang-bn { display: block !important; }
-
-body.lang-en .lang-bn-inline { display: none !important; }
-body.lang-en .lang-en-inline { display: inline !important; }
-body.lang-bn .lang-en-inline { display: none !important; }
-body.lang-bn .lang-bn-inline { display: inline !important; }
-
 body.lang-en .lang-btn-en,
-body.lang-bn .lang-btn-bn {
+body.lang-en-active .lang-btn-en {
   background: linear-gradient(135deg, #1C1914, #14120D) !important;
   color: #FAF8F5 !important;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
 }
 body.lang-en .lang-btn-bn,
-body.lang-bn .lang-btn-en {
+body.lang-en-active .lang-btn-bn {
   background: transparent !important;
   color: #64748B !important;
   box-shadow: none !important;
+}
+body.lang-bn .lang-btn-en,
+body.lang-bn-active .lang-btn-en {
+  background: transparent !important;
+  color: #64748B !important;
+  box-shadow: none !important;
+}
+
+/* Bilingual Display Rules */
+.lang-en { display: none !important; }
+.lang-en-inline { display: none !important; }
+.lang-bn { display: block; }
+.lang-bn-inline { display: inline; }
+
+body.lang-en .lang-bn,
+body.lang-en .lang-bn-inline,
+body.lang-en-active .lang-bn,
+body.lang-en-active .lang-bn-inline {
+  display: none !important;
+}
+
+body.lang-en .lang-en,
+body.lang-en-active .lang-en {
+  display: block !important;
+}
+body.lang-en .lang-en-inline,
+body.lang-en span.lang-en-inline,
+body.lang-en a.lang-en-inline,
+body.lang-en-active .lang-en-inline,
+body.lang-en-active span.lang-en-inline,
+body.lang-en-active a.lang-en-inline {
+  display: inline !important;
+}
+
+body.lang-bn .lang-en,
+body.lang-bn .lang-en-inline,
+body.lang-bn-active .lang-en,
+body.lang-bn-active .lang-en-inline {
+  display: none !important;
+}
+
+body.lang-bn .lang-bn,
+body.lang-bn-active .lang-bn {
+  display: block !important;
+}
+body.lang-bn .lang-bn-inline,
+body.lang-bn span.lang-bn-inline,
+body.lang-bn a.lang-bn-inline,
+body.lang-bn-active .lang-bn-inline,
+body.lang-bn-active span.lang-bn-inline,
+body.lang-bn-active a.lang-bn-inline {
+  display: inline !important;
 }
 
 </style>
@@ -698,7 +720,7 @@ body.lang-bn .lang-btn-en {
 <div id="reading-progress"></div>
 
 <!-- Sticky Header -->
-<header>
+<header class="site-header">
   <div class="wrap nav-row">
     <a class="brand-link" href="/" aria-label="ZynSite">
       <div class="brand-icon-box">

@@ -21,6 +21,8 @@
       top_email_title: "সাপোর্ট ইমেইল",
 
       // Navbar
+      nav_home: "হোম",
+      nav_ecommerce: "ই-কমার্স",
       nav_brand_sub: "zynsite.com",
       nav_services: "সেবাসমূহ",
       nav_fcommerce: "এফ-কমার্স ল্যান্ডিং পেজ",
@@ -405,6 +407,7 @@
       // Footer
       footer_desc: "আমরা বাংলাদেশি ব্যবসা ও ফেসবুক উদ্যোক্তাদের জন্য বিশ্বমানের, আল্ট্রা-ফাস্ট ও হাই-কনভার্টিং ওয়েবসাইট এবং ল্যান্ডিং পেজ তৈরি করি যা সেলস বাড়ায় এবং ব্র্যান্ড ভ্যালু প্রতিষ্ঠা করে।",
       footer_desc_short: "হাই-কনভার্টিং ওয়েবসাইট ও ১-ক্লিক সেলস ফানেল",
+      footer_online_badge: "২৪/৭ অনলাইন",
       footer_services_title: "সেবাসমূহ",
       footer_tools_title: "টুলস ও সাপোর্ট",
       footer_contact_title: "যোগাযোগ",
@@ -413,6 +416,29 @@
       footer_copyright: "© 2026 ZynSite. সর্বস্বত্ব সংরক্ষিত।",
       footer_payment_partners: "পেমেন্ট পার্টনার: বিকাশ • নগদ • ব্যাংক ট্রান্সফার • রকেট",
       footer_sla_notice: "🛡️ সকল প্রজেক্ট ১০০% সন্তুষ্টির গ্যারান্টি ও অফিসিয়াল SLA এগ্রিমেন্ট দ্বারা সুরক্ষিত।",
+      footer_solutions_title: "সলিউশনস:",
+      footer_sol_landing: "ল্যান্ডিং পেজ",
+      footer_sol_fcommerce: "F-Commerce",
+      footer_sol_ecommerce: "ই-কমার্স",
+      footer_sol_personal: "পার্সোনাল ব্র্যান্ড",
+      footer_sol_corporate: "কর্পোরেট ওয়েবসাইট",
+      footer_sol_price: "ওয়েবসাইটের দাম",
+      footer_featured_title: "জনপ্রিয় গাইড:",
+      footer_guide_1: "ওয়েবসাইট চেকলিস্ট",
+      footer_guide_2: "ফেসবুক পেজ vs ওয়েবসাইট",
+      footer_guide_3: "ল্যান্ডিং পেজের দাম কত?",
+      footer_guide_4: "ফেক অর্ডার কমানোর ৭ উপায়",
+      footer_all_blogs: "সকল ব্লগ ও গাইড",
+
+      // Video Section
+      video_section_title: "ভিডিওতে দেখুন: ZynSite কীভাবে কাজ করে",
+      video_section_subtitle: "ছোট ছোট ভিডিওতে দেখে নিন, কীভাবে একটি ল্যান্ডিং পেজ আপনার ইনবক্সের চাপ কমায় আর বিক্রি বাড়ায়।",
+      video_1_caption: "ইনবক্সের ঝামেলা শেষ, অর্ডার আসবে গোছানোভাবে",
+      video_2_caption: "২৪ ঘণ্টা খোলা আপনার অনলাইন দোকান",
+      video_3_caption: "ল্যান্ডিং পেজের দাম নিয়ে সব প্রশ্নের উত্তর",
+      video_yt_btn: "আরও ভিডিও দেখুন: YouTube এ ZynSite",
+      blog_date_oct_25: "২৫ অক্টো ২০২৬",
+      blog_date_oct_24: "২৪ অক্টো ২০২৬",
 
       // Pricing Transparency & Mobile Sticky CTA
       pricing_transparency_guarantee: "💡 ১০০% স্বচ্ছতা গ্যারান্টি: আমাদের কোনো লুকানো চার্জ নেই এবং ১ম বছর ডোমেইন-হোস্টিং সম্পূর্ণ ফ্রি। ২য় বছর থেকে শুধুমাত্র নামমাত্র রেগুলার রিনিউয়াল ফি প্রযোজ্য হবে এবং ফুল কন্ট্রোল প্যানেল আপনার নামেই থাকবে।",
@@ -679,6 +705,8 @@
       top_email_title: "Support Email",
 
       // Navbar
+      nav_home: "Home",
+      nav_ecommerce: "E-Commerce",
       nav_brand_sub: "zynsite.com",
       nav_services: "Services",
       nav_fcommerce: "F-Commerce Landing",
@@ -1063,6 +1091,7 @@
       // Footer
       footer_desc: "We build world-class, ultra-fast, high-converting websites and landing pages engineered to accelerate sales, capture leads, and establish authority for modern businesses.",
       footer_desc_short: "High-Converting Websites & 1-Click Sales Funnels",
+      footer_online_badge: "24/7 Online",
       footer_services_title: "Services",
       footer_tools_title: "Tools & Support",
       footer_contact_title: "Contact",
@@ -1071,6 +1100,29 @@
       footer_copyright: "© 2026 ZynSite. All rights reserved.",
       footer_payment_partners: "Payment Methods: Visa • MasterCard • Bank Transfer • bKash",
       footer_sla_notice: "🛡️ All client projects backed by our 100% Satisfaction Guarantee and official SLA agreement.",
+      footer_solutions_title: "Solutions:",
+      footer_sol_landing: "Landing Page",
+      footer_sol_fcommerce: "F-Commerce",
+      footer_sol_ecommerce: "E-Commerce",
+      footer_sol_personal: "Personal Brand",
+      footer_sol_corporate: "Corporate Website",
+      footer_sol_price: "Website Pricing",
+      footer_featured_title: "Featured Guides:",
+      footer_guide_1: "Website Checklist",
+      footer_guide_2: "Facebook Page vs Website",
+      footer_guide_3: "Landing Page Cost Guide",
+      footer_guide_4: "7 Ways to Reduce Fake Orders",
+      footer_all_blogs: "All Blogs & Guides",
+
+      // Video Section
+      video_section_title: "Watch: How ZynSite Multiplies Your Sales",
+      video_section_subtitle: "Actionable short videos showcasing how a high-converting landing page automates orders and boosts revenue.",
+      video_1_caption: "No more inbox clutter: orders placed automatically",
+      video_2_caption: "Your digital storefront open 24/7 on autopilot",
+      video_3_caption: "All your questions about landing page pricing answered",
+      video_yt_btn: "Watch More on YouTube: ZynSite →",
+      blog_date_oct_25: "Oct 25, 2026",
+      blog_date_oct_24: "Oct 24, 2026",
 
       // Pricing Transparency & Mobile Sticky CTA
       pricing_transparency_guarantee: "💡 100% Transparency Guarantee: No hidden fees ever. 1st year domain & cloud hosting are 100% free. From Year 2 onward, only regular nominal renewal fees apply, and the full control panel remains registered under your name.",
@@ -1420,6 +1472,8 @@
       if (document.body) {
         document.body.classList.toggle('lang-en', isEn);
         document.body.classList.toggle('lang-bn', !isEn);
+        document.body.classList.toggle('lang-en-active', isEn);
+        document.body.classList.toggle('lang-bn-active', !isEn);
       }
 
       // 1. Update Title and Meta
@@ -1501,6 +1555,7 @@
     }
 
     updateSwitcherUI(lang) {
+      const isEn = lang === 'en';
       document.querySelectorAll('.lang-switcher-pill').forEach(pill => {
         const bnBtn = pill.querySelector('.lang-btn-bn');
         const enBtn = pill.querySelector('.lang-btn-en');
@@ -1510,15 +1565,23 @@
         bnBtn.textContent = 'BN';
         enBtn.textContent = 'EN';
 
-        const activeClass = 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/30 font-bold';
-        const inactiveClass = 'text-slate-400 hover:text-white font-medium';
+        // Toggle active class for custom/standard CSS pages (e.g. blog)
+        bnBtn.classList.toggle('active-lang', !isEn);
+        enBtn.classList.toggle('active-lang', isEn);
 
-        if (lang === 'bn') {
-          bnBtn.className = `lang-btn-bn px-2.5 py-1 rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer text-xs font-en uppercase tracking-wider ${activeClass}`;
-          enBtn.className = `lang-btn-en px-2.5 py-1 rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer text-xs font-en uppercase tracking-wider ${inactiveClass}`;
-        } else {
-          enBtn.className = `lang-btn-en px-2.5 py-1 rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer text-xs font-en uppercase tracking-wider ${activeClass}`;
-          bnBtn.className = `lang-btn-bn px-2.5 py-1 rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer text-xs font-en uppercase tracking-wider ${inactiveClass}`;
+        // Check if page uses Tailwind (e.g. index.html)
+        const isTailwindPage = !!document.querySelector('script[src*="tailwind"]') || pill.classList.contains('backdrop-blur-md');
+        if (isTailwindPage) {
+          const activeClass = 'bg-gradient-to-r from-[#1C1914] to-[#14120D] text-[#FAF8F5] shadow-sm font-bold';
+          const inactiveClass = 'text-slate-600 hover:text-[#14120D] font-medium';
+
+          if (!isEn) {
+            bnBtn.className = `lang-btn-bn px-2.5 py-1 rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer text-xs font-en uppercase tracking-wider ${activeClass}`;
+            enBtn.className = `lang-btn-en px-2.5 py-1 rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer text-xs font-en uppercase tracking-wider ${inactiveClass}`;
+          } else {
+            enBtn.className = `lang-btn-en px-2.5 py-1 rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer text-xs font-en uppercase tracking-wider ${activeClass}`;
+            bnBtn.className = `lang-btn-bn px-2.5 py-1 rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer text-xs font-en uppercase tracking-wider ${inactiveClass}`;
+          }
         }
       });
     }
