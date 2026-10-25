@@ -23,6 +23,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Hind+Siliguri:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  (function() {
+    var saved = localStorage.getItem('zyn_lang') || localStorage.getItem('zynsite_lang');
+    var browser = (navigator.language || '').toLowerCase();
+    var lang = (saved === 'en' || (!saved && browser.startsWith('en'))) ? 'en' : 'bn';
+    document.documentElement.lang = lang;
+    if (lang === 'en') {
+      document.documentElement.classList.add('lang-en-html');
+    }
+  })();
+</script>
 <script src="/js/i18n.js" onerror="this.onerror=null;this.src='../js/i18n.js';"></script>
 
 <script type="application/ld+json">
@@ -103,33 +114,55 @@ header.site-header {
   align-items: center;
   gap: 10px;
   text-decoration: none;
+  flex-shrink: 0;
 }
 .brand-icon-box {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #1C1914, #14120D);
-  border: 1px solid rgba(200, 170, 118, 0.4);
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #C8AA76;
+  border: 1px solid rgba(179, 143, 72, 0.65);
+  box-shadow: 0 4px 14px -2px rgba(200, 170, 118, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
   flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.brand-icon-box:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 20px rgba(200, 170, 118, 0.45);
 }
 .brand-icon-box img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+}
+.brand-logo-text-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand-logo-img {
+  height: 28px;
+  width: auto;
   object-fit: contain;
+  display: block;
 }
-.brand-text-logo {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 25px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  color: var(--ink);
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34D399;
+  box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+  animation: pulse-green 2s infinite;
 }
-.brand-text-logo span { color: var(--gold); }
+@keyframes pulse-green {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(52, 211, 153, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+}
 
 .nav-links {
   display: flex;
@@ -146,6 +179,129 @@ header.site-header {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Luxury Gold Gradient Button */
+.gold-order-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(135deg, #F9EED4, #E8CD8C, #D4AF37);
+  color: #14120D;
+  font-weight: 700;
+  font-size: 13.5px;
+  padding: 8px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.28);
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+}
+.gold-order-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.42);
+}
+
+/* Mobile Hamburger Button */
+.mobile-menu-btn {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(200, 170, 118, 0.45);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+}
+.mobile-menu-btn .bar {
+  display: block;
+  height: 2px;
+  background: #14120D;
+  border-radius: 2px;
+  transition: all 0.25s;
+}
+.mobile-menu-btn .bar-1 { width: 20px; }
+.mobile-menu-btn .bar-2 { width: 15px; background: #B38F48; }
+.mobile-menu-btn .bar-3 { width: 20px; }
+
+/* Mobile Drawer */
+.mobile-drawer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(250, 249, 245, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 24px;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: auto;
+}
+.mobile-drawer.active {
+  display: flex;
+}
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(200, 170, 118, 0.25);
+}
+.drawer-close-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid rgba(200, 170, 118, 0.35);
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #14120D;
+  cursor: pointer;
+}
+.drawer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 30px 0;
+}
+.drawer-nav a {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1E293B;
+  transition: color 0.2s;
+}
+.drawer-nav a:hover {
+  color: var(--gold-dark);
+}
+.drawer-footer {
+  padding-top: 20px;
+  border-top: 1px solid rgba(200, 170, 118, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.drawer-footer .gold-order-btn {
+  justify-content: center;
+  padding: 14px;
+  font-size: 15px;
+}
+.drawer-contact-info {
+  font-size: 12.5px;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
 }
 
 /* Language Switcher Pill */
@@ -561,6 +717,8 @@ footer {
 
 @media (max-width: 768px) {
   .nav-links { display: none; }
+  .mobile-menu-btn { display: flex; }
+  .header-right .gold-order-btn { display: none; }
   .articles-grid { grid-template-columns: 1fr; }
   .blog-hero h1 { font-size: 26px; }
   .blog-hero p { font-size: 15px; }
@@ -576,27 +734,91 @@ footer {
   .footer-row, .footer-bottom { text-align: center; justify-content: center; }
 }
 
-/* Bilingual Display Rules */
+/* Bulletproof Bilingual Display Rules */
 .lang-en { display: none; }
 .lang-en-inline { display: none; }
-body.lang-en .lang-bn { display: none !important; }
-body.lang-en .lang-en { display: block !important; }
-body.lang-bn .lang-en { display: none !important; }
-body.lang-bn .lang-bn { display: block !important; }
 
-body.lang-en .lang-bn-inline { display: none !important; }
-body.lang-en .lang-en-inline { display: inline !important; }
-body.lang-bn .lang-en-inline { display: none !important; }
-body.lang-bn .lang-bn-inline { display: inline !important; }
+html[lang="en"] .lang-bn,
+html[lang="en"] .lang-bn-inline,
+html.lang-en-html .lang-bn,
+html.lang-en-html .lang-bn-inline,
+body.lang-en .lang-bn,
+body.lang-en .lang-bn-inline,
+body.lang-en-active .lang-bn,
+body.lang-en-active .lang-bn-inline {
+  display: none !important;
+}
+
+html[lang="en"] .lang-en,
+html.lang-en-html .lang-en,
+body.lang-en .lang-en,
+body.lang-en-active .lang-en {
+  display: block !important;
+}
+
+html[lang="en"] .lang-en-inline,
+html[lang="en"] span.lang-en-inline,
+html[lang="en"] a.lang-en-inline,
+html.lang-en-html .lang-en-inline,
+html.lang-en-html span.lang-en-inline,
+html.lang-en-html a.lang-en-inline,
+body.lang-en .lang-en-inline,
+body.lang-en span.lang-en-inline,
+body.lang-en a.lang-en-inline,
+body.lang-en-active .lang-en-inline,
+body.lang-en-active span.lang-en-inline,
+body.lang-en-active a.lang-en-inline {
+  display: inline !important;
+}
+
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) .lang-en,
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) .lang-en-inline,
+body.lang-bn .lang-en,
+body.lang-bn .lang-en-inline,
+body.lang-bn-active .lang-en,
+body.lang-bn-active .lang-en-inline {
+  display: none !important;
+}
+
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) .lang-bn,
+body.lang-bn .lang-bn,
+body.lang-bn-active .lang-bn {
+  display: block !important;
+}
+
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) .lang-bn-inline,
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) span.lang-bn-inline,
+body.lang-bn .lang-bn-inline,
+body.lang-bn span.lang-bn-inline,
+body.lang-bn-active .lang-bn-inline,
+body.lang-bn-active span.lang-bn-inline {
+  display: inline !important;
+}
 
 body.lang-en .lang-btn-en,
-body.lang-bn .lang-btn-bn {
+body.lang-en-active .lang-btn-en,
+html[lang="en"] .lang-btn-en {
   background: linear-gradient(135deg, #1C1914, #14120D) !important;
   color: #FAF8F5 !important;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
 }
 body.lang-en .lang-btn-bn,
-body.lang-bn .lang-btn-en {
+body.lang-en-active .lang-btn-bn,
+html[lang="en"] .lang-btn-bn {
+  background: transparent !important;
+  color: #64748B !important;
+  box-shadow: none !important;
+}
+body.lang-bn .lang-btn-bn,
+body.lang-bn-active .lang-btn-bn,
+html:not([lang="en"]):not(.lang-en-html) .lang-btn-bn {
+  background: linear-gradient(135deg, #1C1914, #14120D) !important;
+  color: #FAF8F5 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+}
+body.lang-bn .lang-btn-en,
+body.lang-bn-active .lang-btn-en,
+html:not([lang="en"]):not(.lang-en-html) .lang-btn-en {
   background: transparent !important;
   color: #64748B !important;
   box-shadow: none !important;
@@ -613,8 +835,9 @@ body.lang-bn .lang-btn-en {
       <div class="brand-icon-box">
         <img src="/assets/zynsite-icon.png" alt="ZynSite Emblem">
       </div>
-      <div class="brand-text-logo">
-        Zyn<span>Site</span>
+      <div class="brand-logo-text-wrap">
+        <img src="/assets/zynsite-text.png" alt="ZynSite.com" class="brand-logo-img">
+        <div class="pulse-dot" title="Active Agency"></div>
       </div>
     </a>
 
@@ -634,13 +857,57 @@ body.lang-bn .lang-btn-en {
         <button type="button" class="lang-btn-en" onclick="window.zynI18n.setLanguage('en', true)" title="EN">EN</button>
       </div>
 
-      <a class="nav-cta" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20want%20to%20build%20a%20website%20for%20my%20business" target="_blank" rel="noopener noreferrer">
-        <i data-lucide="message-circle" style="width:15px;height:15px;"></i>
-        <span data-i18n="nav_order">অর্ডার ও পরামর্শ</span>
+      <!-- Luxury Gold Gradient Order Button -->
+      <a class="gold-order-btn" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20want%20to%20build%20a%20website%20for%20my%20business" target="_blank" rel="noopener noreferrer">
+        <i data-lucide="shopping-cart" style="width:15px;height:15px;"></i>
+        <span data-i18n="nav_order">সরাসরি অর্ডার</span>
       </a>
+
+      <!-- Mobile Hamburger Button -->
+      <button type="button" class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle Navigation">
+        <span class="bar bar-1"></span>
+        <span class="bar bar-2"></span>
+        <span class="bar bar-3"></span>
+      </button>
     </div>
   </div>
 </header>
+
+<!-- Mobile Navigation Drawer -->
+<div id="mobile-menu-drawer" class="mobile-drawer" aria-hidden="true">
+  <div class="drawer-header">
+    <div class="brand-link">
+      <div class="brand-icon-box">
+        <img src="/assets/zynsite-icon.png" alt="ZynSite Emblem">
+      </div>
+      <div class="brand-logo-text-wrap">
+        <img src="/assets/zynsite-text.png" alt="ZynSite.com" class="brand-logo-img">
+      </div>
+    </div>
+    <button type="button" class="drawer-close-btn" onclick="toggleMobileMenu()" aria-label="Close menu">
+      <i data-lucide="x" style="width:20px;height:20px;"></i>
+    </button>
+  </div>
+  <nav class="drawer-nav">
+    <a href="/" onclick="toggleMobileMenu()">হোম / Home</a>
+    <a href="/landing-page-bangladesh/" onclick="toggleMobileMenu()">ল্যান্ডিং পেজ তৈরি</a>
+    <a href="/f-commerce-website/" onclick="toggleMobileMenu()">F-Commerce ওয়েবসাইট</a>
+    <a href="/ecommerce-website/" onclick="toggleMobileMenu()">ই-কমার্স ওয়েবসাইট</a>
+    <a href="/website-price-bangladesh/" onclick="toggleMobileMenu()">প্যাকেজ ও দাম (Pricing)</a>
+    <a href="/blog/" onclick="toggleMobileMenu()" style="color:var(--gold-dark);">ব্লগ ও নলেজ হাব</a>
+    <a href="/website-design-bangladesh/" onclick="toggleMobileMenu()">Website Design Bangladesh</a>
+  </nav>
+  <div class="drawer-footer">
+    <a href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20want%20to%20discuss%20a%20website%20project" target="_blank" rel="noopener noreferrer" class="gold-order-btn">
+      <i data-lucide="shopping-cart" style="width:16px;height:16px;"></i>
+      <span>অর্ডার ও পরামর্শ (WhatsApp)</span>
+    </a>
+    <div class="drawer-contact-info">
+      <span>অফিসিয়াল ইমেইল: <a href="mailto:contact@zynsite.com" style="color:var(--gold-dark);font-weight:600;">contact@zynsite.com</a></span>
+      <span>WhatsApp: +40 774 119 870</span>
+    </div>
+  </div>
+</div>
 
 <!-- Breadcrumb -->
 <div class="wrap">
@@ -846,8 +1113,8 @@ body.lang-bn .lang-btn-en {
         <div class="brand-icon-box" style="width:36px;height:36px;">
           <img src="/assets/zynsite-icon.png" alt="ZynSite Logo">
         </div>
-        <div class="brand-text-logo" style="font-size:22px;">
-          Zyn<span>Site</span>
+        <div class="brand-logo-text-wrap">
+          <img src="/assets/zynsite-text.png" alt="ZynSite.com" class="brand-logo-img" style="height:24px;">
         </div>
       </div>
       <div style="font-size:13px;color:var(--muted);">
@@ -875,12 +1142,19 @@ body.lang-bn .lang-btn-en {
 
     <div class="footer-bottom">
       <p>© ২০২৬ ZynSite.com. সর্বস্বত্ব সংরক্ষিত।</p>
-      <p>পেমেন্ট পার্টনার: বিকাশ • নগদ • ব্যাংক ট্রান্সফার • রকেট</p>
+      <p>অফিসিয়াল ইমেইল: <a href="mailto:contact@zynsite.com" style="color:var(--gold-dark);font-weight:600;">contact@zynsite.com</a> • WhatsApp: +40 774 119 870</p>
     </div>
   </div>
 </footer>
 
 <script>
+  function toggleMobileMenu() {
+    const drawer = document.getElementById('mobile-menu-drawer');
+    if (drawer) {
+      drawer.classList.toggle('active');
+    }
+  }
+
   let currentCategory = 'all';
   let searchQuery = '';
 

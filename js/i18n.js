@@ -1385,7 +1385,7 @@
     }
 
     detectInitialLanguage() {
-      const saved = localStorage.getItem('zyn_lang');
+      const saved = localStorage.getItem('zyn_lang') || localStorage.getItem('zynsite_lang');
       if (saved === 'bn' || saved === 'en') {
         return saved;
       }
@@ -1410,7 +1410,7 @@
 
     checkGeoIP() {
       // If user already explicitly picked a language, do not override
-      if (localStorage.getItem('zyn_lang')) return;
+      if (localStorage.getItem('zyn_lang') || localStorage.getItem('zynsite_lang')) return;
 
       // Fast async IP lookup for country code
       const fetchWithTimeout = (url, timeoutMs = 2500) => {
@@ -1459,7 +1459,10 @@
       this.currencySymbol = lang === 'en' ? '$' : '৳';
 
       if (persist) {
-        localStorage.setItem('zyn_lang', lang);
+        try {
+          localStorage.setItem('zyn_lang', lang);
+          localStorage.setItem('zynsite_lang', lang);
+        } catch (e) {}
       }
 
       this.applyLanguageToDOM(lang);
@@ -1468,6 +1471,8 @@
     applyLanguageToDOM(lang) {
       const isEn = lang === 'en';
       document.documentElement.lang = lang;
+      document.documentElement.setAttribute('lang', lang);
+      document.documentElement.classList.toggle('lang-en-html', isEn);
 
       if (document.body) {
         document.body.classList.toggle('lang-en', isEn);

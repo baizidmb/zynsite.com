@@ -23,6 +23,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Hind+Siliguri:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  (function() {
+    var saved = localStorage.getItem('zyn_lang') || localStorage.getItem('zynsite_lang');
+    var browser = (navigator.language || '').toLowerCase();
+    var lang = (saved === 'en' || (!saved && browser.startsWith('en'))) ? 'en' : 'bn';
+    document.documentElement.lang = lang;
+    if (lang === 'en') {
+      document.documentElement.classList.add('lang-en-html');
+    }
+  })();
+</script>
 <script src="/js/i18n.js" onerror="this.onerror=null;this.src='../../js/i18n.js';"></script>
 
 <script type="application/ld+json">
@@ -152,28 +163,52 @@ header.site-header {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
+  text-decoration: none;
 }
 .brand-icon-box {
-  width: 38px;
-  height: 38px;
-  border-radius: 11px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
   background: #C8AA76;
-  border: 1px solid rgba(179, 143, 72, 0.7);
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(200, 170, 118, 0.25);
+  border: 1px solid rgba(179, 143, 72, 0.65);
+  box-shadow: 0 4px 14px -2px rgba(200, 170, 118, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.brand-icon-box:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 20px rgba(200, 170, 118, 0.45);
 }
 .brand-icon-box img { width: 100%; height: 100%; object-fit: cover; }
-.brand-text-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--ink);
+.brand-logo-text-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-.brand-text-logo span { color: var(--gold); }
+.brand-logo-img {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34D399;
+  box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+  animation: pulse-green 2s infinite;
+}
+@keyframes pulse-green {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(52, 211, 153, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+}
 
 .nav-back-link {
   font-size: 13.5px;
@@ -183,20 +218,38 @@ header.site-header {
   align-items: center;
   gap: 6px;
   transition: color 0.2s;
+  white-space: nowrap;
 }
 .nav-back-link:hover { color: var(--gold-dark); }
 
-.nav-cta {
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Luxury Gold Gradient Button */
+.gold-order-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: linear-gradient(135deg, #15803D, #16A34A);
-  color: #fff;
+  gap: 7px;
+  background: linear-gradient(135deg, #F9EED4, #E8CD8C, #D4AF37);
+  color: #14120D;
   font-weight: 700;
   font-size: 13px;
   padding: 8px 16px;
-  border-radius: 9999px;
-  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.2);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.28);
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+}
+.gold-order-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.42);
 }
 
 /* Breadcrumb */
@@ -616,6 +669,13 @@ footer {
   .footer-bottom { text-align: center; justify-content: center; }
 }
 
+@media (max-width: 640px) {
+  .nav-back-link { display: none; }
+  .brand-logo-img { height: 24px; }
+  .brand-icon-box { width: 36px; height: 36px; }
+  .gold-order-btn { padding: 6px 12px; font-size: 12px; }
+}
+
 /* Language Switcher Pill */
 .lang-switcher-pill {
   display: inline-flex;
@@ -642,36 +702,42 @@ footer {
 .lang-switcher-pill button.active-lang,
 body.lang-bn .lang-btn-bn,
 body.lang-bn-active .lang-btn-bn,
-body:not(.lang-en) .lang-btn-bn {
+body:not(.lang-en) .lang-btn-bn,
+html:not([lang="en"]):not(.lang-en-html) .lang-btn-bn {
   background: linear-gradient(135deg, #1C1914, #14120D) !important;
   color: #FAF8F5 !important;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
 }
 body.lang-en .lang-btn-en,
-body.lang-en-active .lang-btn-en {
+body.lang-en-active .lang-btn-en,
+html[lang="en"] .lang-btn-en {
   background: linear-gradient(135deg, #1C1914, #14120D) !important;
   color: #FAF8F5 !important;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
 }
 body.lang-en .lang-btn-bn,
-body.lang-en-active .lang-btn-bn {
+body.lang-en-active .lang-btn-bn,
+html[lang="en"] .lang-btn-bn {
   background: transparent !important;
   color: #64748B !important;
   box-shadow: none !important;
 }
 body.lang-bn .lang-btn-en,
-body.lang-bn-active .lang-btn-en {
+body.lang-bn-active .lang-btn-en,
+html:not([lang="en"]):not(.lang-en-html) .lang-btn-en {
   background: transparent !important;
   color: #64748B !important;
   box-shadow: none !important;
 }
 
-/* Bilingual Display Rules */
-.lang-en { display: none !important; }
-.lang-en-inline { display: none !important; }
-.lang-bn { display: block; }
-.lang-bn-inline { display: inline; }
+/* Bulletproof Bilingual Display Rules */
+.lang-en { display: none; }
+.lang-en-inline { display: none; }
 
+html[lang="en"] .lang-bn,
+html[lang="en"] .lang-bn-inline,
+html.lang-en-html .lang-bn,
+html.lang-en-html .lang-bn-inline,
 body.lang-en .lang-bn,
 body.lang-en .lang-bn-inline,
 body.lang-en-active .lang-bn,
@@ -679,19 +745,46 @@ body.lang-en-active .lang-bn-inline {
   display: none !important;
 }
 
+html[lang="en"] .lang-en,
+html.lang-en-html .lang-en,
 body.lang-en .lang-en,
 body.lang-en-active .lang-en {
   display: block !important;
 }
+
+html[lang="en"] .lang-en-inline,
+html[lang="en"] span.lang-en,
+html[lang="en"] span.lang-en-inline,
+html[lang="en"] a.lang-en-inline,
+html[lang="en"] strong.lang-en-inline,
+html.lang-en-html .lang-en-inline,
+html.lang-en-html span.lang-en,
+html.lang-en-html span.lang-en-inline,
+html.lang-en-html a.lang-en-inline,
+html.lang-en-html strong.lang-en-inline,
 body.lang-en .lang-en-inline,
+body.lang-en span.lang-en,
 body.lang-en span.lang-en-inline,
 body.lang-en a.lang-en-inline,
+body.lang-en strong.lang-en-inline,
 body.lang-en-active .lang-en-inline,
+body.lang-en-active span.lang-en,
 body.lang-en-active span.lang-en-inline,
-body.lang-en-active a.lang-en-inline {
+body.lang-en-active a.lang-en-inline,
+body.lang-en-active strong.lang-en-inline {
   display: inline !important;
 }
 
+ul.toc-list.lang-en,
+html[lang="en"] ul.toc-list.lang-en,
+html.lang-en-html ul.toc-list.lang-en,
+body.lang-en ul.toc-list.lang-en,
+body.lang-en-active ul.toc-list.lang-en {
+  display: grid !important;
+}
+
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) .lang-en,
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) .lang-en-inline,
 body.lang-bn .lang-en,
 body.lang-bn .lang-en-inline,
 body.lang-bn-active .lang-en,
@@ -699,17 +792,32 @@ body.lang-bn-active .lang-en-inline {
   display: none !important;
 }
 
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) .lang-bn,
 body.lang-bn .lang-bn,
 body.lang-bn-active .lang-bn {
   display: block !important;
 }
-body.lang-bn .lang-bn-inline,
+
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) span.lang-bn,
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) span.lang-bn-inline,
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) a.lang-bn-inline,
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) strong.lang-bn-inline,
+body.lang-bn span.lang-bn,
 body.lang-bn span.lang-bn-inline,
 body.lang-bn a.lang-bn-inline,
-body.lang-bn-active .lang-bn-inline,
+body.lang-bn strong.lang-bn-inline,
+body.lang-bn-active span.lang-bn,
 body.lang-bn-active span.lang-bn-inline,
-body.lang-bn-active a.lang-bn-inline {
+body.lang-bn-active a.lang-bn-inline,
+body.lang-bn-active strong.lang-bn-inline {
   display: inline !important;
+}
+
+ul.toc-list.lang-bn,
+html:not([lang="en"]):not(.lang-en-html) ul.toc-list.lang-bn,
+body.lang-bn ul.toc-list.lang-bn,
+body.lang-bn-active ul.toc-list.lang-bn {
+  display: grid !important;
 }
 
 </style>
@@ -722,12 +830,13 @@ body.lang-bn-active a.lang-bn-inline {
 <!-- Sticky Header -->
 <header class="site-header">
   <div class="wrap nav-row">
-    <a class="brand-link" href="/" aria-label="ZynSite">
+    <a class="brand-link" href="/" aria-label="ZynSite Homepage">
       <div class="brand-icon-box">
         <img src="/assets/zynsite-icon.png" alt="ZynSite Logo">
       </div>
-      <div class="brand-text-logo">
-        Zyn<span>Site</span>
+      <div class="brand-logo-text-wrap">
+        <img src="/assets/zynsite-text.png" alt="ZynSite.com" class="brand-logo-img">
+        <div class="pulse-dot" title="Active Agency"></div>
       </div>
     </a>
 
@@ -737,15 +846,15 @@ body.lang-bn-active a.lang-bn-inline {
       <span class="lang-en-inline">All Blogs & Guides</span>
     </a>
 
-    <div style="display:flex;align-items:center;gap:10px;">
+    <div class="header-actions">
       <div class="lang-switcher-pill" role="group" aria-label="Language switcher">
         <button type="button" class="lang-btn-bn" onclick="window.zynI18n.setLanguage('bn', true)" title="BN">BN</button>
         <button type="button" class="lang-btn-en" onclick="window.zynI18n.setLanguage('en', true)" title="EN">EN</button>
       </div>
 
-      <a class="nav-cta" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20want%20to%20discuss%20a%20website%20project" target="_blank" rel="noopener noreferrer">
-        <i data-lucide="message-circle" style="width:15px;height:15px;"></i>
-        <span class="lang-bn-inline">অর্ডার করুন</span>
+      <a class="gold-order-btn" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20want%20to%20discuss%20a%20website%20project" target="_blank" rel="noopener noreferrer">
+        <i data-lucide="shopping-cart" style="width:15px;height:15px;"></i>
+        <span class="lang-bn-inline">সরাসরি অর্ডার</span>
         <span class="lang-en-inline">Order Now</span>
       </a>
     </div>
