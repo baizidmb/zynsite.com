@@ -138,16 +138,15 @@ class BackendService {
           created_at: orderRecord.created_at
         };
 
-        const { data, error } = await this.supabase
+        const { error } = await this.supabase
           .from("orders")
-          .upsert([supabasePayload], { onConflict: "order_id" })
-          .select();
+          .insert([supabasePayload]);
 
         if (error) {
           console.error("Supabase order insert error:", error);
           return { success: true, mode: "local_fallback", data: orderRecord, error };
         }
-        return { success: true, mode: "supabase", data: data ? data[0] : orderRecord };
+        return { success: true, mode: "supabase", data: orderRecord };
       } catch (err) {
         console.error("Supabase order save error:", err);
         return { success: true, mode: "local_fallback", data: orderRecord };
@@ -195,16 +194,15 @@ class BackendService {
     // 2. If Supabase is connected, insert into Supabase
     if (this.isConfigured && this.supabase) {
       try {
-        const { data, error } = await this.supabase
+        const { error } = await this.supabase
           .from("demo_bookings")
-          .upsert([demoRecord], { onConflict: "booking_id" })
-          .select();
+          .insert([demoRecord]);
 
         if (error) {
           console.error("Supabase demo insert error:", error);
           return { success: true, mode: "local_fallback", data: demoRecord, error };
         }
-        return { success: true, mode: "supabase", data: data ? data[0] : demoRecord };
+        return { success: true, mode: "supabase", data: demoRecord };
       } catch (err) {
         console.error("Supabase demo save error:", err);
         return { success: true, mode: "local_fallback", data: demoRecord };
@@ -455,22 +453,19 @@ class BackendService {
 
     let matchedOrder = null;
 
-    // 1. Check Supabase if configured
+    // 1. Check Supabase via secure RPC function (Zero direct table exposure)
     if (this.isConfigured && this.supabase) {
       try {
-        const { data, error } = await this.supabase
-          .from("orders")
-          .select("*")
-          .or(`order_id.eq.${cleanId},order_id.eq.#${cleanId}`);
+        const { data, error } = await this.supabase.rpc("track_customer_order", {
+          p_order_id: cleanId,
+          p_phone_tail: phoneTail
+        });
 
         if (!error && Array.isArray(data) && data.length > 0) {
-          matchedOrder = data.find(o => {
-            const p = String(o.client_phone || "").replace(/\D/g, "");
-            return p.endsWith(phoneTail);
-          });
+          matchedOrder = data[0];
         }
       } catch (err) {
-        console.warn("Supabase trackOrder error:", err);
+        console.warn("Supabase trackOrder RPC error:", err);
       }
     }
 
@@ -526,7 +521,10 @@ class BackendService {
         admin_whatsapp_link: waLink
       };
 
-      // 3. Dispatch to Telegram Bot (Async non-blocking)
+      // 3. Dispatch via secure serverless endpoint (zero leaked tokens)
+      this.dispatchServerlessNotification(type, payload, waLink).catch(() => {});
+
+      // 4. Dispatch to Telegram Bot if local admin credentials configured (Async non-blocking)
       this.dispatchTelegramNotification(type, payload, waLink).catch(e => console.warn("Telegram dispatch failed:", e));
 
       // 4. Dispatch Email Notification to contact@zynsite.com (Async non-blocking)
@@ -548,120 +546,49 @@ class BackendService {
   }
 
   /**
-   * Telegram Bot Instant Notification Dispatcher
-   * Uses user-configured bot token and chat_id, or defaults to official bot token
+   * Secure Serverless Notification Dispatcher
+   * Calls /api/notify serverless function where Bot Tokens & Chat IDs
+   * live exclusively in server-side environment variables. Zero browser exposure.
    */
-  /**
-   * Fetch Telegram notification configuration (Token & Chat ID) from Supabase or localStorage
-   */
-  async getCloudTelegramConfig() {
-    let chatId = localStorage.getItem("zynsite_telegram_chat_id") || "";
-    let token = localStorage.getItem("zynsite_telegram_bot_token") || "8885095686:AAGT6BXeyVa2HgWg8TXqYc1cf0L7Yc4DMM4";
-
-    if ((!chatId || !token) && this.isConfigured && this.supabase) {
-      try {
-        const { data } = await this.supabase
-          .from("orders")
-          .select("order_id, notes")
-          .in("order_id", ["SETTINGS_TELEGRAM_CHAT_ID", "SETTINGS_TELEGRAM_BOT_TOKEN"]);
-        if (Array.isArray(data)) {
-          data.forEach(row => {
-            if (row.order_id === "SETTINGS_TELEGRAM_CHAT_ID" && row.notes) {
-              chatId = row.notes.trim();
-              localStorage.setItem("zynsite_telegram_chat_id", chatId);
-            }
-            if (row.order_id === "SETTINGS_TELEGRAM_BOT_TOKEN" && row.notes) {
-              token = row.notes.trim();
-              localStorage.setItem("zynsite_telegram_bot_token", token);
-            }
-          });
-        }
-      } catch (e) {
-        console.warn("Could not fetch cloud telegram settings:", e);
+  async dispatchServerlessNotification(type, data, waLink) {
+    try {
+      const res = await fetch("/api/notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type, data, waLink })
+      });
+      if (res.ok) {
+        return await res.json().catch(() => ({}));
       }
+    } catch (e) {
+      // Serverless API not reachable (e.g. offline preview)
     }
-    return { token, chatId };
+    return null;
   }
 
   /**
-   * Save Telegram notification configuration (Token & Chat ID) to both localStorage and Supabase
+   * Local Admin Telegram Configuration (Stored ONLY in Admin LocalStorage)
    */
+  async getCloudTelegramConfig() {
+    const chatId = localStorage.getItem("zynsite_telegram_chat_id") || "";
+    const token = localStorage.getItem("zynsite_telegram_bot_token") || "";
+    return { token, chatId };
+  }
+
   async saveCloudTelegramConfig(token, chatId) {
     if (token) localStorage.setItem("zynsite_telegram_bot_token", token.trim());
     if (chatId) localStorage.setItem("zynsite_telegram_chat_id", chatId.trim());
-
-    if (this.isConfigured && this.supabase) {
-      try {
-        const rows = [];
-        if (token) {
-          rows.push({
-            order_id: "SETTINGS_TELEGRAM_BOT_TOKEN",
-            client_name: "SYSTEM_SETTING",
-            client_phone: "SYSTEM",
-            package_name: "TELEGRAM_CONFIG",
-            notes: token.trim(),
-            status: "system"
-          });
-        }
-        if (chatId) {
-          rows.push({
-            order_id: "SETTINGS_TELEGRAM_CHAT_ID",
-            client_name: "SYSTEM_SETTING",
-            client_phone: "SYSTEM",
-            package_name: "TELEGRAM_CONFIG",
-            notes: chatId.trim(),
-            status: "system"
-          });
-        }
-        if (rows.length > 0) {
-          await this.supabase.from("orders").upsert(rows, { onConflict: "order_id" });
-        }
-      } catch (e) {
-        console.warn("Could not save cloud telegram config:", e);
-      }
-    }
   }
 
   async dispatchTelegramNotification(type, data, waLink) {
     try {
-      const defaultToken = "8885095686:AAGT6BXeyVa2HgWg8TXqYc1cf0L7Yc4DMM4";
-      let token = (localStorage.getItem("zynsite_telegram_bot_token") || defaultToken).trim();
+      // Only runs client-side if the administrator explicitly stored a private key in their own browser
+      let token = (localStorage.getItem("zynsite_telegram_bot_token") || "").trim();
       let chatId = (localStorage.getItem("zynsite_telegram_chat_id") || "").trim();
 
-      // 1. If chatId is missing, check cloud Supabase config
-      if (!chatId) {
-        const cloudCfg = await this.getCloudTelegramConfig();
-        if (cloudCfg.chatId) chatId = cloudCfg.chatId;
-        if (cloudCfg.token) token = cloudCfg.token;
-      }
-
-      // 2. If still missing, attempt to auto-discover it from getUpdates
-      if (!chatId && token) {
-        try {
-          const updRes = await fetch(`https://api.telegram.org/bot${token}/getUpdates`, { method: "GET" });
-          if (updRes.ok) {
-            const updData = await updRes.json();
-            const updates = updData?.result || [];
-            if (updates.length > 0) {
-              for (let i = updates.length - 1; i >= 0; i--) {
-                const u = updates[i];
-                const foundChat = u.message?.chat || u.channel_post?.chat || u.my_chat_member?.chat || u.callback_query?.message?.chat;
-                if (foundChat?.id) {
-                  chatId = String(foundChat.id);
-                  this.saveCloudTelegramConfig(token, chatId).catch(() => {});
-                  break;
-                }
-              }
-            }
-          }
-        } catch (e) {
-          // ignore auto-discover error
-        }
-      }
-
       if (!token || !chatId) {
-        console.warn("Telegram alert skipped: bot token or chat_id not available.", { hasToken: Boolean(token), hasChatId: Boolean(chatId) });
-        return { success: false, reason: "missing_credentials" };
+        // Dispatched server-side via /api/notify
+        return { success: false, reason: "serverless_delegated" };
       }
 
       const isOrder = type === "order";
