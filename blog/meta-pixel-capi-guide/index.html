@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meta Pixel ও CAPI কী? ফেসবুক বিজ্ঞাপনে কেন এত জরুরি | ZynSite</title>
+<meta name="description" content="Meta Pixel ও Conversions API (CAPI) কী, কীভাবে কাজ করে, কোন ইভেন্ট ট্র্যাক করবেন, আর Pixel ও CAPI একসাথে ব্যবহার করলে ফেসবুক বিজ্ঞাপনের ফল বোঝা কেন সহজ হয়। ZynSite গাইড।">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<link rel="canonical" href="https://www.zynsite.com/blog/meta-pixel-capi-guide/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.zynsite.com/blog/meta-pixel-capi-guide/">
+<meta property="og:site_name" content="ZynSite">
+<meta property="og:title" content="Meta Pixel ও CAPI কী? ফেসবুক বিজ্ঞাপনে কেন এত জরুরি">
+<meta property="og:description" content="Meta Pixel ও Conversions API (CAPI) কী, কীভাবে কাজ করে, কোন ইভেন্ট ট্র্যাক করবেন, আর Pixel ও CAPI একসাথে ব্যবহার করলে ফেসবুক বিজ্ঞাপনের ফল বোঝা কেন সহজ হয়। ZynSite গাইড।">
+<meta property="og:image" content="https://www.zynsite.com/assets/og-image.png">
+<meta name="theme-color" content="#C8AA76">
+
+<!-- Fonts & Icons -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Hind+Siliguri:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  (function() {
+    var saved = localStorage.getItem('zyn_lang') || localStorage.getItem('zynsite_lang');
+    var browser = (navigator.language || '').toLowerCase();
+    var lang = (saved === 'en' || (!saved && browser.startsWith('en'))) ? 'en' : 'bn';
+    document.documentElement.lang = lang;
+    if (lang === 'en') {
+      document.documentElement.classList.add('lang-en-html');
+    }
+  })();
+</script>
+<script src="/js/i18n.js" onerror="this.onerror=null;this.src='../../js/i18n.js';"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://www.zynsite.com/blog/meta-pixel-capi-guide/#article",
+      "headline": "Meta Pixel ও CAPI কী? ফেসবুক বিজ্ঞাপনে কেন এত জরুরি",
+      "description": "Meta Pixel ও Conversions API (CAPI) কী, কীভাবে কাজ করে, কোন ইভেন্ট ট্র্যাক করবেন, আর Pixel ও CAPI একসাথে ব্যবহার করলে ফেসবুক বিজ্ঞাপনের ফল বোঝা কেন সহজ হয়। ZynSite গাইড।",
+      "datePublished": "2026-10-27",
+      "dateModified": "2026-10-27",
+      "inLanguage": "bn",
+      "author": {
+        "@id": "https://www.zynsite.com/#organization"
+      },
+      "publisher": {
+        "@id": "https://www.zynsite.com/#organization"
+      },
+      "mainEntityOfPage": "https://www.zynsite.com/blog/meta-pixel-capi-guide/"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "ZynSite",
+          "item": "https://www.zynsite.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "ব্লগ",
+          "item": "https://www.zynsite.com/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Meta Pixel ও CAPI গাইড",
+          "item": "https://www.zynsite.com/blog/meta-pixel-capi-guide/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Meta Pixel ব্যবহার করতে কি আলাদা টাকা লাগে?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Meta Pixel কোড ও Conversions API ব্যবহারের জন্য Meta আলাদা কোনো চার্জ নেয় না। খরচ হয় ওয়েবসাইটে সেটআপের কাজে ও ফেসবুক বিজ্ঞাপনের বাজেটে। ZynSite এর ওয়েবসাইট প্যাকেজে Pixel ও CAPI সেটআপ অন্তর্ভুক্ত থাকে।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Pixel ছাড়া কি ফেসবুক বিজ্ঞাপন চালানো যায়?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "যায়, তবে তখন বোঝা কঠিন হয় কোন বিজ্ঞাপন থেকে অর্ডার এলো আর কোনটা থেকে শুধু ক্লিক এলো। Pixel থাকলে Meta অর্ডারের তথ্য পায়, ফলে বিজ্ঞাপন অপ্টিমাইজ করা ও রিটার্গেটিং করা অনেক সহজ হয়।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Pixel ও CAPI একসাথে বসালে কি সেল দুইবার গণনা হয়?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "সঠিক সেটআপে হয় না। ডিডুপ্লিকেশন ঠিক থাকলে Meta একই ইভেন্টকে একবারই গণনা করে, যদিও তা Pixel ও CAPI দুটো পথেই আসে। সেটআপের সময় এই যাচাইটি করে নেওয়া জরুরি।"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "আমার ওয়েবসাইটে Pixel ও CAPI সেটআপ করতে কত খরচ হবে?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ZynSite এর ল্যান্ডিং পেজ ৳৩,৯৯০ থেকে শুরু, আর ই-কমার্স ওয়েবসাইট ৳১৪,৯৯০। প্রথম বছরের ফ্রি .com ডোমেইন ও হোস্টিং অন্তর্ভুক্ত থাকে, আর ৫০% অগ্রিমে কাজ শুরু হয়। বিস্তারিত জানতে WhatsApp এ মেসেজ করুন।"
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+:root {
+  --gold: #B38F48;
+  --gold-dark: #997530;
+  --gold-brand: #C8AA76;
+  --gold-soft: #F5EEDB;
+  --ink: #14120D;
+  --body: #1E293B;
+  --muted: #475569;
+  --bg: #FAF9F5;
+  --surface: #FFFFFF;
+  --border: #E8E0CF;
+  --border-gold: rgba(200, 170, 118, 0.45);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg);
+  color: var(--body);
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; height: auto; display: block; }
+
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #C8AA76 0%, #B38F48 50%, #15803D 100%);
+  z-index: 100;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 20px; }
+
+header.site-header {
+  position: sticky;
+  top: 0;
+  background: rgba(250, 249, 245, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+}
+.nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  gap: 16px;
+}
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+.brand-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #C8AA76;
+  border: 1px solid rgba(179, 143, 72, 0.65);
+  box-shadow: 0 4px 14px -2px rgba(200, 170, 118, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.brand-icon-box:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 20px rgba(200, 170, 118, 0.45);
+}
+.brand-icon-box img { width: 100%; height: 100%; object-fit: cover; }
+.brand-logo-text-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand-logo-img {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34D399;
+  box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+  animation: pulse-green 2s infinite;
+}
+@keyframes pulse-green {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(52, 211, 153, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+}
+
+.nav-back-link {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+.nav-back-link:hover { color: var(--gold-dark); }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Luxury Gold Gradient Button */
+.gold-order-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(135deg, #F9EED4, #E8CD8C, #D4AF37);
+  color: #14120D;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.28);
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+}
+.gold-order-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.42);
+}
+
+.breadcrumb {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 20px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.breadcrumb a:hover { color: var(--gold-dark); }
+
+.article-header {
+  position: static !important;
+  top: auto !important;
+  z-index: auto !important;
+  background: transparent !important;
+  padding: 24px 0 32px;
+  border-bottom: 1px solid var(--border);
+}
+.cat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--gold-dark);
+  background: var(--gold-soft);
+  border: 1px solid rgba(200, 170, 118, 0.35);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  margin-bottom: 16px;
+}
+.article-header h1 {
+  font-size: clamp(28px, 4.5vw, 42px);
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.32;
+  margin-bottom: 16px;
+  letter-spacing: -0.2px;
+}
+.article-lead {
+  font-size: clamp(16px, 2vw, 19px);
+  color: #334155;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.meta-share-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #EBE4D5;
+  font-size: 13px;
+}
+.author-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.avatar-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #C8AA76;
+  color: #fff;
+  font-weight: 800;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(200, 170, 118, 0.3);
+}
+.author-details { line-height: 1.35; }
+.author-name { font-weight: 700; color: var(--ink); }
+.author-date { color: var(--muted); font-size: 12px; }
+
+.share-buttons { display: flex; align-items: center; gap: 8px; }
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--body);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.share-btn:hover { background: #F5EEDB; border-color: var(--gold-brand); }
+.share-btn.wa:hover { background: #DCFCE7; color: #15803D; border-color: #86EFAC; }
+
+.toc-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--gold);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin: 32px 0 36px;
+  box-shadow: 0 4px 14px rgba(20, 18, 13, 0.03);
+}
+.toc-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.toc-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 8px 16px;
+  font-size: 14.5px;
+}
+.toc-list a {
+  color: var(--gold-dark);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.toc-list a:hover { color: #14120D; text-decoration: underline; }
+
+.article-content {
+  font-size: 17.5px;
+  color: #1E293B;
+  padding-bottom: 40px;
+}
+.article-content p { margin-bottom: 20px; line-height: 1.85; }
+.article-content h2 {
+  font-size: clamp(22px, 3.2vw, 28px);
+  font-weight: 800;
+  color: var(--ink);
+  margin: 40px 0 16px;
+  line-height: 1.35;
+  border-bottom: 2px solid var(--gold-soft);
+  padding-bottom: 8px;
+}
+.article-content h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2D281E;
+  margin: 28px 0 12px;
+}
+.article-content ul, .article-content ol { margin: 16px 0 24px 24px; }
+.article-content li { margin-bottom: 10px; line-height: 1.75; }
+
+.callout {
+  background: #FDFBF7;
+  border: 1px solid var(--border-gold);
+  border-radius: 16px;
+  padding: 22px 24px;
+  margin: 28px 0;
+}
+.callout.pro-tip {
+  background: #F9F7EE;
+  border-left: 4px solid var(--gold);
+}
+.callout-title {
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--ink);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.in-article-cta {
+  background: linear-gradient(135deg, #FAF7EE, #F5EEDB);
+  border: 1px solid var(--border-gold);
+  border-radius: 20px;
+  padding: 28px 24px;
+  margin: 36px 0;
+  display: flex;
+  flex-direction: column;
+  sm-flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: 0 6px 20px rgba(200, 170, 118, 0.15);
+}
+.in-cta-text h4 {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.in-cta-text p { font-size: 14.5px; color: var(--muted); margin: 0; }
+.btn-wa-gold {
+  background: #15803D;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(21, 128, 61, 0.3);
+  white-space: nowrap;
+}
+.btn-wa-gold:hover { background: #16A34A; }
+
+.faq-section {
+  margin: 40px 0 20px;
+  border-top: 1px solid var(--border);
+  padding-top: 36px;
+}
+.faq-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.faq-item:hover { border-color: var(--gold-brand); }
+.faq-header {
+  padding: 18px 20px;
+  font-weight: 700;
+  font-size: 16.5px;
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  user-select: none;
+}
+.faq-body {
+  padding: 0 20px 18px;
+  font-size: 15.5px;
+  color: #334155;
+  line-height: 1.7;
+}
+
+.related-section {
+  padding: 40px 0 20px;
+  border-top: 1px solid var(--border);
+}
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+.related-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.2s;
+}
+.related-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold-brand);
+  box-shadow: 0 8px 20px rgba(200, 170, 118, 0.15);
+}
+.related-card h4 { font-size: 16.5px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+.related-card p { font-size: 13.5px; color: var(--muted); }
+
+#toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #14120D;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  display: none;
+  z-index: 1000;
+}
+
+footer {
+  background: #F5F2EB;
+  border-top: 1px solid rgba(200, 170, 118, 0.3);
+  padding: 40px 0 30px;
+  font-size: 13.5px;
+  color: var(--muted);
+  margin-top: 40px;
+}
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1E293B;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(200, 170, 118, 0.15);
+  justify-content: center;
+}
+.footer-links a:hover { color: var(--gold-dark); }
+.footer-bottom {
+  padding-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+}
+
+@media (max-width: 640px) {
+  .in-article-cta { flex-direction: column; text-align: center; }
+  .footer-bottom { text-align: center; justify-content: center; }
+  .nav-back-link { display: none; }
+  .brand-logo-img { height: 24px; }
+  .brand-icon-box { width: 36px; height: 36px; }
+  .gold-order-btn { padding: 6px 12px; font-size: 12px; }
+}
+
+/* Language Switcher Pill */
+.lang-switcher-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2.5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(200, 170, 118, 0.45);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+}
+.lang-switcher-pill button {
+  padding: 3.5px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: 0.5px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #64748B;
+}
+.lang-switcher-pill button.active-lang,
+body.lang-bn .lang-btn-bn,
+body.lang-bn-active .lang-btn-bn,
+body:not(.lang-en) .lang-btn-bn,
+html:not([lang="en"]):not(.lang-en-html) .lang-btn-bn {
+  background: linear-gradient(135deg, #1C1914, #14120D) !important;
+  color: #FAF8F5 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+}
+body.lang-en .lang-btn-en,
+body.lang-en-active .lang-btn-en,
+html[lang="en"] .lang-btn-en {
+  background: linear-gradient(135deg, #1C1914, #14120D) !important;
+  color: #FAF8F5 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+}
+body.lang-en .lang-btn-bn,
+body.lang-en-active .lang-btn-bn,
+html[lang="en"] .lang-btn-bn {
+  background: transparent !important;
+  color: #64748B !important;
+  box-shadow: none !important;
+}
+body.lang-bn .lang-btn-en,
+body.lang-bn-active .lang-btn-en,
+html:not([lang="en"]):not(.lang-en-html) .lang-btn-en {
+  background: transparent !important;
+  color: #64748B !important;
+  box-shadow: none !important;
+}
+
+/* Bulletproof Bilingual Display Rules */
+.lang-en { display: none; }
+.lang-en-inline { display: none; }
+
+html[lang="en"] .lang-bn,
+html[lang="en"] .lang-bn-inline,
+html.lang-en-html .lang-bn,
+html.lang-en-html .lang-bn-inline,
+body.lang-en .lang-bn,
+body.lang-en .lang-bn-inline,
+body.lang-en-active .lang-bn,
+body.lang-en-active .lang-bn-inline {
+  display: none !important;
+}
+
+html[lang="en"] .lang-en,
+html.lang-en-html .lang-en,
+body.lang-en .lang-en,
+body.lang-en-active .lang-en {
+  display: block !important;
+}
+
+html[lang="en"] .lang-en-inline,
+html[lang="en"] span.lang-en,
+html[lang="en"] span.lang-en-inline,
+html[lang="en"] a.lang-en-inline,
+html[lang="en"] strong.lang-en-inline,
+html.lang-en-html .lang-en-inline,
+html.lang-en-html span.lang-en,
+html.lang-en-html span.lang-en-inline,
+html.lang-en-html a.lang-en-inline,
+html.lang-en-html strong.lang-en-inline,
+body.lang-en .lang-en-inline,
+body.lang-en span.lang-en,
+body.lang-en span.lang-en-inline,
+body.lang-en a.lang-en-inline,
+body.lang-en strong.lang-en-inline,
+body.lang-en-active .lang-en-inline,
+body.lang-en-active span.lang-en,
+body.lang-en-active span.lang-en-inline,
+body.lang-en-active a.lang-en-inline,
+body.lang-en-active strong.lang-en-inline {
+  display: inline !important;
+}
+
+ul.toc-list.lang-en,
+html[lang="en"] ul.toc-list.lang-en,
+html.lang-en-html ul.toc-list.lang-en,
+body.lang-en ul.toc-list.lang-en,
+body.lang-en-active ul.toc-list.lang-en {
+  display: grid !important;
+}
+
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) .lang-en,
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) .lang-en-inline,
+body.lang-bn .lang-en,
+body.lang-bn .lang-en-inline,
+body.lang-bn-active .lang-en,
+body.lang-bn-active .lang-en-inline {
+  display: none !important;
+}
+
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) .lang-bn,
+body.lang-bn .lang-bn,
+body.lang-bn-active .lang-bn {
+  display: block !important;
+}
+
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) span.lang-bn,
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) span.lang-bn-inline,
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) a.lang-bn-inline,
+html:not([lang="en"]):not(.lang-en-html) body:not(.lang-en) strong.lang-bn-inline,
+body.lang-bn span.lang-bn,
+body.lang-bn span.lang-bn-inline,
+body.lang-bn a.lang-bn-inline,
+body.lang-bn strong.lang-bn-inline,
+body.lang-bn-active span.lang-bn,
+body.lang-bn-active span.lang-bn-inline,
+body.lang-bn-active a.lang-bn-inline,
+body.lang-bn-active strong.lang-bn-inline {
+  display: inline !important;
+}
+
+ul.toc-list.lang-bn,
+html:not([lang="en"]):not(.lang-en-html) ul.toc-list.lang-bn,
+body.lang-bn ul.toc-list.lang-bn,
+body.lang-bn-active ul.toc-list.lang-bn {
+  display: grid !important;
+}
+
+</style>
+</head>
+<body data-title-bn="Meta Pixel ও CAPI কী? ফেসবুক বিজ্ঞাপনে কেন এত জরুরি | ZynSite" data-title-en="What Are Meta Pixel and CAPI? Why They Matter So Much for Facebook Ads | ZynSite">
+
+<div id="reading-progress"></div>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="wrap nav-row">
+    <a class="brand-link" href="/" aria-label="ZynSite Homepage">
+      <div class="brand-icon-box">
+        <img src="/assets/zynsite-icon.png" alt="ZynSite Logo">
+      </div>
+      <div class="brand-logo-text-wrap">
+        <img src="/assets/zynsite-text.png" alt="ZynSite.com" class="brand-logo-img">
+        <div class="pulse-dot" title="Active Agency"></div>
+      </div>
+    </a>
+
+    <a href="/blog/" class="nav-back-link">
+      <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+      <span class="lang-bn-inline">সকল ব্লগ ও গাইড</span>
+      <span class="lang-en-inline">All Blogs & Guides</span>
+    </a>
+
+    <div class="header-actions">
+      <div class="lang-switcher-pill" role="group" aria-label="Language switcher">
+        <button type="button" class="lang-btn-bn" onclick="window.zynI18n.setLanguage('bn', true)" title="BN">BN</button>
+        <button type="button" class="lang-btn-en" onclick="window.zynI18n.setLanguage('en', true)" title="EN">EN</button>
+      </div>
+
+      <a class="gold-order-btn" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20want%20to%20discuss%20a%20website%20project" target="_blank" rel="noopener noreferrer">
+        <i data-lucide="shopping-cart" style="width:15px;height:15px;"></i>
+        <span class="lang-bn-inline">সরাসরি অর্ডার</span>
+        <span class="lang-en-inline">Order Now</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="/" class="lang-bn-inline">হোম</a><a href="/" class="lang-en-inline">Home</a>
+    <span>/</span>
+    <a href="/blog/" class="lang-bn-inline">ব্লগ</a><a href="/blog/" class="lang-en-inline">Blog</a>
+    <span>/</span>
+    <span style="color:var(--ink);font-weight:600;" class="lang-bn-inline">Meta Pixel ও CAPI গাইড</span>
+    <span style="color:var(--ink);font-weight:600;" class="lang-en-inline">Meta Pixel and CAPI Guide</span>
+  </div>
+
+  <article>
+    <header class="article-header">
+      <div class="cat-badge">
+        <i data-lucide="sparkles" style="width:13px;height:13px;"></i>
+        <span class="lang-bn-inline">ফেসবুক বিজ্ঞাপন ও ট্র্যাকিং</span>
+        <span class="lang-en-inline">Facebook Ads & Tracking</span>
+      </div>
+      <h1>
+        <span class="lang-bn">Meta Pixel ও CAPI কী? ফেসবুক বিজ্ঞাপনে কেন এত জরুরি</span>
+        <span class="lang-en">What Are Meta Pixel and CAPI? Why They Matter So Much for Facebook Ads</span>
+      </h1>
+      <p class="article-lead">
+        <span class="lang-bn">ফেসবুক বিজ্ঞাপনে ক্লিক আসছে, কিন্তু কোন বিজ্ঞাপন থেকে আসল অর্ডার এলো তা বোঝা যাচ্ছে না? Meta Pixel ও Conversions API (CAPI) কী, কীভাবে কাজ করে, আর সঠিক ট্র্যাকিং ছাড়া বিজ্ঞাপনের বাজেট কেন অনুমানে খরচ হয়, এই গাইডে তা বিস্তারিত ব্যাখ্যা করা হলো।</span>
+        <span class="lang-en">Clicks are coming from Facebook ads, but you cannot tell which ad brought a real order? This guide explains what Meta Pixel and the Conversions API (CAPI) are, how they work, and why ad budgets get spent on guesswork without correct tracking.</span>
+      </p>
+
+      <div class="meta-share-row">
+        <div class="author-pill">
+          <div class="avatar-box">ZS</div>
+          <div class="author-details">
+            <div class="author-name"><span class="lang-bn-inline">ZynSite রিসার্চ ও স্ট্র্যাটেজি টিম</span><span class="lang-en-inline">ZynSite Research & Strategy Team</span></div>
+            <div class="author-date"><span class="lang-bn-inline">২৭ অক্টোবর ২০২৬ • ৬ মিনিট পড়া</span><span class="lang-en-inline">October 27, 2026 • 6 min read</span></div>
+          </div>
+        </div>
+
+        <div class="share-buttons">
+          <button class="share-btn wa" onclick="shareOnWhatsApp()">
+            <i data-lucide="message-circle" style="width:14px;height:14px;"></i>
+            <span>WhatsApp</span>
+          </button>
+          <button class="share-btn" onclick="shareOnFacebook()">
+            <i data-lucide="share-2" style="width:14px;height:14px;"></i>
+            <span>Facebook</span>
+          </button>
+          <button class="share-btn" onclick="copyArticleLink()">
+            <i data-lucide="link" style="width:14px;height:14px;"></i>
+            <span>Copy Link</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Table of Contents -->
+    <nav class="toc-box" aria-label="সূচিপত্র">
+      <div class="toc-title">
+        <i data-lucide="list" style="width:18px;height:18px;color:var(--gold);"></i>
+        <span class="lang-bn-inline">আর্টিকেলের সূচিপত্র</span><span class="lang-en-inline">Table of Contents</span>
+      </div>
+      <ul class="toc-list lang-bn">
+        <li><a href="#why-blind">১. Pixel ও CAPI ছাড়া বিজ্ঞাপন কেন অন্ধভাবে চলে</a></li>
+        <li><a href="#what-is-pixel">২. Meta Pixel কী?</a></li>
+        <li><a href="#what-is-capi">৩. Conversions API বা CAPI কী?</a></li>
+        <li><a href="#pixel-and-capi-together">৪. Pixel আর CAPI একসাথে কেন দরকার?</a></li>
+        <li><a href="#events-to-track">৫. কোন কোন ইভেন্ট ট্র্যাক করা উচিত?</a></li>
+        <li><a href="#common-mistakes">৬. সাধারণ ৫টি ভুল যা ট্র্যাকিং নষ্ট করে</a></li>
+        <li><a href="#zynsite-setup">৭. ZynSite এ Pixel ও CAPI সেটআপ</a></li>
+        <li><a href="#checklist">৮. বিজ্ঞাপন চালানোর আগের চেকলিস্ট</a></li>
+        <li><a href="#faqs">৯. সাধারণ জিজ্ঞাসা (FAQ)</a></li>
+      </ul>
+      <ul class="toc-list lang-en">
+        <li><a href="#why-blind">1. Why Ads Run Blind Without Pixel and CAPI</a></li>
+        <li><a href="#what-is-pixel">2. What Is Meta Pixel?</a></li>
+        <li><a href="#what-is-capi">3. What Is the Conversions API?</a></li>
+        <li><a href="#pixel-and-capi-together">4. Why Use Pixel and CAPI Together?</a></li>
+        <li><a href="#events-to-track">5. Which Events Should You Track?</a></li>
+        <li><a href="#common-mistakes">6. Five Common Mistakes That Break Tracking</a></li>
+        <li><a href="#zynsite-setup">7. How ZynSite Sets Up Pixel and CAPI</a></li>
+        <li><a href="#checklist">8. Checklist Before You Run Ads</a></li>
+        <li><a href="#faqs">9. Frequently Asked Questions (FAQ)</a></li>
+      </ul>
+    </nav>
+
+    <div class="article-content">
+    <div class="lang-bn">
+      <h2 id="why-blind">Pixel ও CAPI ছাড়া ফেসবুক বিজ্ঞাপন কেন অন্ধভাবে চলে</h2>
+      <p>আপনি ফেসবুক বিজ্ঞাপন চালাচ্ছেন, ক্লিক আসছে, মেসেজ আসছে, এমনকি অর্ডারও আসছে। কিন্তু কোন বিজ্ঞাপন থেকে আসল ক্রেতা এলো, কোন বিজ্ঞাপনে শুধু ক্লিক পড়ল আর কোনো বিক্রি হলো না, তা কি আপনি নিশ্চিতভাবে জানেন? অনেক ব্যবসায়ী এই প্রশ্নের উত্তর না জেনেই প্রতিদিন বাজেট বাড়ান বা কমান। ফলে ভালো বিজ্ঞাপন বন্ধ হয়ে যায়, আর খারাপ বিজ্ঞাপনে টাকা খরচ হতেই থাকে। Meta Pixel ও Conversions API, সংক্ষেপে CAPI, এই সমস্যার সমাধান করে। এগুলো আপনার ওয়েবসাইট আর Meta এর মধ্যে সংযোগ তৈরি করে, যাতে ওয়েবসাইটে কে কী করল, সেই তথ্য Meta পর্যন্ত পৌঁছায়।</p>
+      <p>সহজভাবে বললে, Pixel ও CAPI হলো আপনার বিজ্ঞাপনের চোখ ও কান। এগুলো ছাড়া Meta শুধু জানে কে ক্লিক করেছে, কিন্তু জানে না কে কিনেছে। এই গাইডে জানবেন Pixel কী, CAPI কী, কোন ইভেন্ট ট্র্যাক করা উচিত, আর কোন ভুলগুলো ট্র্যাকিং নষ্ট করে।</p>
+
+      <h2 id="what-is-pixel">১. Meta Pixel কী?</h2>
+      <p>Meta Pixel হলো Meta এর দেওয়া ছোট একটি কোড, যা আপনার ওয়েবসাইটে বসানো হয়। কেউ যখন আপনার ওয়েবসাইটে আসে, তখন এই কোডটি ব্রাউজার থেকে Meta কে জানায় যে ভিজিটর কী কী করেছে। যেমন, সে কোন পণ্যের পেজ দেখেছে, পণ্যটি কার্টে যোগ করেছে কি না, চেকআউট শুরু করেছে কি না, বা অর্ডার সম্পন্ন করেছে কি না। এই প্রতিটি কাজকে বলা হয় ইভেন্ট।</p>
+      <p>একটি উদাহরণ দেখুন। একজন ক্রেতা পণ্যের পেজ দেখে চলে গেল, কিন্তু কিনল না। Pixel সেই তথ্য মনে রাখে। পরে শুধু সেইসব মানুষকে আবার বিজ্ঞাপন দেখানো যায়, যারা পণ্য দেখেছে কিন্তু কেনেনি। একে বলে রিটার্গেটিং। Pixel ছাড়া এই মানুষগুলোকে আলাদা করে খুঁজে পাওয়া প্রায় অসম্ভব।</p>
+
+      <h2 id="what-is-capi">২. Conversions API বা CAPI কী?</h2>
+      <p>Conversions API, সংক্ষেপে CAPI, হলো Pixel এর পাশাপাশি কাজ করা আরেকটি সংযোগ, তবে এটি ব্রাউজারের মাধ্যমে নয়, আপনার ওয়েবসাইটের সার্ভার থেকে সরাসরি Meta এর সার্ভারে তথ্য পাঠায়। Pixel যখন ব্রাউজারের উপর নির্ভর করে, তখন কিছু তথ্য মাঝপথে হারিয়ে যেতে পারে। যেমন, ভিজিটর ব্রাউজারে ট্র্যাকিং বন্ধ রাখলে, অ্যাড ব্লকার ব্যবহার করলে, বা নেটওয়ার্ক সমস্যা হলে Pixel সব ইভেন্ট ঠিকভাবে পাঠাতে পারে না। CAPI এই ঘাটতি পূরণ করতে সাহায্য করে, কারণ এটি সার্ভার থেকে সরাসরি তথ্য পাঠায়।</p>
+      <p>সহজ তুলনা দিলে বিষয়টি পরিষ্কার হবে। ধরুন, Pixel হলো দোকানের সামনের ক্যামেরা, আর CAPI হলো ক্যাশ কাউন্টারের হিসাবের খাতা। ক্যামেরা বন্ধ থাকলেও খাতায় বিক্রির হিসাব থেকে যায়। তাই Pixel ও CAPI দুটো একসাথে ব্যবহার করলে তথ্য আরও সম্পূর্ণ হওয়ার সম্ভাবনা বাড়ে.</p>
+
+      <h2 id="pixel-and-capi-together">৩. Pixel আর CAPI একসাথে কেন দরকার?</h2>
+      <p>অনেকের মনে প্রশ্ন আসে, দুটো একসাথে বসালে কি একই অর্ডার দুইবার গণনা হবে? সঠিক সেটআপে তা হয় না। Pixel ও CAPI একই ইভেন্ট পাঠালে, Meta ডিডুপ্লিকেশন পদ্ধতিতে সেগুলোকে একটি ইভেন্ট হিসেবে গণনা করে, যদি দুটোতে একই ইভেন্ট নাম ও মিলে যাওয়া তথ্য থাকে। তাই দুটো সংযোগ রাখার মানে ডাবল গণনা নয়, বরং একটা সংযোগে তথ্য হারিয়ে গেলেও অন্যটা থেকে তা পৌঁছানোর সুযোগ থাকা।</p>
+      <ul>
+        <li>Pixel ব্রাউজার থেকে দ্রুত তথ্য পাঠায়, আর CAPI সার্ভার থেকে আরও নির্ভরযোগ্য তথ্য পাঠায়।</li>
+        <li>দুটো মিলে Meta আরও সম্পূর্ণ তথ্য পায়, ফলে বিজ্ঞাপন অপ্টিমাইজেশন ও দর্শক তৈরিতে সাহায্য হয়।</li>
+        <li>একটি সংযোগে কোনো ইভেন্ট হারিয়ে গেলেও অন্যটি সেই তথ্য পৌঁছে দিতে পারে।</li>
+      </ul>
+      <p>মনে রাখবেন, Pixel ও CAPI কোনো জাদুর যন্ত্র নয়, এগুলো শুধু তথ্য পৌঁছে দেয়। সঠিক তথ্য ছাড়া বোঝা যায় না কোন জায়গায় সমস্যা, আর কোন বিজ্ঞাপনটি আসলে কাজ করছে।</p>
+
+      <h2 id="events-to-track">৪. কোন কোন ইভেন্ট ট্র্যাক করা উচিত?</h2>
+      <p>সব বাটনে একই ইভেন্ট বসানো ঠিক নয়। প্রতিটি ধাপের জন্য আলাদা ইভেন্ট থাকে, যাতে Meta বুঝতে পারে ক্রেতা কোন ধাপে আছে। নিচের ইভেন্টগুলো বাংলাদেশের ফেসবুক ব্যবসায়ীদের জন্য সবচেয়ে দরকারি।</p>
+      <ul>
+        <li><strong>ViewContent:</strong> কেউ পণ্যের পেজ বা বিস্তারিত তথ্য দেখেছে। এটি আগ্রহের প্রথম সংকেত।</li>
+        <li><strong>AddToCart:</strong> কেউ পণ্য কার্টে যোগ করেছে। এই মানুষগুলো কেনার কাছাকাছি থাকে, তাই রিটার্গেটিং এর জন্য এরা খুব গুরুত্বপূর্ণ।</li>
+        <li><strong>InitiateCheckout:</strong> কেউ অর্ডার ফর্মে নাম, ঠিকানা ও ফোন নম্বর দিতে শুরু করেছে। এখানে অনেক অর্ডার থেমে যায়, তাই এই ধাপটি আলাদা করে দেখা দরকার।</li>
+        <li><strong>Purchase:</strong> অর্ডার সম্পন্ন হয়েছে। এটি সবচেয়ে গুরুত্বপূর্ণ ইভেন্ট, কারণ Meta এই তথ্য থেকে শেখে কোন বিজ্ঞাপন আসল ক্রেতা এনেছে।</li>
+        <li><strong>Lead:</strong> কেউ ফর্ম পূরণ করে যোগাযোগের তথ্য দিয়েছে, যেমন সার্ভিসের জন্য ইনকোয়ারি। সার্ভিস ব্যবসার জন্য এই ইভেন্টটি খুব কাজের।</li>
+        <li><strong>CompleteRegistration:</strong> কেউ অ্যাকাউন্ট খুলেছে বা রেজিস্ট্রেশন সম্পন্ন করেছে।</li>
+      </ul>
+      <p>Purchase ইভেন্টের সাথে অর্ডারের মূল্য ও মুদ্রার তথ্য পাঠানো উচিত, যাতে Meta বুঝতে পারে কোন বিজ্ঞাপন আসল আয় এনেছে। অর্ডার বাটনে ক্লিক করলেই Purchase গণনা করা ঠিক নয়, অর্ডার সফলভাবে জমা হলেই Purchase ইভেন্ট পাঠাতে হবে।</p>
+
+      <h2 id="common-mistakes">৫. সাধারণ ৫টি ভুল যা ট্র্যাকিং নষ্ট করে</h2>
+      <p>Pixel বসানো হয়েছে মানেই ট্র্যাকিং ঠিক আছে, এমন ধারণা ভুল। নিচের ভুলগুলো খুব সাধারণ, আর এগুলো থাকলে বিজ্ঞাপনের রিপোর্ট ভুল দেখায়।</p>
+      <ol>
+        <li><strong>Purchase ইভেন্ট নেই:</strong> Pixel বসানো আছে, কিন্তু অর্ডার সম্পন্ন হলে কোনো Purchase ইভেন্ট যায় না। ফলে Meta জানে না কোন বিজ্ঞাপন থেকে বিক্রি হয়েছে।</li>
+        <li><strong>ডিডুপ্লিকেশন ছাড়া Pixel ও CAPI:</strong> দুটো সংযোগে একই ইভেন্ট আলাদাভাবে গণনা হলে রিপোর্টে সেল বেশি দেখায়। সেটআপের সময় ডিডুপ্লিকেশন ঠিক আছে কি না, তা যাচাই করা জরুরি।</li>
+        <li><strong>ভুল Pixel ID বা ভুল ডোমেইন:</strong> অন্য ব্যবসার Pixel ID বসানো, বা ভুল ওয়েবসাইটে Pixel বসানো হলে তথ্য ভুল জায়গায় যায়।</li>
+        <li><strong>টেস্ট না করে বিজ্ঞাপন চালানো:</strong> সেটআপের পর নিজে একটি টেস্ট অর্ডার বা টেস্ট ইভেন্ট করে দেখা উচিত, Meta এর Events Manager এ ইভেন্ট আসছে কি না। টেস্ট ছাড়া বিজ্ঞাপন চালালে দিনের পর দিন ভুল তথ্য জমা হয়।</li>
+        <li><strong>শুধু ক্লিক দেখে সিদ্ধান্ত নেওয়া:</strong> যে বিজ্ঞাপনে ক্লিক বেশি, সেটাই ভালো বিজ্ঞাপন নয়। Purchase ও অর্ডারের তথ্য দেখেই সিদ্ধান্ত নিতে হয়।</li>
+      </ol>
+
+      <h2 id="zynsite-setup">৬. ZynSite এ Pixel ও CAPI সেটআপ কীভাবে হয়?</h2>
+      <p>ZynSite এর <a href="/landing-page-bangladesh/" style="color:var(--gold-dark);font-weight:700;text-decoration:underline;">ল্যান্ডিং পেজে</a>, <a href="/f-commerce-website/" style="color:var(--gold-dark);font-weight:700;text-decoration:underline;">F-Commerce ওয়েবসাইটে</a> ও <a href="/ecommerce-website/" style="color:var(--gold-dark);font-weight:700;text-decoration:underline;">ই-কমার্স ওয়েবসাইটে</a> Meta Pixel ও CAPI সেটআপ করে দেওয়া হয়, যাতে অর্ডারের প্রতিটি ধাপের ইভেন্ট সঠিকভাবে Meta পর্যন্ত পৌঁছায়। সেটআপের পর Test Events দিয়ে যাচাই করা হয়, ViewContent, AddToCart, InitiateCheckout ও Purchase ইভেন্ট ঠিকভাবে আসছে কি না। সেটআপের জন্য আপনার Meta Business অ্যাকাউন্ট ও Pixel এর তথ্য দরকার হতে পারে, আর ZynSite টিম সেটআপ ও টেস্টের কাজটি করে দেয়।</p>
+      <p>দামের দিক থেকে, ল্যান্ডিং পেজ ৳৩,৯৯০ থেকে শুরু, আর ই-কমার্স ওয়েবসাইট ৳১৪,৯৯০। প্রথম বছরের জন্য ফ্রি .com ডোমেইন ও হোস্টিং অন্তর্ভুক্ত থাকে, আর ৫০% অগ্রিম দিয়ে কাজ শুরু হয়। Pixel ও CAPI সেটআপ কোনো আলাদা জটিল কাজ নয়, এটি ওয়েবসাইট তৈরিরই অংশ, যাতে প্রথম দিন থেকে আপনার বিজ্ঞাপনের তথ্য সঠিকভাবে জমা হতে থাকে।</p>
+
+      <h2 id="checklist">৭. বিজ্ঞাপন চালানোর আগের চেকলিস্ট</h2>
+      <p>বিজ্ঞাপন চালানোর আগে নিচের চেকলিস্টটি মিলিয়ে নিন। প্রতিটি পয়েন্ট মিলে গেলে তবেই বাজেট বাড়ান।</p>
+      <div class="callout pro-tip">
+        <div class="callout-title">
+          <i data-lucide="check-circle" style="width:18px;height:18px;color:var(--gold);"></i>
+          <span>চালানোর আগে মিলিয়ে নিন:</span>
+        </div>
+        <ol style="margin: 8px 0 0 16px;">
+          <li>সঠিক Pixel ID আপনার ওয়েবসাইটে বসানো আছে।</li>
+          <li>Purchase ইভেন্ট টেস্ট করে দেখা হয়েছে, আর Events Manager এ তা আসছে।</li>
+          <li>Pixel ও CAPI দুটো থাকলে ডিডুপ্লিকেশন ঠিক আছে।</li>
+          <li>Purchase ইভেন্টে অর্ডারের মূল্য ও মুদ্রা ঠিকভাবে যাচ্ছে।</li>
+          <li>রিটার্গেটিং এর জন্য ViewContent ও AddToCart দর্শক তৈরি করা হয়েছে।</li>
+        </ol>
+      </div>
+      <p>এই চেকলিস্টটি ঠিক করে নিলে প্রতিটি বিজ্ঞাপনের ফল তথ্য দিয়ে বিচার করা যায়, অনুমান দিয়ে নয়। Pixel ও CAPI সেটআপ নিয়ে প্রশ্ন থাকলে নিচের WhatsApp বাটনে মেসেজ করুন।</p>
+
+      <!-- FAQ Section -->
+      <section class="faq-section" id="faqs">
+        <h2>সাধারণ জিজ্ঞাসা (FAQ)</h2>
+        
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Meta Pixel ব্যবহার করতে কি আলাদা টাকা লাগে?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform 0.2s;"></i>
+          </div>
+          <div class="faq-body">
+            Meta Pixel কোড ও Conversions API ব্যবহারের জন্য Meta আলাদা কোনো চার্জ নেয় না। খরচ হয় ওয়েবসাইটে সেটআপের কাজে ও ফেসবুক বিজ্ঞাপনের বাজেটে। ZynSite এর ওয়েবসাইট প্যাকেজে Pixel ও CAPI সেটআপ অন্তর্ভুক্ত থাকে।
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Pixel ছাড়া কি ফেসবুক বিজ্ঞাপন চালানো যায়?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform 0.2s;"></i>
+          </div>
+          <div class="faq-body">
+            যায়, তবে তখন বোঝা কঠিন হয় কোন বিজ্ঞাপন থেকে অর্ডার এলো আর কোনটা থেকে শুধু ক্লিক এলো। Pixel থাকলে Meta অর্ডারের তথ্য পায়, ফলে বিজ্ঞাপন অপ্টিমাইজ করা ও রিটার্গেটিং করা অনেক সহজ হয়।
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Pixel ও CAPI একসাথে বসালে কি সেল দুইবার গণনা হয়?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform 0.2s;"></i>
+          </div>
+          <div class="faq-body">
+            সঠিক সেটআপে হয় না। ডিডুপ্লিকেশন ঠিক থাকলে Meta একই ইভেন্টকে একবারই গণনা করে, যদিও তা Pixel ও CAPI দুটো পথেই আসে। সেটআপের সময় এই যাচাইটি করে নেওয়া জরুরি।
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>আমার ওয়েবসাইটে Pixel ও CAPI সেটআপ করতে কত খরচ হবে?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform 0.2s;"></i>
+          </div>
+          <div class="faq-body">
+            ZynSite এর ল্যান্ডিং পেজ ৳৩,৯৯০ থেকে শুরু, আর ই-কমার্স ওয়েবসাইট ৳১৪,৯৯০। প্রথম বছরের ফ্রি .com ডোমেইন ও হোস্টিং অন্তর্ভুক্ত থাকে, আর ৫০% অগ্রিমে কাজ শুরু হয়। বিস্তারিত জানতে WhatsApp এ মেসেজ করুন।
+          </div>
+        </div>
+      </section>
+
+      <!-- Related Articles -->
+      <section class="related-section">
+        <h2>আরও পড়ুন (Related Guides)</h2>
+        <div class="related-grid">
+          <a class="related-card" href="/blog/landing-page-price-bangladesh/">
+            <span style="font-size:11px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;">প্রাইসিং গাইড</span>
+            <h4>ল্যান্ডিং পেজের দাম কত? পূর্ণ গাইড</h4>
+            <p>দাম নির্ভর করে কিসের উপর, বাজারের বিভিন্ন অফারের আসল পার্থক্য ও লুকানো খরচের চেকলিস্ট।</p>
+          </a>
+
+          <a class="related-card" href="/blog/facebook-page-vs-website/">
+            <span style="font-size:11px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;">স্ট্র্যাটেজি গাইড</span>
+            <h4>ফেসবুক পেজ vs ওয়েবসাইট: কোনটা আগে দরকার?</h4>
+            <p>দুটোর সুবিধা, সীমাবদ্ধতা, খরচ ও সঠিক ক্রম নিয়ে পূর্ণ বিশ্লেষণ।</p>
+          </a>
+          <a class="related-card" href="/blog/reduce-fake-orders/">
+            <span style="font-size:11px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;">লজিস্টিকস ও প্রফিট</span>
+            <h4>ফেক অর্ডার কমানোর উপায়: ফেসবুক ব্যবসার জন্য ৭টি পদ্ধতি</h4>
+            <p>ফোন ভ্যালিডেশন, কুরিয়ার ফ্রড চেক ও ডেলিভারি চার্জ অগ্রিম নেওয়ার প্রমাণিত কৌশল।</p>
+          </a>
+        </div>
+      </section>
+      <!-- WhatsApp CTA -->
+      <div class="in-article-cta">
+        <div class="in-cta-text">
+          <h4>আপনার ওয়েবসাইটে Pixel ও CAPI সেটআপ চান?</h4>
+          <p>ZynSite ল্যান্ডিং পেজে Meta Pixel ও CAPI সেটআপ অন্তর্ভুক্ত থাকে। ল্যান্ডিং পেজ মাত্র ৳৩,৯৯০ থেকে, ৫০% অগ্রিমে কাজ শুরু, প্রথম বছর ফ্রি ডোমেইন ও হোস্টিং সহ।</p>
+        </div>
+        <a class="btn-wa-gold" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20want%20Meta%20Pixel%20and%20CAPI%20setup%20for%20my%20website" target="_blank" rel="noopener noreferrer">
+          <i data-lucide="message-circle" style="width:16px;height:16px;"></i>
+          <span>WhatsApp: +40 774 119 870</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="lang-en">
+      <h2 id="why-blind">Why Facebook Ads Run Blind Without Pixel and CAPI</h2>
+      <p>You run Facebook ads, clicks arrive, messages arrive, and even orders arrive. But do you know for certain which ad brought a real buyer, which ad only brought clicks, and which ad brought no sale at all? Many sellers increase or cut their budget without knowing the answer. As a result, a good ad gets switched off, while a poor ad keeps spending money. Meta Pixel and the Conversions API, or CAPI for short, solve this problem. They create a connection between your website and Meta, so that what a visitor does on your website reaches Meta.</p>
+      <p>Put simply, Pixel and CAPI are the eyes and ears of your ads. Without them, Meta only knows who clicked an ad, not who bought. With them, Meta can learn which kind of person is more likely to become a buyer, and help show ads to similar people. This guide explains what Pixel is, what CAPI is, how they differ, which events to track, and which mistakes break tracking.</p>
+
+      <h2 id="what-is-pixel">1. What Is Meta Pixel?</h2>
+      <p>Meta Pixel is a small piece of code provided by Meta, placed on your website. When someone visits your website, this code tells Meta from the browser what the visitor did. For example, which product page the visitor viewed, whether the product was added to the cart, whether checkout was started, or whether an order was completed. Each of these actions is called an event.</p>
+      <p>Consider an example. A buyer views your product page and leaves without buying. Pixel keeps that information. Later, you can show ads again only to those people who viewed the product but did not buy. That is called retargeting. Without Pixel, finding those people separately is almost impossible. So Pixel matters not only for tracking sales, but also for building audiences for future ads.</p>
+
+      <h2 id="what-is-capi">2. What Is the Conversions API, or CAPI?</h2>
+      <p>The Conversions API, or CAPI, is another connection that works alongside Pixel, but it does not send data through the browser. It sends data directly from your website server to the Meta server. When Pixel depends on the browser, some data can be lost on the way. For example, if a visitor has tracking switched off in the browser, uses an ad blocker, or faces a network problem, Pixel may not send every event correctly. CAPI helps fill that gap, because it sends data directly from the server.</p>
+      <p>A simple comparison makes this clear. Think of Pixel as a camera at the front of a shop, watching who comes and goes. Think of CAPI as the sales ledger at the cash counter, where the real sales record is written. Even if the camera is off, the sales record stays in the ledger. So relying only on Pixel is risky. Using Pixel and CAPI together increases the chance that event data arrives in full.</p>
+
+      <h2 id="pixel-and-capi-together">3. Why Use Pixel and CAPI Together?</h2>
+      <p>Many people ask whether using both will count the same order twice. With the correct setup, it will not. When Pixel and CAPI send the same event, Meta counts it as one event through deduplication, as long as both carry the same event name and matching information. So keeping both connections does not mean double counting. It means that if data is lost through one connection, the other can still deliver it.</p>
+      <ul>
+        <li>Pixel sends data quickly from the browser, while CAPI sends more reliable data from the server.</li>
+        <li>Together, they give Meta more complete data, which helps with ad optimisation and audience building.</li>
+        <li>If an event is lost through one connection, the other may still deliver that information.</li>
+      </ul>
+      <p>Remember, Pixel and CAPI are not magic. They only deliver information. If the product is not good, the price is not right, or the ad message is not right, tracking alone will not increase sales. But without correct information, you cannot tell where the problem is, or which ad is actually working.</p>
+
+      <h2 id="events-to-track">4. Which Events Should You Track?</h2>
+      <p>Putting the same event on every button is not correct. Each step has a separate event, so Meta can understand which step a buyer is at. The events below are the most useful for Facebook sellers in Bangladesh.</p>
+      <ul>
+        <li><strong>ViewContent:</strong> Someone viewed a product page or detailed information. This is the first sign of interest.</li>
+        <li><strong>AddToCart:</strong> Someone added a product to the cart. These people are close to buying, so they are very important for retargeting.</li>
+        <li><strong>InitiateCheckout:</strong> Someone started entering a name, address and phone number in the order form. Many orders stop at this step, so it needs separate attention.</li>
+        <li><strong>Purchase:</strong> The order is complete. This is the most important event, because Meta learns from it which ad brought a real buyer.</li>
+        <li><strong>Lead:</strong> Someone filled in a form and gave contact details, such as an enquiry for a service. This event is very useful for service businesses.</li>
+        <li><strong>CompleteRegistration:</strong> Someone opened an account or completed registration.</li>
+      </ul>
+      <p>The Purchase event should also carry the order value and currency, so Meta can understand which ad brought real revenue, not just clicks. One more point to remember: clicking the order button alone should not count as a Purchase. The Purchase event should be sent only when the order is successfully submitted, or wrong data will reach Meta.</p>
+
+      <h2 id="common-mistakes">5. Five Common Mistakes That Break Tracking</h2>
+      <p>Having Pixel installed does not mean tracking is correct. The mistakes below are very common, and when they are present, ad reports show wrong data.</p>
+      <ol>
+        <li><strong>No Purchase event:</strong> Pixel is installed, but no Purchase event is sent when an order is completed. Meta then does not know which ad produced a sale.</li>
+        <li><strong>Pixel and CAPI without deduplication:</strong> If the same event is counted separately through both connections, reports show inflated sales. Checking deduplication during setup is essential.</li>
+        <li><strong>Wrong Pixel ID or wrong domain:</strong> If another business Pixel ID is installed, or Pixel is placed on the wrong website, data goes to the wrong place.</li>
+        <li><strong>Running ads without testing:</strong> After setup, run a test order or test event and check whether the event appears in Meta Events Manager. Without testing, wrong data can accumulate for days.</li>
+        <li><strong>Deciding from clicks alone:</strong> The ad with the most clicks is not always the best ad. Decisions should be based on Purchase and order data.</li>
+      </ol>
+
+      <h2 id="zynsite-setup">6. How Does ZynSite Set Up Pixel and CAPI?</h2>
+      <p>On ZynSite <a href="/landing-page-bangladesh/" style="color:var(--gold-dark);font-weight:700;text-decoration:underline;">landing pages</a>, <a href="/f-commerce-website/" style="color:var(--gold-dark);font-weight:700;text-decoration:underline;">F-Commerce websites</a> and <a href="/ecommerce-website/" style="color:var(--gold-dark);font-weight:700;text-decoration:underline;">e-commerce websites</a>, Meta Pixel and CAPI are set up so that every step of an order reaches Meta correctly. After setup, Test Events are used to check whether ViewContent, AddToCart, InitiateCheckout and Purchase events arrive correctly. Setting up may need your Meta Business account and Pixel details, and the ZynSite team handles the setup and testing work.</p>
+      <p>On price, a landing page starts at ৳3,990, and an e-commerce website costs ৳14,990. A free .com domain and hosting for the first year are included, and work starts with a 50% advance. Pixel and CAPI setup is not a separate complicated job. It is part of building the website, so that your ad data starts being collected correctly from the first day.</p>
+
+      <h2 id="checklist">7. Checklist Before You Run Ads</h2>
+      <p>Before you run ads, check the list below. Increase the budget only when every point matches.</p>
+      <div class="callout pro-tip">
+        <div class="callout-title">
+          <i data-lucide="check-circle" style="width:18px;height:18px;color:var(--gold);"></i>
+          <span>Check before you launch:</span>
+        </div>
+        <ol style="margin: 8px 0 0 16px;">
+          <li>The correct Pixel ID is installed on your website.</li>
+          <li>The Purchase event has been tested, and it appears in Events Manager.</li>
+          <li>Deduplication is correct when both Pixel and CAPI are used.</li>
+          <li>The Purchase event carries the correct order value and currency.</li>
+          <li>ViewContent and AddToCart audiences have been created for retargeting.</li>
+        </ol>
+      </div>
+      <p>Once this checklist is done, you can judge every ad with data, not guesswork. And when you judge with data, the budget goes to the right place. If you have any questions about Pixel and CAPI setup, send a message with the WhatsApp button below. After hearing about your website and ads, the right advice can be given.</p>
+
+      <!-- FAQ Section -->
+      <section class="faq-section" id="faqs">
+        <h2>Frequently Asked Questions (FAQ)</h2>
+        
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Does using Meta Pixel cost extra money?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform 0.2s;"></i>
+          </div>
+          <div class="faq-body">
+            Meta does not charge separately for using the Pixel code or the Conversions API. Costs come from the setup work on the website and the Facebook ad budget. ZynSite website packages include Pixel and CAPI setup.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Can Facebook ads run without Pixel?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform 0.2s;"></i>
+          </div>
+          <div class="faq-body">
+            Yes, but then it is hard to tell which ad brought orders and which ad only brought clicks. With Pixel, Meta receives order data, which makes ad optimisation and retargeting much easier.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>Will Pixel and CAPI together count a sale twice?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform 0.2s;"></i>
+          </div>
+          <div class="faq-body">
+            Not with the correct setup. When deduplication is correct, Meta counts the same event only once, even if it arrives through both Pixel and CAPI. This check should be done during setup.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-header" onclick="toggleFaq(this)">
+            <span>How much does Pixel and CAPI setup cost on my website?</span>
+            <i data-lucide="chevron-down" style="width:18px;height:18px;transition:transform 0.2s;"></i>
+          </div>
+          <div class="faq-body">
+            A ZynSite landing page starts at ৳3,990, and an e-commerce website costs ৳14,990. A free .com domain and hosting for the first year are included, and work starts with a 50% advance. Send a WhatsApp message for details.
+          </div>
+        </div>
+      </section>
+
+      <!-- Related Articles -->
+      <section class="related-section">
+        <h2>More Recommended Guides</h2>
+        <div class="related-grid">
+          <a class="related-card" href="/blog/landing-page-price-bangladesh/">
+            <span style="font-size:11px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;">Pricing Guide</span>
+            <h4>Landing Page Cost in Bangladesh: Full Pricing Guide</h4>
+            <p>What determines pricing, market tier comparisons, and hidden costs to watch out for.</p>
+          </a>
+
+          <a class="related-card" href="/blog/facebook-page-vs-website/">
+            <span style="font-size:11px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;">Strategy Guide</span>
+            <h4>Facebook Page vs Website: Which One Do You Need First?</h4>
+            <p>Starting an online business: page or website? Clear pros, cons, costs, and the exact roadmap.</p>
+          </a>
+          <a class="related-card" href="/blog/reduce-fake-orders/">
+            <span style="font-size:11px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;">Logistics &amp; Profit</span>
+            <h4>7 Proven Ways to Reduce Fake Orders for Facebook Businesses</h4>
+            <p>Phone validation, courier fraud checks, and advance delivery fee strategies that work.</p>
+          </a>
+        </div>
+      </section>
+      <!-- WhatsApp CTA -->
+      <div class="in-article-cta">
+        <div class="in-cta-text">
+          <h4>Want Pixel and CAPI Setup on Your Website?</h4>
+          <p>ZynSite landing pages include Meta Pixel and CAPI setup. A landing page starts at ৳3,990, work starts with a 50% advance, and a free domain and hosting for the first year are included.</p>
+        </div>
+        <a class="btn-wa-gold" href="https://wa.me/40774119870?text=Hello%20ZynSite%2C%20I%20want%20Meta%20Pixel%20and%20CAPI%20setup%20for%20my%20website" target="_blank" rel="noopener noreferrer">
+          <i data-lucide="message-circle" style="width:16px;height:16px;"></i>
+          <span>WhatsApp: +40 774 119 870</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  </article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-links">
+      <a href="/">হোম</a>
+      <span>•</span>
+      <a href="/landing-page-bangladesh/">ল্যান্ডিং পেজ তৈরি</a>
+      <span>•</span>
+      <a href="/f-commerce-website/">F-Commerce ওয়েবসাইট</a>
+      <span>•</span>
+      <a href="/ecommerce-website/">ই-কমার্স ওয়েবসাইট</a>
+      <span>•</span>
+      <a href="/website-price-bangladesh/">ওয়েবসাইটের দাম ও খরচ</a>
+      <span>•</span>
+      <a href="/blog/">ব্লগ ও নলেজ হাব</a>
+    </div>
+    <div class="footer-bottom">
+      <p>© ২০২৬ ZynSite.com , ল্যান্ডিং পেজ ও ওয়েবসাইট ডেভেলপমেন্ট, বাংলাদেশ।</p>
+      <p>অফিসিয়াল ইমেইল: <a href="mailto:contact@zynsite.com" style="color:var(--gold-dark);font-weight:600;">contact@zynsite.com</a> • WhatsApp: +40 774 119 870</p>
+    </div>
+  </div>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+
+  window.addEventListener('scroll', () => {
+    const docEl = document.documentElement;
+    const scrollTop = docEl.scrollTop || document.body.scrollTop;
+    const scrollHeight = docEl.scrollHeight - docEl.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    const bar = document.getElementById('reading-progress');
+    if (bar) bar.style.width = Math.min(progress, 100) + '%';
+  });
+
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const body = item.querySelector('.faq-body');
+    const icon = el.querySelector('i');
+    if (body.style.display === 'none') {
+      body.style.display = 'block';
+      if (icon) icon.style.transform = 'rotate(180deg)';
+    } else {
+      body.style.display = 'none';
+      if (icon) icon.style.transform = 'rotate(0deg)';
+    }
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 3000);
+  }
+
+  function shareOnWhatsApp() {
+    const url = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent(document.title);
+    window.open(`https://wa.me/?text=${title}%20${url}`, '_blank');
+  }
+
+  function shareOnFacebook() {
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=600,height=400');
+  }
+
+  function copyArticleLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      showToast('✓ আর্টিকেলের লিংক কপি হয়েছে!');
+    }).catch(() => {
+      showToast('লিংক কপি করা যায়নি');
+    });
+  }
+</script>
+
+</body>
+</html>
