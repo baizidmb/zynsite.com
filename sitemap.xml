@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://www.zynsite.com/</loc>
     <lastmod>2026-10-24</lastmod>
@@ -50,7 +50,7 @@
   </url>
   <url>
     <loc>https://www.zynsite.com/blog/</loc>
-    <lastmod>2026-10-29</lastmod>
+    <lastmod>2026-10-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -91,9 +91,35 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.zynsite.com/blog/cash-on-delivery-business-guide/</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.zynsite.com/shahidul-islam-baizid/</loc>
     <lastmod>2026-10-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.zynsite.com/assets/shahidul-islam-baizid.jpg</image:loc>
+      <image:title>Shahidul Islam Baizid (Baizid, Bayzid, বায়জিদ, শহিদুল ইসলাম)</image:title>
+      <image:caption>Photo of Shahidul Islam Baizid, known as Baizid or Bayzid, pizza chef and founder of ZynSite.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.zynsite.com/assets/shahidul-islam-baizid-park.jpg</image:loc>
+      <image:title>Shahidul Islam Baizid (Baizid, Bayzid) in a park</image:title>
+      <image:caption>Shahidul Islam Baizid, known as Baizid or Bayzid, sitting in a park in Romania.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.zynsite.com/assets/shahidul-islam-baizid-kurta.jpg</image:loc>
+      <image:title>Shahidul Islam Baizid (শহিদুল ইসলাম বায়জিদ) wearing a blue kurta</image:title>
+      <image:caption>Shahidul Islam Baizid (শহিদুল ইসলাম বায়জিদ) wearing a blue kurta.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.zynsite.com/assets/shahidul-islam-baizid-beach.jpg</image:loc>
+      <image:title>Shahidul Islam Baizid (Baizid, Bayzid) at the beach</image:title>
+      <image:caption>Shahidul Islam Baizid (Baizid, Bayzid) at the beach, with high rise buildings behind him.</image:caption>
+    </image:image>
   </url>
 </urlset>
